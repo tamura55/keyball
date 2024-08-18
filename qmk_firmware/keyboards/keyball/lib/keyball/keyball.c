@@ -33,7 +33,7 @@ const uint16_t AML_TIMEOUT_MIN = 100;
 const uint16_t AML_TIMEOUT_MAX = 1000;
 const uint16_t AML_TIMEOUT_QU  = 50;   // Quantization Unit
 
-const uint16_t AML_ACTIVATE_THRESHOLD = 50;
+const uint16_t AML_ACTIVATE_THRESHOLD = 50;  //nogokazさん。AML移行のトラボ移動閾値
 
 static const char BL = '\xB0'; // Blank indicator character
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
@@ -135,8 +135,8 @@ static void add_scroll_div(int8_t delta) {
     keyball_set_scroll_div(v < 1 ? 1 : v);
 }
 
-static uint16_t movement_size_of(report_mouse_t *rep) {
-    return abs(rep->x) + abs(rep->y);
+static uint16_t movement_size_of(report_mouse_t *rep) {  //nogokazさん
+    return abs(rep->x) + abs(rep->y);  //nogokazさん
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -175,6 +175,9 @@ void pointing_device_driver_set_cpi(uint16_t cpi) {
     keyball_set_cpi(cpi);
 }
 
+////////////////////////////////////////////////////
+///// massさんのマウスカーソル加速用コード。ここから ///
+////////////////////////////////////////////////////
 static void adjust_mouse_speed(report_mouse_t *r) {
     uint16_t movement_size = movement_size_of(r);
 
@@ -198,8 +201,12 @@ static void adjust_mouse_speed(report_mouse_t *r) {
     r->x = clip2int8(r->x * speed_factor);
     r->y = clip2int8(r->y * speed_factor);
 }
+////////////////////////////////////////////////////
+///// massさんのマウスカーソル加速用コード。ここまで ///
+////////////////////////////////////////////////////
 
 __attribute__((weak)) void keyball_on_apply_motion_to_mouse_move(keyball_motion_t *m, report_mouse_t *r, bool is_left) {
+    adjust_mouse_speed(m);  //massさんのマウスカーソル加速用コード
 #if KEYBALL_MODEL == 61 || KEYBALL_MODEL == 39 || KEYBALL_MODEL == 147 || KEYBALL_MODEL == 44
     r->x = clip2int8(m->y);
     r->y = clip2int8(m->x);
@@ -298,6 +305,9 @@ static inline bool should_report(void) {
     return true;
 }
 
+/////////////////////////////////
+/// nogokazさんコード。ここから ///
+/////////////////////////////////
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 static uint16_t keyball_get_auto_mouse_timeout(void) {
     return keyball.auto_mouse_layer_timeout;
@@ -332,6 +342,9 @@ bool auto_mouse_activation(report_mouse_t mouse_report) {
     }
 }
 #endif
+/////////////////////////////////
+/// nogokazさんコード。ここまで ///
+/////////////////////////////////
 
 report_mouse_t pointing_device_driver_get_report(report_mouse_t rep) {
     // fetch from optical sensor.
@@ -631,7 +644,7 @@ void keyball_set_cpi(uint8_t cpi) {
     }
 }
 
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // nogokazさんコード
 void keyball_handle_auto_mouse_layer_change(layer_state_t state) {
     layer_state_t last_state = keyball.last_layer_state;
     // go into AML
@@ -735,7 +748,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         keycode &= 0xff;
     }
 
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  //nogokazさんコード
     // reduce auto mouse timeout if mouse key is pressed.
     if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
