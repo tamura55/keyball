@@ -824,10 +824,22 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 break;
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
-    // レイヤー3以外ではSSNP_VRTに固定
-    if (get_highest_layer() != 3) {
-        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
-    }
+// レイヤー3以外ではSSNP_VRTに固定_old
+//    if (get_highest_layer() != 3) {
+//        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+//    }
+// レイヤー3以外ではSSNP_VRTに固定
+#    if get_highest_layer(state) != 3
+            case SSNP_HOR:
+                keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+                break;
+            case SSNP_VRT:
+                keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+                break;
+            case SSNP_FRE:
+                keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+                break;
+#    endif
             case SSNP_HOR:
                 keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL);
                 break;
