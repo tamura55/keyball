@@ -41,3 +41,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DYNAMIC_KEYMAP_LAYER_COUNT 7  // レイヤー数を7へ増加
 #define AUTO_MOUSE_LAYER_KEEP_TIME 30000  // AML移行後は30s保持
 #define TAPPING_TERM 200  // 追加
+#define RETRO_TAPPING_PER_KEY  // 追加
