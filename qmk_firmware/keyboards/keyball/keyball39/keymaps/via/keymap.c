@@ -80,3 +80,12 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+// Retro Tappingを有効化するキーを定義
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(2, KC_ENTER):
+            return true;
+        default:
+            return false;
+    }
+}
