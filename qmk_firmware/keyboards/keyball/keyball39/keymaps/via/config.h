@@ -42,4 +42,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define AUTO_MOUSE_LAYER_KEEP_TIME 30000  // AML移行後は30s保持
 #define TAPPING_TERM 200  // 追加
 #define PERMISSIVE_HOLD  //追加
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY  // 追加
 #define RETRO_TAPPING_PER_KEY  // 追加
