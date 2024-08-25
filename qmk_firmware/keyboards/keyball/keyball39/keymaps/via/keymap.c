@@ -80,6 +80,7 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_layerinfo();
 }
 #endif
+
 // Retro Tappingを有効化するキーを定義
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -96,6 +97,25 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
         case LCTL_T(KC_MINS):  // 小指付け根キー
             return true;
         default:
+            return false;
+    }
+}
+
+// nested tapが苦手なキーにのみHold On Other Key Pressを適用
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LSFT_T(KC_GRV):  // 親指キー
+            return true;
+        case LT(1, KC_SPC):  // 親指キー
+            return true;
+        case LT(2, KC_ESC):  // 親指キー
+            return true;
+        case LT(2, KC_ENT):  // 親指キー
+            return true;
+        case LT(1, KC_TAB):  // 親指キー
+            return true;
+        default:
+            // Do not select the hold action when another key is pressed.
             return false;
     }
 }
