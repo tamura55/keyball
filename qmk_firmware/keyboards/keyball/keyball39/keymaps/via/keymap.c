@@ -83,7 +83,17 @@ void oledkit_render_info_user(void) {
 // Retro Tappingを有効化するキーを定義
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LT(2, KC_ENTER):
+        case LSFT(KC_GRV):  // 親指キー
+            return true;
+        case LT(1, KC_SPC):  // 親指キー
+            return true;
+        case LT(2, KC_ESC):  // 親指キー
+            return true;
+        case LT(2, KC_ENT):  // 親指キー
+            return true;
+        case LT(1, KC_TAB):  // 親指キー
+            return true;
+        case LCTL(KC_MINS):  // 小指付け根キー
             return true;
         default:
             return false;
