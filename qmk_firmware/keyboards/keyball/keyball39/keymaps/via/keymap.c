@@ -84,9 +84,13 @@ void oledkit_render_info_user(void) {
 // Retro Tappingを有効化するキーを定義
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LSFT_T(KC_GRV):  // 親指キー
+        case LSFT_T(KC_GRV):  // 親指キー_old
             return true;
-        case LT(1, KC_SPC):  // 親指キー
+        case LT(1, KC_SPC):  // 親指キー_old
+            return true;
+        case LSFT_T(KC_SPC):  // 親指キー_new
+            return true;
+        case LT(1, KC_GRV):  // 親指キー_new
             return true;
         case LT(2, KC_ESC):  // 親指キー
             return true;
@@ -104,9 +108,13 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 // nested tapが苦手なキーにのみHold On Other Key Pressを適用
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LSFT_T(KC_GRV):  // 親指キー
+        case LSFT_T(KC_GRV):  // 親指キー_old
             return true;
-        case LT(1, KC_SPC):  // 親指キー
+        case LT(1, KC_SPC):  // 親指キー_old
+            return true;
+        case LSFT_T(KC_SPC):  // 親指キー_new
+            return true;
+        case LT(1, KC_GRV):  // 親指キー_new
             return true;
         case LT(2, KC_ESC):  // 親指キー
             return true;
