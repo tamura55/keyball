@@ -88,8 +88,6 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
             return true;
         case LT(1, KC_SPC):  // 親指キー_old
             return true;
-        case LSFT_T(KC_SPC):  // 親指キー_new
-            return true;
         case LT(1, KC_GRV):  // 親指キー_new
             return true;
         case LT(2, KC_ESC):  // 親指キー
@@ -99,6 +97,21 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
         case LT(1, KC_TAB):  // 親指キー
             return true;
         case LCTL_T(KC_MINS):  // 小指付け根キー
+            return true;
+        // キーマップ刷新
+        case LCTL_T(KC_GRV):  // 親指キー
+            return true;
+        case LSFT_T(KC_SPC):  // 親指キー
+            return true;
+        case C_S_T(KC_ESC):  // 親指キー
+            return true;
+        case LT(2,KC_TAB):  // 親指キー
+            return true;
+        case LT(1,KC_ENT):  // 親指キー
+            return true;
+        case LALT_T(KC_ESC):  // 親指キー予備
+            return true;
+        case LALT_T(KC_MINS):  // 小指付け根キー
             return true;
         default:
             return false;
@@ -112,8 +125,6 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return true;
         case LT(1, KC_SPC):  // 親指キー_old
             return true;
-        case LSFT_T(KC_SPC):  // 親指キー_new
-            return true;
         case LT(1, KC_GRV):  // 親指キー_new
             return true;
         case LT(2, KC_ESC):  // 親指キー
@@ -121,6 +132,23 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LT(2, KC_ENT):  // 親指キー
             return true;
         case LT(1, KC_TAB):  // 親指キー
+            return true;
+        case LCTL_T(KC_MINS):  // 小指付け根キー
+            return true;
+        // キーマップ刷新
+        case LCTL_T(KC_GRV):  // 親指キー
+            return true;
+        case LSFT_T(KC_SPC):  // 親指キー
+            return true;
+        case C_S_T(KC_ESC):  // 親指キー
+            return true;
+        case LT(2,KC_TAB):  // 親指キー
+            return true;
+        case LT(1,KC_ENT):  // 親指キー
+            return true;
+        case LALT_T(KC_ESC):  // 親指キー予備
+            return true;
+        case LALT_T(KC_MINS):  // 小指付け根キー
             return true;
         default:
             // Do not select the hold action when another key is pressed.
