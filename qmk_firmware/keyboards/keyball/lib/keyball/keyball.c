@@ -33,7 +33,7 @@ const uint16_t AML_TIMEOUT_MIN = 100;
 const uint16_t AML_TIMEOUT_MAX = 1000;
 const uint16_t AML_TIMEOUT_QU  = 50;   // Quantization Unit
 
-const uint16_t AML_ACTIVATE_THRESHOLD = 25;  //nogokazさん。AML移行のトラボ移動閾値
+const uint16_t AML_ACTIVATE_THRESHOLD = 25;  //negokazさん。AML移行のトラボ移動閾値
 
 static const char BL = '\xB0'; // Blank indicator character
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
@@ -135,8 +135,8 @@ static void add_scroll_div(int8_t delta) {
     keyball_set_scroll_div(v < 1 ? 1 : v);
 }
 
-static uint16_t movement_size_of(report_mouse_t *rep) {  //nogokazさん
-    return abs(rep->x) + abs(rep->y);  //nogokazさん
+static uint16_t movement_size_of(report_mouse_t *rep) {  //negokazさん
+    return abs(rep->x) + abs(rep->y);  //negokazさん
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -305,7 +305,7 @@ static inline bool should_report(void) {
 }
 
 /////////////////////////////////
-/// nogokazさんコード。ここから ///
+/// negokazさんコード。ここから ///
 /////////////////////////////////
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 static uint16_t keyball_get_auto_mouse_timeout(void) {
@@ -342,7 +342,7 @@ bool auto_mouse_activation(report_mouse_t mouse_report) {
 }
 #endif
 /////////////////////////////////
-/// nogokazさんコード。ここまで ///
+/// negokazさんコード。ここまで ///
 /////////////////////////////////
 
 report_mouse_t pointing_device_driver_get_report(report_mouse_t rep) {
@@ -643,7 +643,7 @@ void keyball_set_cpi(uint8_t cpi) {
     }
 }
 
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // nogokazさんコード
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさんコード
 void keyball_handle_auto_mouse_layer_change(layer_state_t state) {
     layer_state_t last_state = keyball.last_layer_state;
     // go into AML
@@ -747,13 +747,18 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         keycode &= 0xff;
     }
 
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  //nogokazさんコード
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  //negokazさんコード
     // reduce auto mouse timeout if mouse key is pressed.
     if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
         keyball.total_mouse_movement = 0;
     }
 #endif
+
+// トライ
+    if (keycode == SCRL_MO) {
+        keyball_set_scroll_mode(record->event.pressed);
+    }
 
     switch (keycode) {
 #ifndef MOUSEKEY_ENABLE
@@ -767,11 +772,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         }
 #endif
 
-        case SCRL_MO:
-            keyball_set_scroll_mode(record->event.pressed);
-            // process_auto_mouse may use this in future, if changed order of
-            // processes.
-            return true;
+//        case SCRL_MO:
+//            keyball_set_scroll_mode(record->event.pressed);
+//            // process_auto_mouse may use this in future, if changed order of
+//            // processes.
+//            return true;
     }
 
     // process events which works on pressed only.
