@@ -726,8 +726,8 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case SCRL_MO:
             return true;
-        default:
-            return false;
+        default:  // 追記
+            return false;  // 追記
     }
     return is_mouse_record_user(keycode, record);
 }
@@ -751,17 +751,17 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさん
     // reduce auto mouse timeout if mouse key is pressed.
-//    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {
-    if (IS_MOUSEKEY(keycode) && record->event.pressed) {  // トライ
+//    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {  // negokazさんオリジナル
+    if (IS_MOUSEKEY(keycode) && record->event.pressed) {  // is_mouse_record_kbで定義しているkeycodeではAML保持
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
         keyball.total_mouse_movement = 0;
     }
 #endif
 
     // トライ
-    if (keycode == SCRL_MO) {
-        keyball_set_scroll_mode(record->event.pressed);
-    }
+//    if (keycode == SCRL_MO) {
+//        keyball_set_scroll_mode(record->event.pressed);
+//    }
 
     switch (keycode) {
 #ifndef MOUSEKEY_ENABLE
@@ -774,12 +774,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             return true;
         }
 #endif
-
-//        case SCRL_MO:
-//            keyball_set_scroll_mode(record->event.pressed);
-//            // process_auto_mouse may use this in future, if changed order of
-//            // processes.
-//            return true;
+        case SCRL_MO:
+            keyball_set_scroll_mode(record->event.pressed);
+            // process_auto_mouse may use this in future, if changed order of
+            // processes.
+            return true;
     }
 
     // process events which works on pressed only.
