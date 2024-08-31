@@ -726,6 +726,8 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case SCRL_MO:
             return true;
+        case KC_ENT:
+            return true;
         default:
             return false;
     }
