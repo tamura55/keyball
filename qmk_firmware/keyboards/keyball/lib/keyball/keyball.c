@@ -726,6 +726,8 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case SCRL_MO:
             return true;
+        default:
+            return false;
     }
     return is_mouse_record_user(keycode, record);
 }
@@ -756,9 +758,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #endif
 
 // トライ
-    if (keycode == SCRL_MO) {
-        keyball_set_scroll_mode(record->event.pressed);
-    }
+//    if (keycode == SCRL_MO) {
+//        keyball_set_scroll_mode(record->event.pressed);
+//    }
 
     switch (keycode) {
 #ifndef MOUSEKEY_ENABLE
@@ -772,11 +774,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         }
 #endif
 
-//        case SCRL_MO:
-//            keyball_set_scroll_mode(record->event.pressed);
-//            // process_auto_mouse may use this in future, if changed order of
-//            // processes.
-//            return true;
+        case SCRL_MO:
+            keyball_set_scroll_mode(record->event.pressed);
+            // process_auto_mouse may use this in future, if changed order of
+            // processes.
+            return true;
     }
 
     // process events which works on pressed only.
