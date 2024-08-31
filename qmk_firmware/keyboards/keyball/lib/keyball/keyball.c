@@ -751,7 +751,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  //negokazさんコード
     // reduce auto mouse timeout if mouse key is pressed.
-    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {
+    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode) || keycode == SCRL_MO) && record->event.pressed) { // 追記トライ
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
         keyball.total_mouse_movement = 0;
     }
