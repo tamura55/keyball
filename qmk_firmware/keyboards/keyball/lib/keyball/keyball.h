@@ -115,6 +115,11 @@ enum keyball_keycodes {
     AML_I50  = QK_KB_11, // Increment automatic mouse layer timeout
     AML_D50  = QK_KB_12, // Decrement automatic mouse layer timeout
 
+    // SCRL_TOとSSNP_**を組み合わせたkeycode
+    STSP_VRT = QK_KB_23, // Set scroll snap mode as vertical
+    STSP_HOR = QK_KB_24, // Set scroll snap mode as horizontal
+    STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
+
     // User customizable 32 keycodes.
     KEYBALL_SAFE_RANGE = QK_USER_0,
 };
