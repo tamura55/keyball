@@ -723,6 +723,7 @@ static void pressing_keys_update(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
+    // 押下後もAML保持したいキーを定義
     switch (keycode) {
         case SCRL_MO:
             return true;
@@ -765,16 +766,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさん
     // reduce auto mouse timeout if mouse key is pressed.
 //    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {  // negokazさんオリジナル
-    if ((keycode == KC_MS_BTN1 || keycode == KC_MS_BTN2 || keycode == KC_MS_BTN3) && record->event.pressed) {  // is_mouse_record_kbで定義しているkeycodeではAML保持
+    if ((keycode == KC_MS_BTN1 || keycode == KC_MS_BTN2 || keycode == KC_MS_BTN3) && record->event.pressed) {  // KC_MS_BTN1~3のみに変更
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
         keyball.total_mouse_movement = 0;
     }
 #endif
-
-    // トライ
-//    if (keycode == SCRL_MO) {
-//        keyball_set_scroll_mode(record->event.pressed);
-//    }
 
     switch (keycode) {
 #ifndef MOUSEKEY_ENABLE
