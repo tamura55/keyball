@@ -726,6 +726,19 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case SCRL_MO:
             return true;
+        case KC_MS_BTN4:
+            return true;
+        case KC_MS_BTN5:
+            return true;
+// Kb23~25追加
+#    if KEYBALL_SCROLLSNAP_ENABLE == 2
+        case STSP_VRT:
+            return true;
+        case STSP_HOR:
+            return true;
+        case STSP_FRE:
+            return true;
+#    endif
         default:  // 追記
             return false;  // 追記
     }
@@ -752,7 +765,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさん
     // reduce auto mouse timeout if mouse key is pressed.
 //    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {  // negokazさんオリジナル
-    if (IS_MOUSEKEY(keycode) && record->event.pressed) {  // is_mouse_record_kbで定義しているkeycodeではAML保持
+    if ((keycode == KC_MS_BTN1 || keycode == KC_MS_BTN2 || keycode == KC_MS_BTN3) && record->event.pressed) {  // is_mouse_record_kbで定義しているkeycodeではAML保持
         set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
         keyball.total_mouse_movement = 0;
     }
@@ -779,6 +792,21 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             // process_auto_mouse may use this in future, if changed order of
             // processes.
             return true;
+// Kb23~25追加
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+        case STSP_VRT:
+            keyball_set_scroll_mode(record->event.pressed);
+            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+            return true;
+        case STSP_HOR:
+            keyball_set_scroll_mode(record->event.pressed);
+            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL);
+            return true;
+        case STSP_FRE:
+            keyball_set_scroll_mode(record->event.pressed);
+            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+            return true;
+#endif
     }
 
     // process events which works on pressed only.
