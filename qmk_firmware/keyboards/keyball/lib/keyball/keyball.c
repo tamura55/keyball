@@ -780,6 +780,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case LALT_T(KC_MINS):  // 小指付け根キー
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
+        }
     }
 #endif
 
