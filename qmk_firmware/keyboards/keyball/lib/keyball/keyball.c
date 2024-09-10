@@ -739,7 +739,6 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
         case STSP_FRE:
             return true;
 #    endif
-
         default:  // 追記
             return false;  // 追記
     }
@@ -775,11 +774,18 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_MS_BTN1:
             case KC_MS_BTN2:
             case KC_MS_BTN3:
-//            case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
-//            case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
-//            case RCS_T(KC_ESC):  // 親指キー。L6スぺ
-//            case RALT_T(KC_ESC):  // 親指キー予備。L6スぺ
-//            case RALT_T(KC_MINS):  // 小指付け根キー。L6スぺ
+                set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
+                keyball.total_mouse_movement = 0;
+        }
+    }
+    else {
+        // キーを離した時
+        switch (keycode) {
+            case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
+            case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
+            case RCS_T(KC_ESC):  // 親指キー。L6スぺ
+            case RALT_T(KC_ESC):  // 親指キー予備。L6スぺ
+            case RALT_T(KC_MINS):  // 小指付け根キー。L6スぺ
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
