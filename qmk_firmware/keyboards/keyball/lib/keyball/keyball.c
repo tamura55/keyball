@@ -780,8 +780,8 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
             case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
             case RCS_T(KC_ESC):  // 親指キー。L6スぺ
-            case LT(2,KC_TAB):  // 親指キー。L0共通
-            case LT(1,KC_ENT):  // 親指キー。L0共通
+//            case LT(2,KC_TAB):  // 親指キー。L0共通
+//            case LT(1,KC_ENT):  // 親指キー。L0共通
             case RALT_T(KC_ESC):  // 親指キー予備。L6スぺ
             case RALT_T(KC_MINS):  // 小指付け根キー。L6スぺ
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
