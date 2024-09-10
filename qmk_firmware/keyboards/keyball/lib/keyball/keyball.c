@@ -726,8 +726,13 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     // 押下後もAML保持したいキーを定義
     switch (keycode) {
         case SCRL_MO:
-        case KC_MS_BTN4:
-        case KC_MS_BTN5:
+//        case KC_MS_BTN4:  // 多分記載不要
+//        case KC_MS_BTN5:  // 多分記載不要
+        case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
+        case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
+        case RCS_T(KC_ESC):  // 親指キー。L6スぺ
+        case RALT_T(KC_ESC):  // 親指キー予備。L6スぺ
+        case RALT_T(KC_MINS):  // 小指付け根キー。L6スぺ
             return true;
 // Kb23~25追加
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
@@ -736,6 +741,7 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
         case STSP_FRE:
             return true;
 #    endif
+
         default:  // 追記
             return false;  // 追記
     }
@@ -771,13 +777,13 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case KC_MS_BTN1:
             case KC_MS_BTN2:
             case KC_MS_BTN3:
-            case LCTL_T(KC_GRV):  // 親指キー
-            case LSFT_T(KC_SPC):  // 親指キー
-            case C_S_T(KC_ESC):  // 親指キー
-            case LT(2,KC_TAB):  // 親指キー
-            case LT(1,KC_ENT):  // 親指キー
-            case LALT_T(KC_ESC):  // 親指キー予備
-            case LALT_T(KC_MINS):  // 小指付け根キー
+            case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
+            case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
+            case RCS_T(KC_ESC):  // 親指キー。L6スぺ
+            case LT(2,KC_TAB):  // 親指キー。L0共通
+            case LT(1,KC_ENT):  // 親指キー。L0共通
+            case RALT_T(KC_ESC):  // 親指キー予備。L6スぺ
+            case RALT_T(KC_MINS):  // 小指付け根キー。L6スぺ
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
