@@ -56,10 +56,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
+
 // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     keyball_handle_auto_mouse_layer_change(state);
 #endif
+
 // レイヤー3以外ではSSNP_VRTに固定
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
     uint8_t layer = biton32(state);
@@ -67,6 +69,31 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
     }
 #endif
+
+  // レイヤーとLEDを連動させる
+  switch (get_highest_layer(state)) {
+    case 1:
+      rgblight_sethsv(HSV_CYAN);
+      break;
+    case 2:
+      rgblight_sethsv(HSV_SPRINGGREEN);
+      break;
+    case 3:
+      rgblight_sethsv(HSV_CORAL);
+      break;
+    case 4:
+      rgblight_sethsv(HSV_GOLDENROD);
+      break;
+    case 5:
+      rgblight_sethsv(HSV_PURPLE);
+      break;
+    case 6:
+      rgblight_sethsv(HSV_WHITE);
+      break;
+    default:
+      rgblight_sethsv(HSV_OFF);
+  }
+  
     return state;
 }
 
@@ -110,14 +137,6 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 // nested tapが苦手なキーにのみHold On Other Key Pressを適用
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LSFT_T(KC_GRV):  // 親指キー_old
-        case LT(1, KC_SPC):  // 親指キー_old
-        case LT(1, KC_GRV):  // 親指キー_new
-        case LT(2, KC_ESC):  // 親指キー
-        case LT(2, KC_ENT):  // 親指キー
-        case LT(1, KC_TAB):  // 親指キー
-        case LCTL_T(KC_MINS):  // 小指付け根キー
-        // キーマップ刷新
         case LCTL_T(KC_GRV):  // 親指キー
         case LSFT_T(KC_SPC):  // 親指キー
         case C_S_T(KC_ESC):  // 親指キー
