@@ -643,7 +643,7 @@ void keyball_set_cpi(uint8_t cpi) {
     }
 }
 
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさんコード
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさん
 void keyball_handle_auto_mouse_layer_change(layer_state_t state) {
     layer_state_t last_state = keyball.last_layer_state;
     // go into AML
@@ -765,11 +765,11 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE  // negokazさん
     // reduce auto mouse timeout if mouse key is pressed.
 //    if ((is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode)) && record->event.pressed) {  // negokazさんオリジナル
-//    if ((keycode == KC_MS_BTN1 || keycode == KC_MS_BTN2 || keycode == KC_MS_BTN3) && record->event.pressed) {  // KC_MS_BTN1~3のみに変更
 //        set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
 //        keyball.total_mouse_movement = 0;
 //    }
     if (record->event.pressed) {  // 親指キー追加に伴いif+switch文へ変更
+        // キーを押したとき
         switch (keycode) {
             case KC_MS_BTN1:
             case KC_MS_BTN2:
@@ -779,7 +779,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         }
     }
     else {
-        // キーを離した時
+        // キーを離したとき
         switch (keycode) {
             case RCTL_T(KC_GRV):  // 親指キー。L6スぺ
             case RSFT_T(KC_SPC):  // 親指キー。L6スぺ
