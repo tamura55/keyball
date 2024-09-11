@@ -733,7 +733,8 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
         case KC_TAB:  // 親指キー。AML専用
         case RALT_T(KC_ESC):  // 親指キー予備。AML専用
         case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
-        case QK_KB_26:  // AMLキープ用
+        case QK_KB_26:  // AML専用親指Enter
+        case QK_KB_27:  // AML専用親指Tab
             return true;
 // Kb23~25追加
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
