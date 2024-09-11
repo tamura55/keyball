@@ -729,12 +729,12 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
         case RCTL_T(KC_GRV):  // 親指キー。AML専用
         case RSFT_T(KC_SPC):  // 親指キー。AML専用
         case RCS_T(KC_ESC):  // 親指キー。AML専用
-        case KC_ENT:  // 親指キー。AML専用
-        case KC_TAB:  // 親指キー。AML専用
         case RALT_T(KC_ESC):  // 親指キー予備。AML専用
         case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
-        case QK_KB_26:  // AML専用親指Enter
-        case QK_KB_27:  // AML専用親指Tab
+        case KC_ENT:  // 親指キー。AML専用。暫定
+        case KC_TAB:  // 親指キー。AML専用。暫定
+        case AML_ENT1:  // AML専用親指Enter。未完成
+        case AML_TAB2:  // AML専用親指Tab。未完成
             return true;
 // Kb23~25追加
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
@@ -788,10 +788,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case RCTL_T(KC_GRV):  // 親指キー。AML専用
             case RSFT_T(KC_SPC):  // 親指キー。AML専用
             case RCS_T(KC_ESC):  // 親指キー。AML専用
-            case KC_ENT:  // 親指キー。AML専用
-            case KC_TAB:  // 親指キー。AML専用
             case RALT_T(KC_ESC):  // 親指キー予備。AML専用
             case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
+            case KC_ENT:  // 親指キー。AML専用。暫定
+            case KC_TAB:  // 親指キー。AML専用。暫定
+            case AML_ENT1:  // AML専用親指Enter。未完成
+            case AML_TAB2:  // AML専用親指Tab。未完成
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
