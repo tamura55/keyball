@@ -753,6 +753,7 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
 //////////////////////////////
 /// カスタムキーコード。ここから ///
 //////////////////////////////
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 // フラグを初期化
 static bool pressed_other_key = false;
 
@@ -800,6 +801,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;  // 通常のキー処理を続ける
     }
 }
+#endif
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
