@@ -1,4 +1,4 @@
-/*
+ふ*
 Copyright 2022 MURAOKA Taro (aka KoRoN, @kaoriya)
 
 This program is free software: you can redistribute it and/or modify
@@ -800,6 +800,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 pressed_other_key1 = true;  // 他のキーが押されたことを記録
             } else if (record->event.pressed && layer_state_is(2)) {
                 pressed_other_key2 = true;  // 他のキーが押されたことを記録
+            }
             return true;  // 通常のキー処理を続ける
     }
 }
