@@ -755,14 +755,15 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
 //////////////////////////////
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 // フラグを初期化
-static bool pressed_other_key = false;
+static bool pressed_other_key1 = false;
+static bool pressed_other_key2 = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case AML_ENT1:
             if (record->event.pressed) {
                 // AML_ENT1が押された瞬間
-                pressed_other_key = false;            // 他のキーが押されるまでフラグをリセット
+                pressed_other_key1 = false;            // 他のキーが押されるまでフラグをリセット
                 layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
                 layer_on(1);                          // Layer1を有効化
             } else {
@@ -770,7 +771,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(1);                         // Layer1を無効化
                 layer_clear();                        // Layer0に戻る
                 // 他のキーが押されていない場合のみEnterを入力
-                if (!pressed_other_key) {
+                if (!pressed_other_key1) {
                     tap_code(KC_ENT);                 // Enterキーを送信
                 }
             }
@@ -779,7 +780,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case AML_TAB2:
             if (record->event.pressed) {
                 // AML_TAB2が押された瞬間
-                pressed_other_key = false;            // 他のキーが押されるまでフラグをリセット
+                pressed_other_key2 = false;            // 他のキーが押されるまでフラグをリセット
                 layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
                 layer_on(2);                          // Layer2を有効化
             } else {
@@ -787,7 +788,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(2);                         // Layer2を無効化
                 layer_clear();                        // Layer0に戻る
                 // 他のキーが押されていない場合のみTabを入力
-                if (!pressed_other_key) {
+                if (!pressed_other_key2) {
                     tap_code(KC_TAB);                 // Tabキーを送信
                 }
             }
@@ -796,8 +797,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed && layer_state_is(1)) {
-                pressed_other_key = true;  // 他のキーが押されたことを記録
-            }
+                pressed_other_key1 = true;  // 他のキーが押されたことを記録
+            } else if (record->event.pressed && layer_state_is(2)) {
+                pressed_other_key2 = true;  // 他のキーが押されたことを記録
             return true;  // 通常のキー処理を続ける
     }
 }
