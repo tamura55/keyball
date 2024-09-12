@@ -731,10 +731,10 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
         case RCS_T(KC_ESC):  // 親指キー。AML専用
         case RALT_T(KC_ESC):  // 親指キー予備。AML専用
         case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
-        case KC_ENT:  // 親指キー。AML専用。暫定
-        case KC_TAB:  // 親指キー。AML専用。暫定
-        case AML_ENT1:  // AML専用親指Enter。未完成
-        case AML_TAB2:  // AML専用親指Tab。未完成
+//        case KC_ENT:  // 親指キー。AML専用。暫定
+//        case KC_TAB:  // 親指キー。AML専用。暫定
+//        case AML_ENT1:  // AML専用親指Enter。未完成
+//        case AML_TAB2:  // AML専用親指Tab。未完成
             return true;
 // Kb23~25追加
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
@@ -749,6 +749,60 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     return is_mouse_record_user(keycode, record);
 }
 #endif
+
+//////////////////////////////
+/// カスタムキーコード。ここから ///
+//////////////////////////////
+// フラグを初期化
+static bool pressed_other_key = false;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case AML_ENT1:
+            if (record->event.pressed) {
+                // AML_ENT1が押された瞬間
+                pressed_other_key = false;            // 他のキーが押されるまでフラグをリセット
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
+                layer_on(1);                          // Layer1を有効化
+            } else {
+                // AML_ENT1が離された瞬間
+                layer_off(1);                         // Layer1を無効化
+                layer_clear();                        // Layer0に戻る
+                // 他のキーが押されていない場合のみEnterを入力
+                if (!pressed_other_key) {
+                    tap_code(KC_ENT);                 // Enterキーを送信
+                }
+            }
+            return false;  // AML_ENT1に対して他の処理は行わない
+        
+        case AML_TAB2:
+            if (record->event.pressed) {
+                // AML_TAB2が押された瞬間
+                pressed_other_key = false;            // 他のキーが押されるまでフラグをリセット
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
+                layer_on(2);                          // Layer2を有効化
+            } else {
+                // AML_TAB2が離された瞬間
+                layer_off(2);                         // Layer2を無効化
+                layer_clear();                        // Layer0に戻る
+                // 他のキーが押されていない場合のみTabを入力
+                if (!pressed_other_key) {
+                    tap_code(KC_TAB);                 // Tabキーを送信
+                }
+            }
+            return false;  // AML_TAB2に対して他の処理は行わない
+
+        default:
+            // 他のキーが押された場合にフラグを立てる
+            if (record->event.pressed && layer_state_is(1)) {
+                pressed_other_key = true;  // 他のキーが押されたことを記録
+            }
+            return true;  // 通常のキー処理を続ける
+    }
+}
+//////////////////////////////
+/// カスタムキーコード。ここまで ///
+//////////////////////////////
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     // store last keycode, row, and col for OLED
@@ -781,8 +835,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
-    }
-    else {
+    } else {
         // キーを離したとき
         switch (keycode) {
             case RCTL_T(KC_GRV):  // 親指キー。AML専用
@@ -790,10 +843,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case RCS_T(KC_ESC):  // 親指キー。AML専用
             case RALT_T(KC_ESC):  // 親指キー予備。AML専用
             case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
-            case KC_ENT:  // 親指キー。AML専用。暫定
-            case KC_TAB:  // 親指キー。AML専用。暫定
-            case AML_ENT1:  // AML専用親指Enter。未完成
-            case AML_TAB2:  // AML専用親指Tab。未完成
+//            case KC_ENT:  // 親指キー。AML専用。暫定
+//            case KC_TAB:  // 親指キー。AML専用。暫定
+//            case AML_ENT1:  // AML専用親指Enter。未完成
+//            case AML_TAB2:  // AML専用親指Tab。未完成
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
