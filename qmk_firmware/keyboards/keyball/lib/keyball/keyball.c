@@ -796,10 +796,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         default:
             // 他のキーが押された場合にフラグを立てる
-            if (record->event.pressed && layer_state_is(1)) {
-                pressed_other_key1 = true;  // 他のキーが押されたことを記録
-            } else if (record->event.pressed && layer_state_is(2)) {
-                pressed_other_key2 = true;  // 他のキーが押されたことを記録
+            if (record->event.pressed) {
+                if (layer_state_is(1)) {
+                    pressed_other_key1 = true;  // Layer1で他のキーが押されたことを記録
+                }
+                if (layer_state_is(2)) {
+                    pressed_other_key2 = true;  // Layer2で他のキーが押されたことを記録
+                }
             }
             return true;  // 通常のキー処理を続ける
     }
