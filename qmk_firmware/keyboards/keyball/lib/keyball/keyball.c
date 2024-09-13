@@ -754,41 +754,57 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
 /// カスタムキーコード。ここから ///
 //////////////////////////////
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-// フラグを初期化
+// フラグとタイマーを初期化
 static bool pressed_other_key_ent = false;
+static uint16_t aml_ent1_timer;
+
+// AML_TAB2用
 static bool pressed_other_key_tab = false;
+static uint16_t aml_tab2_timer;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case AML_ENT1:
             if (record->event.pressed) {
                 // AML_ENT1が押された瞬間
-                pressed_other_key_ent = false;            // 他のキーが押されるまでフラグをリセット
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
-                layer_on(1);                          // Layer1を有効化
+                pressed_other_key_ent = false;         // 他のキーが押されるまでフラグをリセット
+                aml_ent1_timer = timer_read();         // タイマーをスタート
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
+                layer_on(1);                           // Layer1を有効化
             } else {
                 // AML_ENT1が離された瞬間
+                // 他のキーが押されていない場合
                 if (!pressed_other_key_ent) {
-                    tap_code(KC_ENT);                 // 他のキーが押されていない場合のみEnterを送信
+                    // Tapping Term以内にリリースされた場合のみEnterを送信
+                    if (timer_elapsed(aml_ent1_timer) < TAPPING_TERM) {
+                        tap_code(KC_ENT);              // Enterキーを送信
+                    }
+                    // Tapping Termを超えている場合は何もしない
                 }
-                layer_off(1);                         // Layer1を無効化
-                layer_clear();                        // Layer0に戻る
+                layer_off(1);                          // Layer1を無効化
+                layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_ENT1に対して他の処理は行わない
-        
+
         case AML_TAB2:
             if (record->event.pressed) {
                 // AML_TAB2が押された瞬間
-                pressed_other_key_tab = false;            // 他のキーが押されるまでフラグをリセット
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // Auto Mouse Layerを無効化
-                layer_on(2);                          // Layer2を有効化
+                pressed_other_key_tab = false;         // 他のキーが押されるまでフラグをリセット
+                aml_tab2_timer = timer_read();         // タイマーをスタート
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
+                layer_on(2);                           // Layer2を有効化
             } else {
                 // AML_TAB2が離された瞬間
+                // 他のキーが押されていない場合
                 if (!pressed_other_key_tab) {
-                    tap_code(KC_TAB);                 // 他のキーが押されていない場合のみTabを送信
+                    // Tapping Term以内にリリースされた場合のみTabを送信
+                    if (timer_elapsed(aml_tab2_timer) < TAPPING_TERM) {
+                        tap_code(KC_TAB);              // Tabキーを送信
+                    }
+                    // Tapping Termを超えている場合は何もしない
                 }
-                layer_off(2);                         // Layer2を無効化
-                layer_clear();                        // Layer0に戻る
+                layer_off(2);                          // Layer2を無効化
+                layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
 
