@@ -144,6 +144,9 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LT(1,KC_ENT):  // 親指キー
         case LALT_T(KC_ESC):  // 親指キー予備
         case LALT_T(KC_MINS):  // 小指付け根キー
+        case RCTL_T(KC_GRV):  // AML専用左親指キー
+        case RSFT_T(KC_SPC):  // AML専用左親指キー
+        case RCS_T(KC_ESC):  // AML専用左親指キー
         case AML_ENT1:  // AML専用右親指キー
         case AML_TAB2:  // AML専用右親指キー
             // Immediately select the hold action when another key is pressed.
