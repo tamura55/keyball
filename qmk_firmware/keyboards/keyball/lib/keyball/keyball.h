@@ -121,8 +121,8 @@ enum keyball_keycodes {
     STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
 
     // AML専用右親指キー
-    AML_ENT1 = QK_KB_26,
-    AML_TAB2 = QK_KB_27,
+    AML_ENT1 = QK_KB_21,
+    AML_TAB2 = QK_KB_22,
 
     // User customizable 32 keycodes.
     KEYBALL_SAFE_RANGE = QK_USER_0,
