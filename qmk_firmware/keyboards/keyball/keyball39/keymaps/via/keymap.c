@@ -128,7 +128,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         rgblight_sethsv(HSV_OFF);
         oled_set_brightness(255);
     }
-トライアルにつきコメントアウト。ここから。 /*
+トライアルにつきコメントアウト。ここから。 */
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
 /*
