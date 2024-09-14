@@ -75,7 +75,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
     // レイヤーとLEDを連動させる
-    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
+//    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
     switch (highest_layer) {
         case 1:
             rgblight_sethsv(HSV_GREEN);
