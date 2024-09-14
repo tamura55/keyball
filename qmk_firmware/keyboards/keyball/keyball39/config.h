@@ -50,6 +50,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    ifndef RGBLIGHT_LIMIT_VAL
 #        define RGBLIGHT_LIMIT_VAL  150 // limitated for power consumption
 #    endif
+
+#    ifndef RGBLIGHT_DEFAULT_VAL
+#define RGBLIGHT_DEFAULT_VAL 50  // 初期のRGBの明るさ
+#    endif
+
 #    ifndef RGBLIGHT_VAL_STEP
 #        define RGBLIGHT_VAL_STEP   15
 #    endif
