@@ -69,7 +69,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 
 ////////// トライアル //////////
-    if (highest_layer == 6) {
+//    if (highest_layer == 6) {
         // 左右のLED範囲を設定する
         if (is_keyboard_master()) {
             // マスター側 (右半分)
@@ -79,16 +79,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         } else {
             // スレーブ側 (左半分)
             rgblight_sethsv(HSV_WHITE);
-//            for (int i = 0; i < 18; i++) {
-//                rgblight_sethsv_at(HSV_WHITE, i);
-//            }
         }
-    } else if (highest_layer == 1) {
-        rgblight_sethsv(HSV_GREEN);
-    } else {
-        rgblight_sethsv(HSV_OFF);
-        oled_set_brightness(255);
-    }
+//    } else if (highest_layer == 1) {
+//        rgblight_sethsv(HSV_GREEN);
+//    } else {
+//        rgblight_sethsv(HSV_OFF);
+//        oled_set_brightness(255);
+//    }
 ////////// トライアル //////////
 
 
