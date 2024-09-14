@@ -41,6 +41,7 @@ __attribute__((weak)) bool oled_task_user(void) {
         oledkit_render_info_user();
     } else {
         oledkit_render_logo_user();
+        oled_set_brightness(5);  // スレーブ側のOLEDの輝度
     }
     return true;
 }
