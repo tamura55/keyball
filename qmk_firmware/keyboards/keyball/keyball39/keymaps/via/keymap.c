@@ -72,48 +72,22 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
     switch (highest_layer) {
         case 1:
-            rgblight_sethsv(HSV_ORANGE);
-            if (kb_master) {
-                oled_set_brightness(30);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(30);  // スレーブ側のOLEDの輝度
-            }
+            rgblight_sethsv(HSV_GREEN);
             break;
         case 2:
-            rgblight_sethsv(HSV_YELLOW);
-            if (kb_master) {
-                oled_set_brightness(25);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(25);  // スレーブ側のOLEDの輝度
-            }
+            rgblight_sethsv(HSV_BLUE);
             break;
         case 3:
-            rgblight_sethsv(HSV_GREEN);
-            if (kb_master) {
-                oled_set_brightness(20);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(20);  // スレーブ側のOLEDの輝度
-            }
-            break;
-        case 4:
-            rgblight_sethsv(HSV_BLUE);
-            if (kb_master) {
-                oled_set_brightness(15);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(15);  // スレーブ側のOLEDの輝度
-            }
-            break;
-        case 5:
             rgblight_sethsv(HSV_RED);
             if (kb_master) {
-                oled_set_brightness(10);  // マスター側のOLEDの輝度
+                oled_set_brightness(5);  // マスター側のOLEDの輝度
             } else {
-                oled_set_brightness(10);  // スレーブ側のOLEDの輝度
+                oled_set_brightness(5);  // スレーブ側のOLEDの輝度
             }
             break;
         case 6:
             rgblight_sethsv(HSV_WHITE);
-            if (kb_master) {
+            if (is_keyboard_master()) {
                 oled_set_brightness(5);  // マスター側のOLEDの輝度
             } else {
                 oled_set_brightness(5);  // スレーブ側のOLEDの輝度
@@ -121,7 +95,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         default:
             rgblight_sethsv(HSV_OFF);
-            if (kb_master) {
+            if (is_keyboard_master()) {
                 oled_set_brightness(255);  // マスター側のOLEDの輝度
             } else {
                 oled_set_brightness(255);  // スレーブ側のOLEDの輝度
