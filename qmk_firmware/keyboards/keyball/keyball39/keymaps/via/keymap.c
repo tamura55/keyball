@@ -93,14 +93,18 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         case 6:
 //            rgblight_sethsv(HSV_WHITE);
+            
+            rgblight_disable();  // 全LEDをオフにする
             // 左右のLED範囲を設定する
             if (is_keyboard_master()) {
-                // マスター側のLED（USB接続側）
+                // マスター側のLED（右側）
                 set_led_range_red(7, 22);
             } else {
-                // スレーブ側のLED（TRRS接続側）
+                // スレーブ側のLED（左側）
                 set_led_range_red(1, 18);
             }
+            rgblight_enable();  // RGBライトを有効にする
+            
             oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
