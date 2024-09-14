@@ -69,33 +69,21 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 
 ////////// トライアル //////////
-    // デバッグ出力：マスターかスレーブかを確認
-    if (is_keyboard_master()) {
-        uprintf("This is the master side\n");
-    } else {
-        uprintf("This is the slave side\n");
-    }
-
     if (highest_layer == 6) {
-        // マスターかスレーブかでLED範囲を設定
         if (is_keyboard_master()) {
             // マスター側 (右半分)
-            uprintf("Setting LEDs for master (right side)\n");
             for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
+                rgb_matrix_set_color(i, 255, 0, 0);  // 赤色に設定
             }
         } else {
             // スレーブ側 (左半分)
-            uprintf("Setting LEDs for slave (left side)\n");
             for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
+                rgb_matrix_set_color(i, 255, 0, 0);  // 赤色に設定
             }
         }
         oled_set_brightness(5);
     } else {
-        // レイヤー6以外ではすべてのLEDをオフに
-        uprintf("Turning off LEDs\n");
-        rgblight_sethsv(HSV_OFF);
+        rgb_matrix_set_color_all(0, 0, 0);  // レイヤー6以外はオフ
         oled_set_brightness(255);
     }
 ////////// トライアル //////////
