@@ -53,13 +53,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// 特定の範囲のLEDを赤色に設定
-void set_led_range_red(uint8_t start, uint8_t end) {
-    for (uint8_t i = start; i <= end; i++) {
-        rgblight_sethsv_at(HSV_RED, i);
-    }
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
     keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
@@ -74,6 +67,41 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     keyball_handle_auto_mouse_layer_change(state);
 #endif
 
+
+////////// トライアル //////////
+    // デバッグ出力：マスターかスレーブかを確認
+    if (is_keyboard_master()) {
+        uprintf("This is the master side\n");
+    } else {
+        uprintf("This is the slave side\n");
+    }
+
+    if (highest_layer == 6) {
+        // マスターかスレーブかでLED範囲を設定
+        if (is_keyboard_master()) {
+            // マスター側 (右半分)
+            uprintf("Setting LEDs for master (right side)\n");
+            for (int i = 30; i < 46; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        } else {
+            // スレーブ側 (左半分)
+            uprintf("Setting LEDs for slave (left side)\n");
+            for (int i = 0; i < 18; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        }
+        oled_set_brightness(5);
+    } else {
+        // レイヤー6以外ではすべてのLEDをオフに
+        uprintf("Turning off LEDs\n");
+        rgblight_sethsv(HSV_OFF);
+        oled_set_brightness(255);
+    }
+////////// トライアル //////////
+
+
+/* トライアルにつきコメントアウト。ここから。
     // レイヤーとLEDを連動させる
     if (highest_layer == 6) {
         // 左右のLED範囲を設定する
@@ -96,22 +124,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //        }
         //rgblight_sethsv_range(HSV_WHITE, 4, 40);
         oled_set_brightness(5);
-/*
-      rgblight_disable();  // 全LEDをオフにする
-            // 左右のLED範囲を設定する
-            if (is_keyboard_master()) {
-                // マスター側のLED（右側）
-                set_led_range_red(7, 22);
-            } else {
-                // スレーブ側のLED（左側）
-                set_led_range_red(1, 18);
-            }
-            rgblight_enable();  // RGBライトを有効にする
-*/
     } else {
         rgblight_sethsv(HSV_OFF);
         oled_set_brightness(255);
     }
+トライアルにつきコメントアウト。ここから。 /*
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
 /*
