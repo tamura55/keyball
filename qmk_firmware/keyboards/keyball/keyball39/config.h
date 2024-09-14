@@ -69,6 +69,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_SPLIT    { 24, 24 }
 #endif
 
+#define SPLIT_TRANSPORT_MIRROR  // 追加
+
 #ifndef OLED_FONT_H
 #    define OLED_FONT_H "keyboards/keyball/lib/logofont/logofont.c"
 #    define OLED_FONT_START 32
