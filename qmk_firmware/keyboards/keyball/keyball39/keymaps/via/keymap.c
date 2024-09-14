@@ -76,7 +76,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     // レイヤーとLEDを連動させる
     if (highest_layer == 6) {
-        rgblight_sethsv_range(HSV_WHITE, 4, 40);
+        // 左右のLED範囲を設定する
+        if (is_keyboard_left()) {
+            rgblight_sethsv_range(HSV_WHITE, 0, 18);  // 左側のLED
+        } else {
+            rgblight_sethsv_range(HSV_WHITE, 30, 46);  // 右側のLED
+        }
+        //rgblight_sethsv_range(HSV_WHITE, 4, 40);
         oled_set_brightness(5);
 /*
       rgblight_disable();  // 全LEDをオフにする
