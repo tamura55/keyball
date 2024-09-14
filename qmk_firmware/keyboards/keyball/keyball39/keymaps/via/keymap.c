@@ -70,20 +70,23 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 ////////// トライアル //////////
     if (highest_layer == 6) {
+        // 左右のLED範囲を設定する
         if (is_keyboard_master()) {
             // マスター側 (右半分)
             for (int i = 30; i < 46; i++) {
-                rgb_matrix_set_color(i, 255, 0, 0);  // 赤色に設定
+                rgblight_sethsv_at(HSV_WHITE, i);
             }
         } else {
             // スレーブ側 (左半分)
-            for (int i = 0; i < 18; i++) {
-                rgb_matrix_set_color(i, 255, 0, 0);  // 赤色に設定
-            }
+            rgblight_sethsv(HSV_WHITE);
+//            for (int i = 0; i < 18; i++) {
+//                rgblight_sethsv_at(HSV_WHITE, i);
+//            }
         }
-        oled_set_brightness(5);
+    } else if (highest_layer == 1) {
+        rgblight_sethsv(HSV_GREEN);
     } else {
-        rgb_matrix_set_color_all(0, 0, 0);  // レイヤー6以外はオフ
+        rgblight_sethsv(HSV_OFF);
         oled_set_brightness(255);
     }
 ////////// トライアル //////////
@@ -120,7 +123,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
 /*
-  switch (highest_layer) {
+    switch (highest_layer) {
         case 1:
             rgblight_sethsv(HSV_GREEN);
             break;
