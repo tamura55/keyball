@@ -76,7 +76,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     // レイヤーとLEDを連動させる
     if (highest_layer == 6) {
-        rgblight_disable();  // 全LEDをオフにする
+        rgblight_sethsv_range(HSV_WHITE, 4, 10);
+/*
+      rgblight_disable();  // 全LEDをオフにする
             // 左右のLED範囲を設定する
             if (is_keyboard_master()) {
                 // マスター側のLED（右側）
@@ -86,6 +88,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 set_led_range_red(1, 18);
             }
             rgblight_enable();  // RGBライトを有効にする
+*/
     }
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
