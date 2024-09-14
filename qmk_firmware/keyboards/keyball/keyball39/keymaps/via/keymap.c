@@ -75,8 +75,22 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
     // レイヤーとLEDを連動させる
+    if (highest_layer == 6) {
+        rgblight_disable();  // 全LEDをオフにする
+            // 左右のLED範囲を設定する
+            if (is_keyboard_master()) {
+                // マスター側のLED（右側）
+                set_led_range_red(7, 22);
+            } else {
+                // スレーブ側のLED（左側）
+                set_led_range_red(1, 18);
+            }
+            rgblight_enable();  // RGBライトを有効にする
+    }
+    
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
-    switch (highest_layer) {
+/*
+  switch (highest_layer) {
         case 1:
             rgblight_sethsv(HSV_GREEN);
             break;
@@ -115,12 +129,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 oled_set_brightness(255);  // スレーブ側のOLEDの輝度
             }
     }
+*/
 
     return state;
 }
 
 #ifdef OLED_ENABLE
-
 #    include "lib/oledkit/oledkit.h"
 
 void oledkit_render_info_user(void) {
