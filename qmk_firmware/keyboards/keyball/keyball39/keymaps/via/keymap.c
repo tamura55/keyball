@@ -72,6 +72,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
   // レイヤーとLEDを連動させる
   switch (get_highest_layer(state)) {
+/*
     case 1:
       rgblight_sethsv(HSV_CYAN);
       break;
@@ -87,6 +88,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     case 5:
       rgblight_sethsv(HSV_PURPLE);
       break;
+*/
     case 6:
       rgblight_sethsv(HSV_WHITE);
       break;
