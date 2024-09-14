@@ -53,6 +53,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+// 特定の範囲のLEDを赤色に設定
+void set_led_range_red(uint8_t start, uint8_t end) {
+    for (uint8_t i = start; i <= end; i++) {
+        rgblight_sethsv_at(HSV_RED, i);
+    }
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
     keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
@@ -68,7 +75,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
     // レイヤーとLEDを連動させる
-#ifdef SPLIT_KEYBOARD
     bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
     switch (highest_layer) {
         case 1:
@@ -79,19 +85,23 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         case 3:
             rgblight_sethsv(HSV_RED);
-            if (kb_master) {
+            if (is_keyboard_master()) {
                 oled_set_brightness(5);  // マスター側のOLEDの輝度
             } else {
                 oled_set_brightness(5);  // スレーブ側のOLEDの輝度
             }
             break;
         case 6:
-            rgblight_sethsv(HSV_WHITE);
+//            rgblight_sethsv(HSV_WHITE);
+            // 左右のLED範囲を設定する
             if (is_keyboard_master()) {
-                oled_set_brightness(5);  // マスター側のOLEDの輝度
+                // マスター側のLED（USB接続側）
+                set_led_range_red(7, 22);
             } else {
-                oled_set_brightness(5);  // スレーブ側のOLEDの輝度
+                // スレーブ側のLED（TRRS接続側）
+                set_led_range_red(1, 18);
             }
+            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
             rgblight_sethsv(HSV_OFF);
@@ -101,7 +111,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 oled_set_brightness(255);  // スレーブ側のOLEDの輝度
             }
     }
-#endif
 
     return state;
 }
