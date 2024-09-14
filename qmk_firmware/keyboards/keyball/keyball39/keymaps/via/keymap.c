@@ -77,6 +77,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // レイヤーとLEDを連動させる
     if (highest_layer == 6) {
         rgblight_sethsv_range(HSV_WHITE, 4, 40);
+        oled_set_brightness(5);
 /*
       rgblight_disable();  // 全LEDをオフにする
             // 左右のLED範囲を設定する
@@ -89,6 +90,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             }
             rgblight_enable();  // RGBライトを有効にする
 */
+    } else {
+        rgblight_sethsv(HSV_OFF);
+        oled_set_brightness(255);
     }
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
