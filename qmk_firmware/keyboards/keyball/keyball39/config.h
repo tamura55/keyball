@@ -47,6 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLED_NUM      48
 #    define RGBLED_SPLIT    { 24, 24 }  // (24 + 22)
+#    define SPLIT_LAYER_STATE_ENABLE  // 追加
 #    ifndef RGBLIGHT_LIMIT_VAL
 #        define RGBLIGHT_LIMIT_VAL  50 // limitated for power consumption
 #    endif
@@ -68,8 +69,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_MATRIX_SPLIT    { 24, 24 }
 #endif
-
-#define SPLIT_TRANSPORT_MIRROR  // 追加
 
 #ifndef OLED_FONT_H
 #    define OLED_FONT_H "keyboards/keyball/lib/logofont/logofont.c"
