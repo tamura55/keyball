@@ -82,7 +82,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 rgblight_sethsv_at(HSV_WHITE, i);
             }
         }
-    if (highest_layer == 1) {
+    if (get_highest_layer(state) == 1) {
         rgblight_sethsv(HSV_OFF);
     }
 //    } else if (highest_layer == 1) {
