@@ -54,48 +54,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
-
-// negokazさん追記部
+    uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
+    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+    if (highest_layer != 3) {
+        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
+    }
+#endif
+    
+    // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     keyball_handle_auto_mouse_layer_change(state);
 #endif
 
-// レイヤー3以外ではSSNP_VRTに固定
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-    uint8_t layer = biton32(state);
-    if (layer != 3) {
-        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+    // レイヤーとLEDを連動させる
+    switch (highest_layer) {
+        case 2:
+            rgblight_sethsv(HSV_YELLOW);
+            oled_set_brightness(200);
+            break;
+        case 3:
+            rgblight_sethsv(HSV_GREEN);
+            oled_set_brightness(150);
+            break;
+        case 4:
+            rgblight_sethsv(HSV_BLUE);
+            oled_set_brightness(100);
+            break;
+        case 5:
+            rgblight_sethsv(HSV_RED);
+            oled_set_brightness(50);
+            break;
+        case 6:
+            rgblight_sethsv(HSV_WHITE);
+            oled_set_brightness(30);
+            break;
+        default:
+            rgblight_sethsv(HSV_OFF);
+            oled_set_brightness(255);
     }
-#endif
 
-  // レイヤーとLEDを連動させる
-  switch (get_highest_layer(state)) {
-/*
-    case 1:
-      rgblight_sethsv(HSV_CYAN);
-      break;
-    case 2:
-      rgblight_sethsv(HSV_SPRINGGREEN);
-      break;
-    case 3:
-      rgblight_sethsv(HSV_CORAL);
-      break;
-    case 4:
-      rgblight_sethsv(HSV_GOLDENROD);
-      break;
-*/
-    case 5:
-      rgblight_sethsv(HSV_PURPLE);
-      break;
-    case 6:
-      rgblight_sethsv(HSV_WHITE);
-      break;
-    default:
-      rgblight_sethsv(HSV_OFF);
-  }
-  
     return state;
 }
 
