@@ -72,7 +72,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
     switch (highest_layer) {
         case 1:
-            rgblight_sethsv(HSV_ROSE);
+            rgblight_sethsv(HSV_ORANGE);
             if (kb_master) {
                 oled_set_brightness(30);  // マスター側のOLEDの輝度
             } else {
