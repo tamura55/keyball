@@ -77,11 +77,23 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // レイヤーとLEDを連動させる
     if (highest_layer == 6) {
         // 左右のLED範囲を設定する
-        if (is_keyboard_left()) {
-            rgblight_sethsv_range(HSV_WHITE, 0, 18);  // 左側のLED
+        if (is_keyboard_master()) {
+            // マスター側 (右半分)
+            for (int i = 30; i < 46; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
         } else {
-            rgblight_sethsv_range(HSV_WHITE, 30, 46);  // 右側のLED
+            // スレーブ側 (左半分)
+            for (int i = 0; i < 18; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
         }
+        
+//        if (is_keyboard_left()) {
+//            rgblight_sethsv_range(HSV_WHITE, 0, 18);  // 左側のLED
+//        } else {
+//            rgblight_sethsv_range(HSV_WHITE, 30, 46);  // 右側のLED
+//        }
         //rgblight_sethsv_range(HSV_WHITE, 4, 40);
         oled_set_brightness(5);
 /*
