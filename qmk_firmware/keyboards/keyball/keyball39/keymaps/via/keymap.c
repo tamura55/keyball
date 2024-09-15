@@ -65,7 +65,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
 #endif
 
-////////// トライアル //////////
+/*
+////////// LEDトライ1。ここから //////////
         if (is_keyboard_master()) {
             // マスター側 (右半分)
             for (int i = 30; i < 46; i++) {
@@ -90,8 +91,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             }
         }
     }
+////////// LEDトライ1。ここまで //////////
 
-/*
+////////// LEDトライ2。ここから //////////
     if (highest_layer == 6) {
         // 左右のLED範囲を設定する
         if (is_keyboard_master()) {
@@ -105,87 +107,36 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 rgblight_sethsv_at(HSV_WHITE, i);
             }
         }
-    } else if (highest_layer == 1) {
-        rgblight_sethsv(HSV_GREEN);
-    } else {
-        rgblight_sethsv(HSV_OFF);
-        oled_set_brightness(255);
-    }
-*/
-////////// トライアル //////////
-
-
-/* トライアルにつきコメントアウト。ここから。
-    // レイヤーとLEDを連動させる
-    if (highest_layer == 6) {
-        // 左右のLED範囲を設定する
-        if (is_keyboard_master()) {
-            // マスター側 (右半分)
-            for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        } else {
-            // スレーブ側 (左半分)
-            for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-        
-//        if (is_keyboard_left()) {
-//            rgblight_sethsv_range(HSV_WHITE, 0, 18);  // 左側のLED
-//        } else {
-//            rgblight_sethsv_range(HSV_WHITE, 30, 46);  // 右側のLED
-//        }
-        //rgblight_sethsv_range(HSV_WHITE, 4, 40);
         oled_set_brightness(5);
     } else {
         rgblight_sethsv(HSV_OFF);
         oled_set_brightness(255);
     }
-トライアルにつきコメントアウト。ここまで。 */
+////////// LEDトライ2。ここまで //////////
+*/
     
-//    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
-/*
+    // レイヤーとLEDを連動させる
     switch (highest_layer) {
         case 1:
             rgblight_sethsv(HSV_GREEN);
+            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         case 2:
             rgblight_sethsv(HSV_BLUE);
+            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         case 3:
             rgblight_sethsv(HSV_RED);
-            if (is_keyboard_master()) {
-                oled_set_brightness(5);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(5);  // スレーブ側のOLEDの輝度
-            }
+            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         case 6:
-//            rgblight_sethsv(HSV_WHITE);
-            
-            rgblight_disable();  // 全LEDをオフにする
-            // 左右のLED範囲を設定する
-            if (is_keyboard_master()) {
-                // マスター側のLED（右側）
-                set_led_range_red(7, 22);
-            } else {
-                // スレーブ側のLED（左側）
-                set_led_range_red(1, 18);
-            }
-            rgblight_enable();  // RGBライトを有効にする
-            
+            rgblight_sethsv(HSV_WHITE);
             oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
             rgblight_sethsv(HSV_OFF);
-            if (is_keyboard_master()) {
-                oled_set_brightness(255);  // マスター側のOLEDの輝度
-            } else {
-                oled_set_brightness(255);  // スレーブ側のOLEDの輝度
-            }
+            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
-*/
 
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
