@@ -66,27 +66,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
 ////////// トライアル //////////
-    if (is_keyboard_master()) {
-        if (get_highest_layer(state) == 1) {
-            rgblight_sethsv(HSV_OFF);
-        } else {
-            for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-    } else {
-         if (get_highest_layer(state) == 1) {
-            rgblight_sethsv(HSV_OFF);
-        } else {
-             for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-    }
-
-/*
-//    if (highest_layer == 6) {
-        // 左右のLED範囲を設定する
         if (is_keyboard_master()) {
             // マスター側 (右半分)
             for (int i = 30; i < 46; i++) {
@@ -100,19 +79,39 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         }
     if (get_highest_layer(state) == 1) {
         if (is_keyboard_master()) {
-            rgblight_sethsv(HSV_OFF);
+            //rgblight_sethsv(HSV_OFF);
+            for (int i = 30; i < 46; i++) {
+                rgblight_sethsv_at(HSV_OFF, i);
+            }
         } else {
-            rgblight_sethsv(HSV_OFF);
+            //rgblight_sethsv(HSV_OFF);
+            for (int i = 0; i < 18; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
         }
     }
+
+/*
+    if (highest_layer == 6) {
+        // 左右のLED範囲を設定する
+        if (is_keyboard_master()) {
+            // マスター側 (右半分)
+            for (int i = 30; i < 46; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        } else {
+            // スレーブ側 (左半分)
+            for (int i = 0; i < 18; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        }
+    } else if (highest_layer == 1) {
+        rgblight_sethsv(HSV_GREEN);
+    } else {
+        rgblight_sethsv(HSV_OFF);
+        oled_set_brightness(255);
+    }
 */
-    
-//    } else if (highest_layer == 1) {
-//        rgblight_sethsv(HSV_GREEN);
-//    } else {
-//        rgblight_sethsv(HSV_OFF);
-//        oled_set_brightness(255);
-//    }
 ////////// トライアル //////////
 
 
@@ -143,7 +142,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         rgblight_sethsv(HSV_OFF);
         oled_set_brightness(255);
     }
-トライアルにつきコメントアウト。ここから。 */
+トライアルにつきコメントアウト。ここまで。 */
     
 //    bool kb_master = is_keyboard_master();  // 一度だけ取得して変数に格納
 /*
