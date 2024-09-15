@@ -67,8 +67,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #        define RGBLIGHT_SAT_STEP   17
 #    endif
 #endif
+
+// RGB Matrix用
 #ifdef RGB_MATRIX_ENABLE
-#    define RGB_MATRIX_SPLIT    { 24, 24 }
+#    define RGBLED_NUM         48       // LEDの総数
+#    define RGB_MATRIX_SPLIT   { 24, 24 }  // 左右に分かれているLED数
+#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150  // RGBLIGHT_LIMIT_VALに対応
+#    define RGB_MATRIX_VAL_STEP 15  // 明るさのステップ
+#    define RGB_MATRIX_HUE_STEP 17  // 色相のステップ
+#    define RGB_MATRIX_SAT_STEP 17  // 彩度のステップ
+#    define RGB_DISABLE_WHEN_USB_SUSPENDED true  // USBサスペンド時にRGBをオフにする
+#    define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR  // RGB Matrixの初期モードを設定（単色モード）
 #endif
 
 #ifndef OLED_FONT_H
