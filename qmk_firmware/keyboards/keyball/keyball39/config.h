@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#    define RGBLIGHT_LAYERS  // LEDトライ時に追加したコード
 //#    define SPLIT_LAYER_STATE_ENABLE  // LEDトライ時に追加したコード
 #    ifndef RGBLIGHT_LIMIT_VAL
-#        define RGBLIGHT_LIMIT_VAL  50 // limitated for power consumption
+#        define RGBLIGHT_LIMIT_VAL  150 // limitated for power consumption
 #    endif
 
 #    ifndef RGBLIGHT_DEFAULT_VAL
