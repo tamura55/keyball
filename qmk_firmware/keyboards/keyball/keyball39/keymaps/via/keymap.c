@@ -66,6 +66,25 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
 ////////// トライアル //////////
+    if (is_keyboard_master()) {
+        if (get_highest_layer(state) == 1) {
+            rgblight_sethsv(HSV_OFF);
+        } else {
+            for (int i = 30; i < 46; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        }
+    } else {
+         if (get_highest_layer(state) == 1) {
+            rgblight_sethsv(HSV_OFF);
+        } else {
+             for (int i = 0; i < 18; i++) {
+                rgblight_sethsv_at(HSV_WHITE, i);
+            }
+        }
+    }
+
+/*
 //    if (highest_layer == 6) {
         // 左右のLED範囲を設定する
         if (is_keyboard_master()) {
@@ -86,6 +105,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
         }
     }
+*/
+    
 //    } else if (highest_layer == 1) {
 //        rgblight_sethsv(HSV_GREEN);
 //    } else {
@@ -168,9 +189,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 */
 
     // negokazさん追記部
-//#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-//    keyball_handle_auto_mouse_layer_change(state);
-//#endif
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+    keyball_handle_auto_mouse_layer_change(state);
+#endif
 
     return state;
 }
