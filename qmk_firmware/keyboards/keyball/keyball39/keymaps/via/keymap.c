@@ -86,7 +86,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             }
         }
     if (get_highest_layer(state) == 1) {
-        rgblight_sethsv(HSV_OFF);
+        if (is_keyboard_master()) {
+            rgblight_sethsv(HSV_OFF);
+        } else {
+            rgblight_sethsv(HSV_OFF);
+        }
     }
 //    } else if (highest_layer == 1) {
 //        rgblight_sethsv(HSV_GREEN);
