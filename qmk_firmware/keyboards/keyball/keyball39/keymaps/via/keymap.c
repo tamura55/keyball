@@ -56,9 +56,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-///// RGB Matrixにて一部点灯トライ /////
-#include "is_keyboard_master.h"
-
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
     keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
