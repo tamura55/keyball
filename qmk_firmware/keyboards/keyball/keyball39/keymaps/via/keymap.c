@@ -56,6 +56,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+///// RGB Matrixにて一部点灯トライ /////
+#include "is_keyboard_master.h"
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
     keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
@@ -114,7 +117,27 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
 ////////// LEDトライ2。ここまで //////////
 */
-    
+
+///// RGB Matrixにて一部点灯トライ /////
+    if (layer_state_cmp(state, 6)) {
+        // Layer 6 の場合、青色に点灯させる
+        for (int i = 0; i < RGBLED_NUM; i++) {
+            if ((is_keyboard_master() && (i >= 0 && i <= 17)) || (!is_keyboard_master() && (i >= 30 && i <= 45))) {
+                // 左側(マスター側)は0〜17、右側(スレーブ側)は30〜45を青色にする
+                rgb_matrix_set_color(i, 0, 0, 255);  // 青色
+            } else {
+                // その他のLEDは消灯
+                rgb_matrix_set_color(i, 0, 0, 0);
+            }
+        }
+    } else {
+        // Layer 6 以外はすべてのLEDをオフにする
+        for (int i = 0; i < RGBLED_NUM; i++) {
+            rgb_matrix_set_color(i, 0, 0, 0);
+        }
+    }
+
+/*
     // レイヤーとLEDを連動させる
     switch (highest_layer) {
         case 1:
@@ -133,6 +156,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
             oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
+*/
 
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
