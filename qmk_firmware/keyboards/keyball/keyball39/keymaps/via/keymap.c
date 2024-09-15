@@ -64,12 +64,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
     }
 #endif
-    
-    // negokazさん追記部
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-    keyball_handle_auto_mouse_layer_change(state);
-#endif
-
 
 ////////// トライアル //////////
 //    if (highest_layer == 6) {
@@ -173,12 +167,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
 */
 
+    // negokazさん追記部
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+    keyball_handle_auto_mouse_layer_change(state);
+#endif
+
     return state;
 }
 
 #ifdef OLED_ENABLE
 #    include "lib/oledkit/oledkit.h"
-
 void oledkit_render_info_user(void) {
     keyball_oled_render_keyinfo();
     keyball_oled_render_ballinfo();
