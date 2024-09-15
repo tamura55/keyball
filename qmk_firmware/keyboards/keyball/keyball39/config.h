@@ -71,6 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // RGB Matrix用
 #ifdef RGB_MATRIX_ENABLE
 #    define RGBLED_NUM         48       // LEDの総数
+#    define RGB_MATRIX_LED_COUNT RGBLED_NUM  // 全体のLED数を指定
 #    define RGB_MATRIX_SPLIT   { 24, 24 }  // 左右に分かれているLED数
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150  // RGBLIGHT_LIMIT_VALに対応
 #    define RGB_MATRIX_VAL_STEP 15  // 明るさのステップ
