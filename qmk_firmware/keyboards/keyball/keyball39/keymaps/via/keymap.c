@@ -168,9 +168,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 */
 
     // negokazさん追記部
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-    keyball_handle_auto_mouse_layer_change(state);
-#endif
+//#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+//    keyball_handle_auto_mouse_layer_change(state);
+//#endif
 
     return state;
 }
