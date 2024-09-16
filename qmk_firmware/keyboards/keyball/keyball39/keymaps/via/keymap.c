@@ -133,7 +133,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         }
     }
 ///// RGB Matrixにて一部点灯トライ。ここまで /////
-*/
 
 ////////// LEDトライ3。ここから //////////
     if (get_highest_layer(state) == 6) { // レイヤー6がアクティブな場合
@@ -149,8 +148,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         rgblight_setrgb_range(0, 47, RGB_OFF); // すべてのLEDをオフ
     }
 ////////// LEDトライ3。ここまで //////////
+*/
 
-/*
     // レイヤーとLEDを連動させる
     switch (highest_layer) {
         case 1:
@@ -169,7 +168,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
             oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
-*/
 
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
