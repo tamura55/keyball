@@ -47,16 +47,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLED_NUM      48
 #    define RGBLED_SPLIT    { 24, 24 }  // (24 + 22)
-//#    define RGBLIGHT_LAYERS  // LEDトライ時に追加したコード
-//#    define SPLIT_LAYER_STATE_ENABLE  // LEDトライ時に追加したコード
+#    define RGBLIGHT_LAYERS  // LED範囲制御にあたり追加
+#    define SPLIT_LAYER_STATE_ENABLE  // LED範囲制御にあたり追加
 #    ifndef RGBLIGHT_LIMIT_VAL
 #        define RGBLIGHT_LIMIT_VAL  150 // limitated for power consumption
 #    endif
-
-#    ifndef RGBLIGHT_DEFAULT_VAL
-#define RGBLIGHT_DEFAULT_VAL 50  // 初期のRGBの明るさ
-#    endif
-
 #    ifndef RGBLIGHT_VAL_STEP
 #        define RGBLIGHT_VAL_STEP   15
 #    endif
