@@ -152,16 +152,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     // レイヤーとLEDを連動させる
     switch (highest_layer) {
-        case 1:
-            rgblight_sethsv(HSV_BLUE);
-            oled_set_brightness(5);  // OLEDの輝度を下げる
-            break;
-        case 2:
-            rgblight_sethsv(HSV_RED);
-            oled_set_brightness(5);  // OLEDの輝度を下げる
-            break;
+//        case 1:
+//            rgblight_sethsv(HSV_BLUE);
+//            oled_set_brightness(5);  // OLEDの輝度を下げる
+//            break;
+//        case 2:
+//            rgblight_sethsv(HSV_RED);
+//            oled_set_brightness(5);  // OLEDの輝度を下げる
+//            break;
         case 6:
-            rgblight_sethsv(HSV_GREEN);
+            rgblight_sethsv(HSV_BLUE);
             oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
