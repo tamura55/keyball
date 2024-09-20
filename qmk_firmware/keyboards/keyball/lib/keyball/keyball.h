@@ -124,6 +124,9 @@ enum keyball_keycodes {
     AML_ENT1 = QK_KB_21,
     AML_TAB2 = QK_KB_22,
 
+    // Excelフィルタ用
+    EXL_FLT = QK_KB_26,
+
     // User customizable 32 keycodes.
     KEYBALL_SAFE_RANGE = QK_USER_0,
 };
