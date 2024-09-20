@@ -803,6 +803,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;  // AML_TAB2に対して他の処理は行わない
 
+        case EXL_FLT:
+            if (record->event.pressed) {
+                register_code(KC_LALT);
+                unregister_code(KC_LALT);
+                tap_code(KC_W);
+                tap_code(KC_F);
+                tap_code(KC_F);
+                tap_code(KC_UP);
+                register_code(KC_LSFT);
+                tap_code(KC_SPC);
+                unregister_code(KC_LSFT);
+                register_code(KC_LALT);
+                unregister_code(KC_LALT);
+                tap_code(KC_A);
+                tap_code(KC_T);
+                tap_code(KC_DOWN);
+                tap_code(KC_UP);
+            }
+            return false;
+
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
