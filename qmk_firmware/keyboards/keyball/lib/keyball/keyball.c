@@ -859,6 +859,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case RSFT_T(KC_SPC):  // 親指キー。AML専用
             case RCS_T(KC_ESC):  // 親指キー。AML専用
             case RALT_T(KC_MINS):  // 小指付け根キー。AML専用
+            case KC_MS_BTN8:  //  AML離脱用
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
         }
