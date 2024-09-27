@@ -11,3 +11,5 @@ OLED_ENABLE = yes
 VIA_ENABLE = yes
 
 DYNAMIC_TAPPING_TERM_ENABLE = yes  # 追記
+
+EXTRAKEY_ENABLE = yes        # Audio control and System control
