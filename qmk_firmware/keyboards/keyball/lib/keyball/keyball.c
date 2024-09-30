@@ -744,7 +744,7 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     return is_mouse_record_user(keycode, record);
 }
 #endif
-
+/*
 //////////////////////////////
 /// カスタムキーコード。ここから ///
 //////////////////////////////
@@ -802,7 +802,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
-/*
+
         case EXL_FLT:
             if (record->event.pressed) {
                 register_code(KC_LALT);
@@ -822,7 +822,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-*/
+
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
@@ -840,6 +840,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
+*/
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     // store last keycode, row, and col for OLED
