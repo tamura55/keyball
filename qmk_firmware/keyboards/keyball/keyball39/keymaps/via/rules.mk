@@ -10,10 +10,10 @@ OLED_ENABLE = yes
 
 VIA_ENABLE = yes
 
-DYNAMIC_TAPPING_TERM_ENABLE = yes  # 追加
+DYNAMIC_TAPPING_TERM_ENABLE = no  # 削減(268bytes)
 
-EXTRAKEY_ENABLE = yes  # Audio control and System control
+EXTRAKEY_ENABLE = yes  # 追加(488bytes)
 
-COMBO_ENABLE = no  # サイズオーバーのため無効化
+COMBO_ENABLE = no  # 削減(1824bytes)
 
-CAPS_WORD_ENABLE = yes  # 追加
+CAPS_WORD_ENABLE = yes  # 追加(472bytes)
