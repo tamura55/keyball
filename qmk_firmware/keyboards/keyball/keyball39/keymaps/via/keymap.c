@@ -57,10 +57,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
-    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
+//    uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
+    keyball_set_scroll_mode(get_highest_layer(state) == 3);  // Auto enable scroll mode when the highest layer is 3
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
-    if (highest_layer != 3) {
+    if (get_highest_layer(state) != 3) {
         keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
     }
 #endif
@@ -151,7 +151,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 */
 
     // レイヤーとLEDを連動させる
-    switch (highest_layer) {
+    
+    switch (get_highest_layer(state)) {
 //        case 1:
 //            rgblight_sethsv(HSV_BLUE);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
@@ -168,7 +169,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
 //            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
-
+    
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     keyball_handle_auto_mouse_layer_change(state);
@@ -247,21 +248,11 @@ static uint16_t aml_tab2_timer;
 
 // Combo Termを50msに設定
 #define CUSTOM_COMBO_TERM 50
-// コンボ1(C+V→Esc)用
-// キーの押下状態を記録するフラグ
+// キー押下状態を記録するフラグ。コンボ1(C+V→Esc)用
 bool is_c_pressed = false;
 bool is_v_pressed = false;
 uint16_t c_pressed_time = 0;
 uint16_t v_pressed_time = 0;
-/*
-// タイマーリセット処理
-void reset_combo_state(void) {
-    is_c_pressed = false;
-    is_v_pressed = false;
-    c_pressed_time = 0;
-    v_pressed_time = 0;
-}
-*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
