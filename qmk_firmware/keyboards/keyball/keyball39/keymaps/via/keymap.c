@@ -151,7 +151,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 */
 
     // レイヤーとLEDを連動させる
+    if (get_highest_layer(state) == 6) {
+        rgblight_sethsv(HSV_BLUE);
+//        oled_set_brightness(5);  // OLEDの輝度を下げる
+    } else {
+        rgblight_sethsv(HSV_OFF);
+//        oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
+    }
     
+    /*
     switch (get_highest_layer(state)) {
 //        case 1:
 //            rgblight_sethsv(HSV_BLUE);
@@ -169,6 +177,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
 //            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
+    */
     
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
