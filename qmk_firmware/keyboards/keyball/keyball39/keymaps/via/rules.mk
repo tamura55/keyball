@@ -12,6 +12,6 @@ VIA_ENABLE = yes
 
 DYNAMIC_TAPPING_TERM_ENABLE = no  # 容量削減のためオミット
 
-EXTRAKEY_ENABLE = yes  # Audio control and System control
+EXTRAKEY_ENABLE = no  # Audio control and System control
 
 COMBO_ENABLE = yes  # コンボ有効化
