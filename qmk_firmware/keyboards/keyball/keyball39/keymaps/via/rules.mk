@@ -15,3 +15,5 @@ DYNAMIC_TAPPING_TERM_ENABLE = yes  # 追加
 EXTRAKEY_ENABLE = yes  # Audio control and System control
 
 COMBO_ENABLE = no  # サイズオーバーのため無効化
+
+CAPS_WORD_ENABLE = yes  # 追加
