@@ -162,11 +162,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //            break;
         case 6:
             rgblight_sethsv(HSV_BLUE);
-            oled_set_brightness(5);  // OLEDの輝度を下げる
+//            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
             rgblight_sethsv(HSV_OFF);
-            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
+//            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
 
     // negokazさん追記部
