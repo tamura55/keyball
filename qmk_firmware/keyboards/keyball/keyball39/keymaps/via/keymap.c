@@ -253,6 +253,7 @@ bool is_c_pressed = false;
 bool is_v_pressed = false;
 uint16_t c_pressed_time = 0;
 uint16_t v_pressed_time = 0;
+/*
 // タイマーリセット処理
 void reset_combo_state(void) {
     is_c_pressed = false;
@@ -260,6 +261,7 @@ void reset_combo_state(void) {
     c_pressed_time = 0;
     v_pressed_time = 0;
 }
+*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -329,17 +331,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             
 ///// コンボ1(C+V→Esc)。ここから /////
         case KC_C:
-            if (record->event.pressed) {
+            if (record->event.pressed) {  // Cが押された
                 is_c_pressed = true;
                 c_pressed_time = timer_read();
                 if (is_v_pressed && timer_elapsed(v_pressed_time) < CUSTOM_COMBO_TERM) {
                     // Vも押されていて、50ms以内ならESCを送信
                     tap_code(KC_ESC);
-                    reset_combo_state();  // コンボ状態をリセット
+                    is_c_pressed = is_v_pressed = false;  // フラグのリセット
+                    c_pressed_time = v_pressed_time = 0;  // タイマーのリセット
                     return false;  // CとVの入力をキャンセル
                 }
-            } else {
-                is_c_pressed = false;  // Cが離された
+            } else {  // Cが離された
+                is_c_pressed = false;  // フラグのリセット
                 c_pressed_time = 0;    // タイマーをリセット
             }
             return true;
@@ -350,11 +353,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (is_c_pressed && timer_elapsed(c_pressed_time) < CUSTOM_COMBO_TERM) {
                     // Cも押されていて、50ms以内ならESCを送信
                     tap_code(KC_ESC);
-                    reset_combo_state();  // コンボ状態をリセット
+                    is_c_pressed = is_v_pressed = false;  // フラグのリセット
+                    c_pressed_time = v_pressed_time = 0;  // タイマーのリセット
                     return false;  // CとVの入力をキャンセル
                 }
             } else {
-                is_v_pressed = false;  // Vが離された
+                is_v_pressed = false;  // フラグのリセット
                 v_pressed_time = 0;    // タイマーをリセット
             }
             return true;
