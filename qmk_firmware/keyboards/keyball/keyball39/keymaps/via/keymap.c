@@ -247,11 +247,18 @@ static uint16_t aml_tab2_timer;
 
 // Combo Termを50msに設定
 #define CUSTOM_COMBO_TERM 50
-// キー押下状態を記録するフラグ。コンボ1(C+V→Esc)用
-bool is_c_pressed = false;
-bool is_v_pressed = false;
-uint16_t c_pressed_time = 0;
-uint16_t v_pressed_time = 0;
+// キー押下状態を記録するフラグ。コンボ1(Q+W→Esc)用
+bool is_q_pressed = false;
+bool is_w_pressed = false;
+uint16_t q_pressed_time = 0;
+uint16_t w_pressed_time = 0;
+// コンボ状態をリセット
+void reset_combo_state(void) {
+    is_q_pressed = false;
+    is_w_pressed = false;
+    q_pressed_time = 0;
+    w_pressed_time = 0;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -319,40 +326,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
             
-///// コンボ1(C+V→Esc)。ここから /////
-        case KC_C:
-            if (record->event.pressed) {  // Cが押された
-                is_c_pressed = true;
-                c_pressed_time = timer_read();
-                if (is_v_pressed && timer_elapsed(v_pressed_time) < CUSTOM_COMBO_TERM) {
-                    // Vも押されていて、50ms以内ならESCを送信
-                    tap_code(KC_ESC);
-                    is_c_pressed = is_v_pressed = false;  // フラグのリセット
-                    c_pressed_time = v_pressed_time = 0;  // タイマーのリセット
-                    return false;  // CとVの入力をキャンセル
-                }
-            } else {  // Cが離された
-                is_c_pressed = false;  // フラグのリセット
-                c_pressed_time = 0;    // タイマーをリセット
-            }
-            return true;
-        case KC_V:
+///// コンボ1。ここから /////
+        case KC_Q:
             if (record->event.pressed) {
-                is_v_pressed = true;
-                v_pressed_time = timer_read();
-                if (is_c_pressed && timer_elapsed(c_pressed_time) < CUSTOM_COMBO_TERM) {
-                    // Cも押されていて、50ms以内ならESCを送信
+                is_q_pressed = true;
+                q_pressed_time = timer_read();
+                if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
+                    // Wも押されていて、50ms以内ならESCを送信
                     tap_code(KC_ESC);
-                    is_c_pressed = is_v_pressed = false;  // フラグのリセット
-                    c_pressed_time = v_pressed_time = 0;  // タイマーのリセット
-                    return false;  // CとVの入力をキャンセル
+                    reset_combo_state();  // コンボ状態をリセット
+                    return false;  // QとWの入力をキャンセル
                 }
             } else {
-                is_v_pressed = false;  // フラグのリセット
-                v_pressed_time = 0;    // タイマーをリセット
+                is_q_pressed = false;  // Qが離された
+                q_pressed_time = 0;    // タイマーをリセット
             }
             return true;
-///// コンボ1(C+V→Esc)。ここまで /////
+
+        case KC_W:
+            if (record->event.pressed) {
+                is_w_pressed = true;
+                w_pressed_time = timer_read();
+                if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
+                    // Qも押されていて、50ms以内ならESCを送信
+                    tap_code(KC_ESC);
+                    reset_combo_state();  // コンボ状態をリセット
+                    return false;  // QとWの入力をキャンセル
+                }
+            } else {
+                is_w_pressed = false;  // Wが離された
+                w_pressed_time = 0;    // タイマーをリセット
+            }
+            return true;
+///// コンボ1。ここまで /////
 
         default:
             // 他のキーが押された場合にフラグを立てる
