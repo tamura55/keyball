@@ -172,12 +172,18 @@ bool is_q_pressed = false;
 bool is_w_pressed = false;
 uint16_t q_pressed_time = 0;
 uint16_t w_pressed_time = 0;
+// コンボ2(F+J→Caps Word)用
+bool is_f_pressed = false;
+bool is_j_pressed = false;
+uint16_t f_pressed_time = 0;
+uint16_t j_pressed_time = 0;
+
 // コンボ状態をリセット
 void reset_combo_state(void) {
-    is_q_pressed = false;
-    is_w_pressed = false;
-    q_pressed_time = 0;
-    w_pressed_time = 0;
+    is_q_pressed = is_w_pressed = false;
+    is_f_pressed = is_j_pressed = false;
+    q_pressed_time = w_pressed_time = 0;
+    f_pressed_time = j_pressed_time = 0;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -279,7 +285,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return true;
 ///// コンボ1。ここまで /////
+///// コンボ2。ここから /////
+        case KC_F:
+            if (record->event.pressed) {
+                is_f_pressed = true;
+                f_pressed_time = timer_read();
+                if (is_j_pressed && timer_elapsed(j_pressed_time) < CUSTOM_COMBO_TERM) {
+                    caps_word_on();  // Caps Wordを有効化
+                    reset_combo_state();
+                    return false;
+                }
+            } else {
+                is_f_pressed = false;
+                f_pressed_time = 0;
+            }
+            return true;
 
+        case KC_J:
+            if (record->event.pressed) {
+                is_j_pressed = true;
+                j_pressed_time = timer_read();
+                if (is_f_pressed && timer_elapsed(f_pressed_time) < CUSTOM_COMBO_TERM) {
+                    caps_word_on();  // Caps Wordを有効化
+                    reset_combo_state();
+                    return false;
+                }
+            } else {
+                is_j_pressed = false;
+                j_pressed_time = 0;
+            }
+            return true;
+///// コンボ2。ここまで /////
+        
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
