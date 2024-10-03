@@ -56,6 +56,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+// LED制御はここに集約
+void caps_word_set_user(bool active) {
+    if (layer_state_is(6)) {
+        rgblight_sethsv(HSV_BLUE); // レイヤー6が有効な場合、青色に点灯
+    } else if (active) {
+        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
+    } else {
+        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+    }
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
     keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
@@ -66,100 +77,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif
 
 /*
-////////// LEDトライ1。ここから //////////
-        if (is_keyboard_master()) {
-            // マスター側 (右半分)
-            for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        } else {
-            // スレーブ側 (左半分)
-            for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-    if (get_highest_layer(state) == 1) {
-        if (is_keyboard_master()) {
-            //rgblight_sethsv(HSV_OFF);
-            for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_OFF, i);
-            }
-        } else {
-            //rgblight_sethsv(HSV_OFF);
-            for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-    }
-////////// LEDトライ1。ここまで //////////
-
-////////// LEDトライ2。ここから //////////
-    if (highest_layer == 6) {
-        // 左右のLED範囲を設定する
-        if (is_keyboard_master()) {
-            // マスター側 (右半分)
-            for (int i = 30; i < 46; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        } else {
-            // スレーブ側 (左半分)
-            for (int i = 0; i < 18; i++) {
-                rgblight_sethsv_at(HSV_WHITE, i);
-            }
-        }
-        oled_set_brightness(5);
-    } else {
-        rgblight_sethsv(HSV_OFF);
-        oled_set_brightness(255);
-    }
-////////// LEDトライ2。ここまで //////////
-
-///// RGB Matrixにて一部点灯トライ。ここから /////
-    if (layer_state_cmp(state, 6)) {
-        // Layer 6 の場合、青色に点灯させる
-        for (int i = 0; i < RGBLED_NUM; i++) {
-            if ((is_keyboard_master() && (i >= 0 && i <= 17)) || (!is_keyboard_master() && (i >= 30 && i <= 45))) {
-                // 左側(マスター側)は0〜17、右側(スレーブ側)は30〜45を青色にする
-                rgb_matrix_set_color(i, 0, 0, 255);  // 青色
-            } else {
-                // その他のLEDは消灯
-                rgb_matrix_set_color(i, 0, 0, 0);
-            }
-        }
-    } else {
-        // Layer 6 以外はすべてのLEDをオフにする
-        for (int i = 0; i < RGBLED_NUM; i++) {
-            rgb_matrix_set_color(i, 0, 0, 0);
-        }
-    }
-///// RGB Matrixにて一部点灯トライ。ここまで /////
-
-////////// LEDトライ3。ここから //////////
-    if (get_highest_layer(state) == 6) { // レイヤー6がアクティブな場合
-        // 左側のLED0〜17と右側のLED30〜45を青色に設定
-        rgblight_setrgb_range(0, 17, HSV_BLUE);  // 左側のLED0〜17を青色に設定
-        rgblight_setrgb_range(30, 45, HSV_BLUE); // 右側のLED30〜45を青色に設定
-        // その他のLEDをオフにする
-        rgblight_setrgb_range(18, 29, RGB_OFF);  // 左側LED18〜23をオフ
-        rgblight_setrgb_range(24, 29, RGB_OFF);  // 右側LED24〜29をオフ
-        rgblight_setrgb_range(46, 47, RGB_OFF);  // 右側LED46以降をオフ（もしあれば）
-    } else {
-        // レイヤー6以外の場合、すべてのLEDをオフにする
-        rgblight_setrgb_range(0, 47, RGB_OFF); // すべてのLEDをオフ
-    }
-////////// LEDトライ3。ここまで //////////
-*/
-
-    // レイヤーとLEDを連動させる
+    // レイヤーとLEDを連動させる_old
     switch (highest_layer) {
-//        case 1:
-//            rgblight_sethsv(HSV_GREEN);
-//            oled_set_brightness(5);  // OLEDの輝度を下げる
-//            break;
-//        case 2:
-//            rgblight_sethsv(HSV_RED);
-//            oled_set_brightness(5);  // OLEDの輝度を下げる
-//            break;
         case 6:
             rgblight_sethsv(HSV_BLUE);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
@@ -168,6 +87,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
 //            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
+*/
     
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
@@ -377,11 +297,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
-
-void caps_word_set_user(bool active) {
-    if (active) {
-        rgblight_sethsv(HSV_RED); // Caps Wordが有効なときに赤色
-    } else {
-        rgblight_sethsv(HSV_OFF); // 無効なときに消灯
-    }
-}
