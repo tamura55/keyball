@@ -377,3 +377,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
+
+void caps_word_set_user(bool active) {
+    if (active) {
+        rgblight_sethsv(HSV_RED); // Caps Wordが有効なときに赤色
+    } else {
+        rgblight_sethsv(HSV_OFF); // 無効なときに消灯
+    }
+}
