@@ -291,8 +291,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 is_f_pressed = true;
                 f_pressed_time = timer_read();
                 if (is_j_pressed && timer_elapsed(j_pressed_time) < CUSTOM_COMBO_TERM) {
-//                    register_code(KC_MHEN);  // 無変換キーを送信
-//                    unregister_code(KC_MHEN);
+                    register_code(KC_INT5);  // 無変換キーを送信
+                    unregister_code(KC_INT5);
                     caps_word_on();  // Caps Wordを有効化
                     reset_combo_state();
                     return false;
@@ -308,8 +308,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 is_j_pressed = true;
                 j_pressed_time = timer_read();
                 if (is_f_pressed && timer_elapsed(f_pressed_time) < CUSTOM_COMBO_TERM) {
-//                    register_code(KC_MHEN);  // 無変換キーを送信
-//                    unregister_code(KC_MHEN);
+                    register_code(KC_ INT5);  // 無変換キーを送信
+                    unregister_code(KC_ INT5);
                     caps_word_on();  // Caps Wordを有効化
                     reset_combo_state();
                     return false;
