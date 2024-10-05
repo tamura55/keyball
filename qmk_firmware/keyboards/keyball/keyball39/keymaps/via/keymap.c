@@ -110,20 +110,11 @@ void oledkit_render_info_user(void) {
 /*
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LSFT_T(KC_GRV):  // 親指キー_old
-        case LT(1, KC_SPC):  // 親指キー_old
-        case LT(1, KC_GRV):  // 親指キー_new
-        case LT(2, KC_ESC):  // 親指キー
-        case LT(2, KC_ENT):  // 親指キー
-        case LT(1, KC_TAB):  // 親指キー
-        case LCTL_T(KC_MINS):  // 小指付け根キー
-        // キーマップ刷新
         case LCTL_T(KC_GRV):  // 親指キー
         case LSFT_T(KC_SPC):  // 親指キー
         case C_S_T(KC_ESC):  // 親指キー
         case LT(2,KC_TAB):  // 親指キー
         case LT(1,KC_ENT):  // 親指キー
-        case LALT_T(KC_ESC):  // 親指キー予備
         case LALT_T(KC_MINS):  // 小指付け根キー
             return true;
         default:
@@ -135,15 +126,16 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 // nested tapが苦手なキーにのみHold On Other Key Pressを適用
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LCTL_T(KC_GRV):  // 親指キー
-        case LSFT_T(KC_SPC):  // 親指キー
-        case C_S_T(KC_ESC):  // 親指キー
-        case LT(2,KC_TAB):  // 親指キー
-        case LT(1,KC_ENT):  // 親指キー
-        case LALT_T(KC_MINS):  // 小指付け根キー
-        case RCTL_T(KC_GRV):  // AML専用左親指キー
-        case RSFT_T(KC_SPC):  // AML専用左親指キー
-        case RCS_T(KC_ESC):  // AML専用左親指キー
+        case THM_LL:
+        case THM_LC:
+        case THM_LR:
+        case THM_RL:
+        case THM_RR:
+        case AML_LL:
+        case AML_LC:
+        case AML_LR:
+        case LIL_L:
+        case LIL_R:
         case AML_ENT1:  // AML専用右親指キー
         case AML_TAB2:  // AML専用右親指キー
             // Immediately select the hold action when another key is pressed.
