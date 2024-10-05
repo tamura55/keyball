@@ -126,18 +126,6 @@ enum keyball_keycodes {
 
     // Excelフィルタ用
     EXL_FLT = QK_KB_26,
-    
-    // 親指・小指付け根キー
-    THM_LL = LCTL_T(KC_INT4),
-    THM_LC = LSFT_T(KC_SPC),
-    THM_LR = LALT_T(KC_ INT5),
-    THM_RL = LT(2,KC_TAB),
-    THM_RR = LT(1,KC_ENT),
-    AML_LL = RCTL_T(KC_INT4),
-    AML_LC = RSFT_T(KC_SPC),
-    AML_LR = RALT_T(KC_ INT5),
-    LIL_L  = LT(4,KC_MINS),
-    LIL_R  = LT(3,KC_F10),
 
     // User customizable 32 keycodes.
     KEYBALL_SAFE_RANGE = QK_USER_0,
