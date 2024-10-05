@@ -728,7 +728,7 @@ bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
 //        case SCRL_MO:
         case RCTL_T(KC_INT4):  // 親指キー。AML専用
         case RSFT_T(KC_SPC):  // 親指キー。AML専用
-        case RALT_T(KC_ INT5):  // 親指キー。AML専用
+        case RALT_T(KC_INT5):  // 親指キー。AML専用
             return true;
 // Kb23~25追加
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
@@ -780,7 +780,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
         switch (keycode) {
             case RCTL_T(KC_INT4):  // 親指キー。AML専用
             case RSFT_T(KC_SPC):  // 親指キー。AML専用
-            case RALT_T(KC_ INT5):  // 親指キー。AML専用
+            case RALT_T(KC_INT5):  // 親指キー。AML専用
             case KC_MS_BTN8:  //  AML離脱用
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
