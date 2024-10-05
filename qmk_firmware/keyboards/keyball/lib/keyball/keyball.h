@@ -136,7 +136,7 @@ enum keyball_keycodes {
     AML_LL = RCTL_T(KC_INT4),
     AML_LC = RSFT_T(KC_SPC),
     AML_LR = RALT_T(KC_ INT5),
-    LIL_L  = LT(4,KC_MINS),
+    LIL_L  = LT(4,KC_MINS),
     LIL_R  = LT(3,KC_F10),
 
     // User customizable 32 keycodes.
