@@ -58,12 +58,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // LED制御はここに集約
 void caps_word_set_user(bool active) {
-    if (layer_state_is(5)) {
-        rgblight_sethsv(HSV_GREEN);
-    } else if (layer_state_is(6)) {
-        rgblight_sethsv(HSV_BLUE); // レイヤー6が有効な場合、青色に点灯
-    } else if (active) {
-        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
+    if (active && !layer_state_is(5) && !layer_state_is(6)) {
+        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+//  if (layer_state_is(5)) {
+//        rgblight_sethsv(HSV_GREEN);
+//    } else if (layer_state_is(6)) {
+//        rgblight_sethsv(HSV_BLUE); // レイヤー6が有効な場合、青色に点灯
+//    } else if (active) {
+//        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
     } else {
         rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
     }
@@ -78,9 +80,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     }
 #endif
 
-/*
-    // レイヤーとLEDを連動させる_old
+    // レイヤーとLEDを連動させる
     switch (highest_layer) {
+        case 5:
+            rgblight_sethsv(HSV_GREEN);
+//            oled_set_brightness(5);  // OLEDの輝度を下げる
+            break;
         case 6:
             rgblight_sethsv(HSV_BLUE);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
@@ -89,7 +94,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv(HSV_OFF);
 //            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
     }
-*/
     
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
