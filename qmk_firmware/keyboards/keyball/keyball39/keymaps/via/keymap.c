@@ -251,13 +251,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
             
 ///// コンボ1。ここから /////
+
         case KC_Q:
             if (record->event.pressed) {
                 is_q_pressed = true;
                 q_pressed_time = timer_read();
+                // Wが既に押されていて、50ms以内ならコンボ成立
+                if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
+                    tap_code(KC_ESC);
+                    reset_combo_state();
+                    return false;  // QとWの入力をキャンセル
+                }
                 return false;  // 一旦Qの入力をキャンセル
             } else {
-                // Wが50ms以内に押されていない場合のみ、Qを送信
+                // Wが50ms以内に押されていない場合のみQを送信
                 if (!is_w_pressed || timer_elapsed(w_pressed_time) >= CUSTOM_COMBO_TERM) {
                     tap_code(KC_Q);  // リリース時にQを送信
                 }
@@ -270,15 +277,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 is_w_pressed = true;
                 w_pressed_time = timer_read();
-                // Qが押されていて、50ms以内ならESCを送信してQとWをキャンセル
+                // Qが既に押されていて、50ms以内ならコンボ成立
                 if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
                     tap_code(KC_ESC);
                     reset_combo_state();
-                    return false;  // Wの入力をキャンセル
+                    return false;  // QとWの入力をキャンセル
                 }
-                return false;  // Wの入力を一旦キャンセル
+                return false;  // 一旦Wの入力をキャンセル
             } else {
-                // Wが50ms以内にQとコンボになっていなかった場合は、Wを送信
+                // Qが50ms以内に押されていない場合のみWを送信
                 if (!is_q_pressed || timer_elapsed(q_pressed_time) >= CUSTOM_COMBO_TERM) {
                     tap_code(KC_W);  // リリース時にWを送信
                 }
