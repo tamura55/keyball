@@ -152,6 +152,13 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 }
 */
 
+const uint16_t PROGMEM test_combo1[] = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM test_combo2[] = {KC_F, KC_J, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(test_combo1, KC_ESC),
+    COMBO(test_combo2, CW_TOGG), // keycodes with modifiers are possible too!
+};
+
 //////////////////////////////
 /// カスタムキーコード。ここから ///
 //////////////////////////////
