@@ -176,6 +176,8 @@ bool is_j_pressed = false;
 uint16_t f_pressed_time = 0;
 uint16_t j_pressed_time = 0;
 
+bool combo_executed = false;  // コンボが成立したかを追跡
+
 // コンボ状態をリセット
 void reset_combo_state(void) {
     is_q_pressed = is_w_pressed = false;
@@ -185,6 +187,11 @@ void reset_combo_state(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // 新しいキーが押されたら combo_executed をリセット
+    if (record->event.pressed) {
+        combo_executed = false;
+    }
+    
     switch (keycode) {
         case AML_ENT1:
             if (record->event.pressed) {
@@ -251,7 +258,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
             
 ///// コンボ1。ここから /////
-
         case KC_Q:
             if (record->event.pressed) {
                 is_q_pressed = true;
@@ -259,14 +265,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // Wが既に押されていて、50ms以内ならコンボ成立
                 if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
                     tap_code(KC_ESC);
-                    reset_combo_state();
+                    combo_executed = true;  // コンボが成立したことを記録
+                    reset_combo_state();     // combo_executed はリセットされない
                     return false;  // QとWの入力をキャンセル
                 }
                 return false;  // 一旦Qの入力をキャンセル
             } else {
-                // Wが50ms以内に押されていない場合のみQを送信
-                if (!is_w_pressed || timer_elapsed(w_pressed_time) >= CUSTOM_COMBO_TERM) {
-                    tap_code(KC_Q);  // リリース時にQを送信
+                // コンボが実行された場合はリリース時の処理をスキップ
+                if (!combo_executed) {
+                    // Wが50ms以内に押されていない場合のみQを送信
+                    if (!is_w_pressed || timer_elapsed(w_pressed_time) >= CUSTOM_COMBO_TERM) {
+                        tap_code(KC_Q);  // リリース時にQを送信
+                    }
                 }
                 is_q_pressed = false;
                 q_pressed_time = 0;
@@ -280,86 +290,76 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // Qが既に押されていて、50ms以内ならコンボ成立
                 if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
                     tap_code(KC_ESC);
-                    reset_combo_state();
+                    combo_executed = true;  // コンボが成立したことを記録
+                    reset_combo_state();     // combo_executed はリセットされない
                     return false;  // QとWの入力をキャンセル
                 }
                 return false;  // 一旦Wの入力をキャンセル
             } else {
-                // Qが50ms以内に押されていない場合のみWを送信
-                if (!is_q_pressed || timer_elapsed(q_pressed_time) >= CUSTOM_COMBO_TERM) {
-                    tap_code(KC_W);  // リリース時にWを送信
+                // コンボが実行された場合はリリース時の処理をスキップ
+                if (!combo_executed) {
+                    // Qが50ms以内に押されていない場合のみWを送信
+                    if (!is_q_pressed || timer_elapsed(q_pressed_time) >= CUSTOM_COMBO_TERM) {
+                        tap_code(KC_W);  // リリース時にWを送信
+                    }
                 }
                 is_w_pressed = false;
                 w_pressed_time = 0;
             }
             return false;
-
-/*
-        case KC_Q:
-            if (record->event.pressed) {
-                is_q_pressed = true;
-                q_pressed_time = timer_read();
-                if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
-                    // Wも押されていて、50ms以内ならESCを送信
-                    tap_code(KC_ESC);
-                    reset_combo_state();  // コンボ状態をリセット
-                    return false;  // QとWの入力をキャンセル
-                }
-            } else {
-                is_q_pressed = false;  // Qが離された
-                q_pressed_time = 0;    // タイマーをリセット
-            }
-            return true;
-
-        case KC_W:
-            if (record->event.pressed) {
-                is_w_pressed = true;
-                w_pressed_time = timer_read();
-                if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
-                    // Qも押されていて、50ms以内ならESCを送信
-                    tap_code(KC_ESC);
-                    reset_combo_state();  // コンボ状態をリセット
-                    return false;  // QとWの入力をキャンセル
-                }
-            } else {
-                is_w_pressed = false;  // Wが離された
-                w_pressed_time = 0;    // タイマーをリセット
-            }
-            return true;
-*/
 ///// コンボ1。ここまで /////
 ///// コンボ2。ここから /////
         case KC_F:
             if (record->event.pressed) {
                 is_f_pressed = true;
                 f_pressed_time = timer_read();
+                // Jが既に押されていて、50ms以内ならコンボ成立
                 if (is_j_pressed && timer_elapsed(j_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_INT5);  // 無変換キーを送信
-                    caps_word_on();  // Caps Wordを有効化
-                    reset_combo_state();
-                    return false;
+                    tap_code(KC_INT5);    // 無変換キーを送信
+                    caps_word_on();         // Caps Wordを有効化
+                    combo_executed = true;  // コンボが成立したことを記録
+                    reset_combo_state();     // combo_executed はリセットされない
+                    return false;  // FとJの入力をキャンセル
                 }
+                return false;  // 一旦Fの入力をキャンセル
             } else {
+                // コンボが実行された場合はリリース時の処理をスキップ
+                if (!combo_executed) {
+                    // Jが50ms以内に押されていない場合のみFを送信
+                    if (!is_j_pressed || timer_elapsed(j_pressed_time) >= CUSTOM_COMBO_TERM) {
+                        tap_code(KC_F);  // リリース時にFを送信
+                    }
+                }
                 is_f_pressed = false;
                 f_pressed_time = 0;
             }
-            return true;
+            return false;
 
         case KC_J:
             if (record->event.pressed) {
                 is_j_pressed = true;
                 j_pressed_time = timer_read();
+                // Fが既に押されていて、50ms以内ならコンボ成立
                 if (is_f_pressed && timer_elapsed(f_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_INT5);  // 無変換キーを送信
-                    caps_word_on();  // Caps Wordを有効化
-                    reset_combo_state();
-                    return false;
+                    tap_code(KC_INT5);    // 無変換キーを送信
+                    caps_word_on();         // Caps Wordを有効化
+                    combo_executed = true;  // コンボが成立したことを記録
+                    reset_combo_state();     // combo_executed はリセットされない
+                    return false;  // FとJの入力をキャンセル
                 }
+                return false;  // 一旦Jの入力をキャンセル
             } else {
+                // コンボが実行された場合はリリース時の処理をスキップ
+                if (!combo_executed) {
+                    // Fが50ms以内に押されていない場合のみJを送信
+                    if (!is_f_pressed || timer_elapsed(f_pressed_time) >= CUSTOM_COMBO_TERM) {
+                        tap_code(KC_J);  // リリース時にJを送信
+                    }
+                }
                 is_j_pressed = false;
                 j_pressed_time = 0;
             }
-            return true;
+            return false;
 ///// コンボ2。ここまで /////
         
         default:
