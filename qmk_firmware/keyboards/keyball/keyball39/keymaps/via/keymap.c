@@ -58,7 +58,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // LED制御はここに集約
 void caps_word_set_user(bool active) {
-    if (layer_state_is(6)) {
+    if (layer_state_is(5)) {
+        rgblight_sethsv(HSV_GREEN);
+    } else if (layer_state_is(6)) {
         rgblight_sethsv(HSV_BLUE); // レイヤー6が有効な場合、青色に点灯
     } else if (active) {
         rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
