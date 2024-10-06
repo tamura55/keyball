@@ -14,6 +14,6 @@ DYNAMIC_TAPPING_TERM_ENABLE = no  # 削減(268bytes)
 
 EXTRAKEY_ENABLE = no  # 削減(488bytes)
 
-COMBO_ENABLE = no  # 削減(1824bytes)
+COMBO_ENABLE = yes  # 削減(1824bytes)
 
 CAPS_WORD_ENABLE = yes  # 追加(472bytes)
