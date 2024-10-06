@@ -255,6 +255,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 is_q_pressed = true;
                 q_pressed_time = timer_read();
+                return false;  // 一旦Qの入力をキャンセル
+            } else {
+                // Wが50ms以内に押されていない場合のみ、Qを送信
+                if (!is_w_pressed || timer_elapsed(w_pressed_time) >= CUSTOM_COMBO_TERM) {
+                    tap_code(KC_Q);  // リリース時にQを送信
+                }
+                is_q_pressed = false;
+                q_pressed_time = 0;
+            }
+            return false;
+
+        case KC_W:
+            if (record->event.pressed) {
+                is_w_pressed = true;
+                w_pressed_time = timer_read();
+                // Qが押されていて、50ms以内ならESCを送信してQとWをキャンセル
+                if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
+                    tap_code(KC_ESC);
+                    reset_combo_state();
+                    return false;  // Wの入力をキャンセル
+                }
+                return false;  // Wの入力を一旦キャンセル
+            } else {
+                // Wが50ms以内にQとコンボになっていなかった場合は、Wを送信
+                if (!is_q_pressed || timer_elapsed(q_pressed_time) >= CUSTOM_COMBO_TERM) {
+                    tap_code(KC_W);  // リリース時にWを送信
+                }
+                is_w_pressed = false;
+                w_pressed_time = 0;
+            }
+            return false;
+
+/*
+        case KC_Q:
+            if (record->event.pressed) {
+                is_q_pressed = true;
+                q_pressed_time = timer_read();
                 if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
                     // Wも押されていて、50ms以内ならESCを送信
                     tap_code(KC_ESC);
@@ -282,6 +319,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 w_pressed_time = 0;    // タイマーをリセット
             }
             return true;
+*/
 ///// コンボ1。ここまで /////
 ///// コンボ2。ここから /////
         case KC_F:
