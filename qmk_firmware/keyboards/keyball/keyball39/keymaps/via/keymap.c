@@ -163,6 +163,7 @@ static uint16_t aml_ent1_timer;
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
 
+/*
 // Combo Termを50msに設定
 #define CUSTOM_COMBO_TERM 50
 // キー押下状態を記録するフラグ。コンボ1(Q+W→Esc)用
@@ -185,12 +186,13 @@ void reset_combo_state(void) {
     q_pressed_time = w_pressed_time = 0;
     f_pressed_time = j_pressed_time = 0;
 }
+*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // 新しいキーが押されたら combo_executed をリセット
-    if (record->event.pressed) {
-        combo_executed = false;
-    }
+//    if (record->event.pressed) {
+//        combo_executed = false;
+//    }
     
     switch (keycode) {
         case AML_ENT1:
@@ -256,7 +258,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-            
+/*
 ///// コンボ1。ここから /////
         case KC_Q:
             if (record->event.pressed) {
@@ -361,7 +363,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 ///// コンボ2。ここまで /////
-        
+*/
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
