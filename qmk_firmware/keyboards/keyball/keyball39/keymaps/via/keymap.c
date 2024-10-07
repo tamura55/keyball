@@ -60,17 +60,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool cw_active = false;
 
 void caps_word_set_user(bool active) {
-    if (active && !layer_state_is(5) && !layer_state_is(6)) {
-        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+    if (active) {
+        rgblight_sethsv(HSV_RED); // Caps Wordが有効な場合、赤色に点灯
         cw_active = true;
-//  if (layer_state_is(5)) {
-//        rgblight_sethsv(HSV_GREEN);
-//    } else if (layer_state_is(6)) {
-//        rgblight_sethsv(HSV_BLUE); // レイヤー6が有効な場合、青色に点灯
-//    } else if (active) {
-//        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
     } else {
-        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+        if (layer_state_is(6)) {
+            rgblight_sethsv(HSV_BLUE);
+        } else if (layer_state_is(5)) {
+            rgblight_sethsv(HSV_GREEN);
+        } else {
+            rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+        }
         cw_active = false;
     }
 }
