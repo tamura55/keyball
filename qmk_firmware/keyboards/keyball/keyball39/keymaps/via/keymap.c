@@ -61,7 +61,7 @@ bool cw_active = false;
 
 void caps_word_set_user(bool active) {
     if (active && !layer_state_is(5) && !layer_state_is(6)) {
-//        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
         cw_active = true;
 //  if (layer_state_is(5)) {
 //        rgblight_sethsv(HSV_GREEN);
@@ -70,7 +70,7 @@ void caps_word_set_user(bool active) {
 //    } else if (active) {
 //        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
     } else {
-//        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
         cw_active = false;
     }
 }
