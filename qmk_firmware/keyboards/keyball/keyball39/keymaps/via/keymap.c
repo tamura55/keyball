@@ -56,10 +56,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// LED制御はここに集約
+// Caps Word用フラグ
+bool cw_active = false;
+
 void caps_word_set_user(bool active) {
     if (active && !layer_state_is(5) && !layer_state_is(6)) {
-        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+//        rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+        cw_active = true;
 //  if (layer_state_is(5)) {
 //        rgblight_sethsv(HSV_GREEN);
 //    } else if (layer_state_is(6)) {
@@ -67,7 +70,8 @@ void caps_word_set_user(bool active) {
 //    } else if (active) {
 //        rgblight_sethsv(HSV_RED); // レイヤー6以外かつCaps Wordが有効な場合、赤色に点灯
     } else {
-        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+//        rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
+        cw_active = false;
     }
 }
 
@@ -91,8 +95,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
-            rgblight_sethsv(HSV_OFF);
-//            oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
+            if (cw_active) {
+                rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+//                oled_set_brightness(5);  // OLEDの輝度を下げる
+            } else {
+                rgblight_sethsv(HSV_OFF);
+//                oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
+            }
     }
     
     // negokazさん追記部
