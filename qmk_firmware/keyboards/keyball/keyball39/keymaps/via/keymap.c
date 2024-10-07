@@ -267,6 +267,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
+
+      case MHEN_CW:
+          if (record->event.pressed) {
+              tap_code(KC_INT5);    // 無変換キーを送信
+              caps_word_on();         // Caps Wordを有効化
+            }
+            return false;
 /*
 ///// コンボ1。ここから /////
         case KC_Q:
