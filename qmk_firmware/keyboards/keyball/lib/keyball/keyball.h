@@ -124,11 +124,9 @@ enum keyball_keycodes {
     STSP_HOR = QK_KB_24, // Set scroll snap mode as horizontal
     STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
 
-    // Excelフィルタ用
-    EXL_FLT = QK_KB_26,
-
-    // Caps Word用
-    MHEN_CW = QK_KB_27,
+    EXL_FLT = QK_KB_26,  // Excelフィルタ用
+    MHEN_CW = QK_KB_27,  // Caps Word用
+    IME_CTL = QK_KB_28,  // IME切替Tap Dance
     
     // 親指・小指付け根キーを定義
     THM_LL = LCTL_T(KC_INT4),  // 変換
