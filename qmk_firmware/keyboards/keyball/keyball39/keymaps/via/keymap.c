@@ -175,6 +175,10 @@ static uint16_t aml_ent1_timer;
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
 
+// Tap Dance用フラグ
+static bool first_td_ime3_pressed = false;
+static uint16_t first_td_ime3_pressed_time = 0;
+
 /*
 // Combo Termを50msに設定
 #define CUSTOM_COMBO_TERM 50
@@ -270,13 +274,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-
-      case MHEN_CW:
-          if (record->event.pressed) {
-              tap_code(KC_INT5);    // 無変換キーを送信
-              caps_word_on();         // Caps Wordを有効化
+            
+        case MHEN_CW:
+            if (record->event.pressed) {
+                tap_code(KC_INT5);    // 無変換キーを送信
+                caps_word_on();         // Caps Wordを有効化
             }
             return false;
+            
+        case TD_IME3:
+            if (record->event.pressed) {
+                if (!first_td_ime3_pressed) {
+                    first_td_ime3_pressed_time = record->event.time;
+                // 一回目のタップのフラグがオン & 最初のキー押下から2回目のキー押下までの時間が TAPPING_TERM の2倍超なら
+                // 間隔を空けた2回目のタップと判断する
+                } else if (first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) > TAPPING_TERM * 2)) {
+                    first_td_ime3_pressed_time = record->event.time;
+                    first_td_ime3_pressed = false;
+                }
+                layer_on(3);
+            } else {
+                layer_off(3);
+                // タップのフラグがオフ & 最初のキー押下からキーを離した時までの時間が TAPPING_TERM 未満なら
+                // タップと判断する
+                if (!first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) < TAPPING_TERM)) {
+                    tap_code(KC_INT4);    // 変換キーを送信
+                    first_td_ime3_pressed = true;
+                // タップのフラグがオン & 最初のキー押下から2回目のタイプでキーを離した時までの時間が TAPPING_TERM の2倍以下なら
+                // ダブルタップと判断する
+                } else if (first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) <= TAPPING_TERM * 2)) {
+                    tap_code(KC_INT5);    // 無変換キーを送信
+                    first_td_ime3_pressed = false;
+                } else {
+                    first_td_ime3_pressed = false;
+                }
+            }
+            return false;
+
 /*
 ///// コンボ1。ここから /////
         case KC_Q:
@@ -393,6 +427,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
             }
+            first_td_ime3_pressed = false;  // フラグをリセット
             return true;  // 通常のキー処理を続ける
     }
 }
