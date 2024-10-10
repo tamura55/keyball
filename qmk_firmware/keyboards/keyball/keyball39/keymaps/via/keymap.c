@@ -77,12 +77,12 @@ void caps_word_set_user(bool active) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
-    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-    if (highest_layer != 3) {
-        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
-    }
-#endif
+//    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
+//#if KEYBALL_SCROLLSNAP_ENABLE == 2
+//    if (highest_layer != 3) {
+//        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
+//    }
+//#endif
 
     // レイヤーとLEDを連動させる
     switch (highest_layer) {
@@ -95,6 +95,9 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー5,6以外ではSSNP_VRTに固定
+#endif
             if (cw_active) {
                 rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
 //                oled_set_brightness(5);  // OLEDの輝度を下げる
