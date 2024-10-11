@@ -178,6 +178,7 @@ static uint16_t aml_tab2_timer;
 // Tap Dance用フラグ
 static bool first_td_ime3_pressed = false;
 static uint16_t first_td_ime3_pressed_time = 0;
+static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
 
 /*
 // Combo Termを50msに設定
@@ -293,21 +294,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     first_td_ime3_pressed = false;
                 }
                 layer_on(3);
+                td_ime3_pressed = true;  // 押されたのでフラグON
             } else {
                 layer_off(3);
                 // タップのフラグがオフ & 最初のキー押下からキーを離した時までの時間が TAPPING_TERM 未満なら
                 // タップと判断する
-                if (!first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) < TAPPING_TERM)) {
+                if (!first_td_ime3_pressed && td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) < TAPPING_TERM)) {
                     tap_code(KC_INT4);    // 変換キーを送信
                     first_td_ime3_pressed = true;
                 // タップのフラグがオン & 最初のキー押下から2回目のタイプでキーを離した時までの時間が TAPPING_TERM の2倍以下なら
                 // ダブルタップと判断する
-                } else if (first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) <= TAPPING_TERM * 2)) {
+                } else if (first_td_ime3_pressed && td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) <= TAPPING_TERM * 2)) {
                     tap_code(KC_INT5);    // 無変換キーを送信
                     first_td_ime3_pressed = false;
                 } else {
                     first_td_ime3_pressed = false;
                 }
+                td_ime3_pressed = false;  // 離したのでリセット
             }
             return false;
 
@@ -426,8 +429,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (layer_state_is(2)) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
+                first_td_ime3_pressed = false;  // フラグをリセット
+                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
             }
-            first_td_ime3_pressed = false;  // フラグをリセット
             return true;  // 通常のキー処理を続ける
     }
 }
