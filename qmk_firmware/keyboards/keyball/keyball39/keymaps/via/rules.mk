@@ -17,5 +17,3 @@ EXTRAKEY_ENABLE = yes  # 追加(488bytes)
 COMBO_ENABLE = no  # 削減(1824bytes)
 
 CAPS_WORD_ENABLE = yes  # 追加(472bytes)
-
-TAP_DANCE_ENABLE = yes  # 追加(bytes)
