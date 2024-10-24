@@ -134,9 +134,9 @@ enum keyball_keycodes {
 //    THM_LR = LALT_T(KC_INT5),  // 無変換
 //    THM_RL = LT(2,KC_TAB),
 //    THM_RR = LT(1,KC_ENT),
-    AML_LL = RCTL_T(KC_ESC),  // 変換
+    AML_LL = RCTL_T(KC_GRV),  // 変換→半/全
     AML_LC = RSFT_T(KC_SPC),
-    AML_LR = RALT_T(KC_INT5),  // 無変換
+    AML_LR = RALT_T(KC_INT5),  // 無変換(old)
 //    LIL_L  = LT(4,KC_MINS),
 //    LIL_R  = LT(3,KC_F10),
 
