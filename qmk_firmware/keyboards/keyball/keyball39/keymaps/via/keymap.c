@@ -258,6 +258,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case EXL_FLT:
             if (record->event.pressed) {
+                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
                 register_code(KC_LALT);
                 unregister_code(KC_LALT);
                 tap_code(KC_W);
@@ -278,7 +279,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             
         case MHEN_CW:
             if (record->event.pressed) {
-                tap_code(KC_INT5);    // 無変換キーを送信
+                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
                 caps_word_on();         // Caps Wordを有効化
             }
             return false;
