@@ -60,12 +60,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool cw_active = false;
 
 void caps_word_set_user(bool active) {
-    if (active) {
-        rgblight_sethsv(HSV_RED); // Caps Wordが有効な場合、赤色に点灯
+    if (active) {  // Caps Wordが有効な場合
+        rgblight_sethsv(HSV_BLUE);
         cw_active = true;
     } else {
         if (layer_state_is(6)) {
-            rgblight_sethsv(HSV_BLUE);
+            rgblight_sethsv(HSV_RED);
         } else if (layer_state_is(5)) {
             rgblight_sethsv(HSV_GREEN);
         } else {
@@ -91,7 +91,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         case 6:
-            rgblight_sethsv(HSV_BLUE);
+            rgblight_sethsv(HSV_RED);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
@@ -99,7 +99,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー5,6以外ではSSNP_VRTに固定
 #endif
             if (cw_active) {
-                rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合、赤色に点灯
+                rgblight_sethsv(HSV_BLUE); // レイヤー5,6以外かつCaps Wordが有効な場合
 //                oled_set_brightness(5);  // OLEDの輝度を下げる
             } else {
                 rgblight_sethsv(HSV_OFF);
