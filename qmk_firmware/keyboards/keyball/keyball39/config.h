@@ -50,7 +50,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #    define RGBLIGHT_LAYERS  // LED範囲制御にあたり追加
 // #    define SPLIT_LAYER_STATE_ENABLE  // LED範囲制御にあたり追加
 #    ifndef RGBLIGHT_LIMIT_VAL
-#        define RGBLIGHT_LIMIT_VAL  200 // limitated for power consumption
+#        define RGBLIGHT_LIMIT_VAL  180 // 赤色不安定のため、200→180へ変更
 #    endif
 #    ifndef RGBLIGHT_VAL_STEP
 #        define RGBLIGHT_VAL_STEP   15
