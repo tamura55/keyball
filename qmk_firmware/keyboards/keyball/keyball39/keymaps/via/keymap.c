@@ -174,6 +174,10 @@ static uint16_t aml_ent1_timer;
 // AML_TAB2用
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
+// ME7_L3用
+static bool pressed_other_key_me7 = false;
+static uint16_t me7_l3_timer;
+
 
 // Tap Dance用フラグ
 //static bool first_td_ime3_pressed = false;
@@ -281,6 +285,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
                 caps_word_on();         // Caps Wordを有効化
+            }
+            return false;
+        
+        case ME7_L3:
+            if (record->event.pressed) {
+                pressed_other_key_me7 = false;         // 他のキーが押されるまでフラグをリセット
+                me7_l3_timer = timer_read();           // タイマーをスタート
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // AMLを無効化
+                layer_on(3);                           // Layer3を有効化
+            } else {
+                // 他のキーが押されていない場合
+                if (!pressed_other_key_me7) {
+                    // Tapping Term以内にリリースされた場合のみEnterを送信
+                    if (timer_elapsed(me7_l3_timer) < TAPPING_TERM) {
+                        tap_code(MS_BTN7);             // マウス7を送信
+                    }
+                    // Tapping Termを超えている場合は何もしない
+                }
+                layer_off(3);                          // Layer3を無効化
+                layer_clear();                         // Layer0に戻る
             }
             return false;
 /*
@@ -429,6 +453,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 if (layer_state_is(2)) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
+                }
+                if (layer_state_is(3)) {
+                    pressed_other_key_me7 = true;  // Layer3で他のキーが押されたことを記録
                 }
 //                first_td_ime3_pressed = false;  // フラグをリセット
 //                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
