@@ -176,9 +176,9 @@ static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
 
 // Tap Dance用フラグ
-static bool first_td_ime3_pressed = false;
-static uint16_t first_td_ime3_pressed_time = 0;
-static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
+//static bool first_td_ime3_pressed = false;
+//static uint16_t first_td_ime3_pressed_time = 0;
+//static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
 
 /*
 // Combo Termを50msに設定
@@ -255,7 +255,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
-/*
+
         case EXL_FLT:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
@@ -276,14 +276,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-*/
+
         case MHEN_CW:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
                 caps_word_on();         // Caps Wordを有効化
             }
             return false;
-            
+/*
         case TD_IME3:
             if (record->event.pressed) {
                 if (!first_td_ime3_pressed) {
@@ -314,7 +314,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 td_ime3_pressed = false;  // 離したのでリセット
             }
             return false;
-
+/*
 /*
 ///// コンボ1。ここから /////
         case KC_Q:
@@ -430,8 +430,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (layer_state_is(2)) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
-                first_td_ime3_pressed = false;  // フラグをリセット
-                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
+//                first_td_ime3_pressed = false;  // フラグをリセット
+//                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
             }
             return true;  // 通常のキー処理を続ける
     }
