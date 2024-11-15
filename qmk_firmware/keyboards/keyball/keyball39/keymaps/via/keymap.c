@@ -338,7 +338,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 td_ime3_pressed = false;  // 離したのでリセット
             }
             return false;
-/*
+*/
 /*
 ///// コンボ1。ここから /////
         case KC_Q:
