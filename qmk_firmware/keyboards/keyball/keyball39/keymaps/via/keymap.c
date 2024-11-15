@@ -255,7 +255,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
-
+/*
         case EXL_FLT:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
@@ -276,7 +276,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-            
+*/
         case MHEN_CW:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
