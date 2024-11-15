@@ -299,7 +299,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (!pressed_other_key_me7) {
                     // Tapping Term以内にリリースされた場合のみEnterを送信
                     if (timer_elapsed(me7_l3_timer) < TAPPING_TERM) {
-                        tap_code(MS_BTN7);             // マウス7を送信
+                        tap_code(KC_MS_BTN7);             // マウス7を送信
                     }
                     // Tapping Termを超えている場合は何もしない
                 }
