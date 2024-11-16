@@ -127,7 +127,8 @@ enum keyball_keycodes {
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
     MHEN_CW  = QK_KB_27, // Caps Word用
     TD_IME3  = QK_KB_28, // IME切替Tap Dance
-    TAML_L3  = QK_KB_29, // AML移行＆L3
+    TO6_MO3  = QK_KB_29, // タップでL6移行、それ以外はL3
+    TMS_MTG  = QK_KB_30, // TeamsのマイクON/OFF切替
     
     // 親指・小指付け根キーを定義
 //    THM_LL = LCTL_T(KC_INT4),  // 変換
