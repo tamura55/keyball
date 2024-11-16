@@ -297,18 +297,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (!pressed_other_key_taml) {
                     // Tapping Term以内にリリースされた場合
                     if (timer_elapsed(taml_l3_timer) < TAPPING_TERM) {
-//                        layer_off(3);                  // Layer3を無効化
-                        layer_clear();                 // Layer0に戻る
+                        layer_off(3);                  // Layer3を無効化
+//                        layer_clear();                 // Layer0に戻る
                         layer_on(AUTO_MOUSE_DEFAULT_LAYER);   // AMLを有効化
                     }  // Tapping Termを超えている場合
                     else {
-//                        layer_off(3);                  // Layer3を無効化
-                        layer_clear();                 // Layer0に戻る
+                        layer_off(3);                  // Layer3を無効化
+//                        layer_clear();                 // Layer0に戻る
                     }
                 } // 他のキーが押された場合
                 else {
-//                    layer_off(3);                      // Layer3を無効化
-                    layer_clear();                     // Layer0に戻る
+                    layer_off(3);                      // Layer3を無効化
+//                    layer_clear();                     // Layer0に戻る
                 }
             }
             return false;
