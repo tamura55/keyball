@@ -297,14 +297,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             } else {
                 // 他のキーが押されていない場合
                 if (!pressed_other_key_me7) {
-                    // Tapping Term以内にリリースされた場合のみEnterを送信
+                    // Tapping Term以内にリリースされた場合
                     if (timer_elapsed(me7_l3_timer) < TAPPING_TERM) {
-                        tap_code(KC_MS_BTN7);             // マウス7を送信
+                        layer_off(3);                  // Layer3を無効化
+                        layer_clear();                 // Layer0に戻る
+                        tap_code(KC_MS_BTN7);          // マウス7を送信
+                    }  // Tapping Termを超えている場合
+                    else {
+                        layer_off(3);                  // Layer3を無効化
+                        layer_clear();                 // Layer0に戻る
                     }
-                    // Tapping Termを超えている場合は何もしない
+                } // 他のキーが押された場合
+                else {
+                    layer_off(3);                      // Layer3を無効化
+                    layer_clear();                     // Layer0に戻る
                 }
-                layer_off(3);                          // Layer3を無効化
-                layer_clear();                         // Layer0に戻る
             }
             return false;
 /*
