@@ -127,7 +127,7 @@ enum keyball_keycodes {
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
     MHEN_CW  = QK_KB_27, // Caps Word用
     TD_IME3  = QK_KB_28, // IME切替Tap Dance
-    ME7_L3   = QK_KB_29, // マウス7＆L3
+    TAML_L3  = QK_KB_29, // AML移行＆L3
     
     // 親指・小指付け根キーを定義
 //    THM_LL = LCTL_T(KC_INT4),  // 変換
