@@ -309,6 +309,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
+
+      case TMS_MTG:
+            if (record->event.pressed) {
+                register_code(KC_LWIN);
+                wait_ms(300);
+                tap_code(KC_4);
+                wait_ms(300);
+                tap_code(KC_4);
+                unregister_code(KC_LWIN);
+                wait_ms(300);
+                register_code(KC_LCTL);
+                register_code(KC_LSFT);
+                tap_code(KC_M);
+                unregister_code(KC_LSFT);
+                unregister_code(KC_LCTL);
+            }
+            return false;
 /*
         case TD_IME3:
             if (record->event.pressed) {
