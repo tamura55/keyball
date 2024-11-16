@@ -174,9 +174,9 @@ static uint16_t aml_ent1_timer;
 // AML_TAB2用
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
-// TAML_L3用
-static bool pressed_other_key_taml = false;
-static uint16_t taml_l3_timer;
+// TO6_MO3用
+static bool pressed_other_key_mo3 = false;
+static uint16_t to6_mo3_timer;
 
 // Tap Dance用フラグ
 //static bool first_td_ime3_pressed = false;
@@ -287,28 +287,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         
-        case TAML_L3:
+        case TO6_MO3:
             if (record->event.pressed) {
-                pressed_other_key_taml = false;         // 他のキーが押されるまでフラグをリセット
-                taml_l3_timer = timer_read();           // タイマーをスタート
+                pressed_other_key_mo3 = false;         // 他のキーが押されるまでフラグをリセット
+                to6_mo3_timer = timer_read();          // タイマーをスタート
                 layer_on(3);                           // Layer3を有効化
             } else {
                 // 他のキーが押されていない場合
-                if (!pressed_other_key_taml) {
+                if (!pressed_other_key_mo3) {
                     // Tapping Term以内にリリースされた場合
-                    if (timer_elapsed(taml_l3_timer) < TAPPING_TERM) {
+                    if (timer_elapsed(to6_mo3_timer) < TAPPING_TERM) {
                         layer_off(3);                  // Layer3を無効化
-//                        layer_clear();                 // Layer0に戻る
-                        layer_on(AUTO_MOUSE_DEFAULT_LAYER);   // AMLを有効化
+                        layer_on(6);                   // Layer6を有効化
                     }  // Tapping Termを超えている場合
                     else {
                         layer_off(3);                  // Layer3を無効化
-//                        layer_clear();                 // Layer0に戻る
                     }
                 } // 他のキーが押された場合
                 else {
                     layer_off(3);                      // Layer3を無効化
-//                    layer_clear();                     // Layer0に戻る
                 }
             }
             return false;
@@ -460,7 +457,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
                 if (layer_state_is(3)) {
-                    pressed_other_key_taml = true;  // Layer3で他のキーが押されたことを記録
+                    pressed_other_key_mo3 = true;  // Layer3で他のキーが押されたことを記録
                 }
 //                first_td_ime3_pressed = false;  // フラグをリセット
 //                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
