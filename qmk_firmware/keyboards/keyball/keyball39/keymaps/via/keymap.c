@@ -286,7 +286,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 caps_word_on();         // Caps Wordを有効化
             }
             return false;
-        
+/*
         case TO6_MO3:
             if (record->event.pressed) {
                 pressed_other_key_mo3 = false;         // 他のキーが押されるまでフラグをリセット
@@ -309,7 +309,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             return false;
-
+*/
       case TMS_MTG:
             if (record->event.pressed) {
                 register_code(KC_LWIN);
