@@ -175,8 +175,8 @@ static uint16_t aml_ent1_timer;
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
 // TO6_MO3用
-static bool pressed_other_key_mo3 = false;
-static uint16_t to6_mo3_timer;
+//static bool pressed_other_key_mo3 = false;
+//static uint16_t to6_mo3_timer;
 
 // Tap Dance用フラグ
 //static bool first_td_ime3_pressed = false;
@@ -473,9 +473,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (layer_state_is(2)) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
-                if (layer_state_is(3)) {
-                    pressed_other_key_mo3 = true;  // Layer3で他のキーが押されたことを記録
-                }
+//                if (layer_state_is(3)) {
+//                    pressed_other_key_mo3 = true;  // Layer3で他のキーが押されたことを記録
+//                }
 //                first_td_ime3_pressed = false;  // フラグをリセット
 //                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
             }
