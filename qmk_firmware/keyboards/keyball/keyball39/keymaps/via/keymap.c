@@ -183,7 +183,7 @@ static uint16_t aml_tab2_timer;
 //static uint16_t first_td_ime3_pressed_time = 0;
 //static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
 
-/*
+/* 擬似コンボ用
 // Combo Termを50msに設定
 #define CUSTOM_COMBO_TERM 50
 // キー押下状態を記録するフラグ。コンボ1(Q+W→Esc)用
@@ -191,20 +191,12 @@ bool is_q_pressed = false;
 bool is_w_pressed = false;
 uint16_t q_pressed_time = 0;
 uint16_t w_pressed_time = 0;
-// コンボ2(F+J→Caps Word)用
-bool is_f_pressed = false;
-bool is_j_pressed = false;
-uint16_t f_pressed_time = 0;
-uint16_t j_pressed_time = 0;
-
-bool combo_executed = false;  // コンボが成立したかを追跡
-
+// コンボが成立したかを追跡
+bool combo_executed = false;
 // コンボ状態をリセット
 void reset_combo_state(void) {
     is_q_pressed = is_w_pressed = false;
-    is_f_pressed = is_j_pressed = false;
     q_pressed_time = w_pressed_time = 0;
-    f_pressed_time = j_pressed_time = 0;
 }
 */
 
@@ -410,59 +402,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 ///// コンボ1。ここまで /////
-///// コンボ2。ここから /////
-        case KC_F:
-            if (record->event.pressed) {
-                is_f_pressed = true;
-                f_pressed_time = timer_read();
-                // Jが既に押されていて、50ms以内ならコンボ成立
-                if (is_j_pressed && timer_elapsed(j_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_INT5);    // 無変換キーを送信
-                    caps_word_on();         // Caps Wordを有効化
-                    combo_executed = true;  // コンボが成立したことを記録
-                    reset_combo_state();     // combo_executed はリセットされない
-                    return false;  // FとJの入力をキャンセル
-                }
-                return false;  // 一旦Fの入力をキャンセル
-            } else {
-                // コンボが実行された場合はリリース時の処理をスキップ
-                if (!combo_executed) {
-                    // Jが50ms以内に押されていない場合のみFを送信
-                    if (!is_j_pressed || timer_elapsed(j_pressed_time) >= CUSTOM_COMBO_TERM) {
-                        tap_code(KC_F);  // リリース時にFを送信
-                    }
-                }
-                is_f_pressed = false;
-                f_pressed_time = 0;
-            }
-            return false;
-
-        case KC_J:
-            if (record->event.pressed) {
-                is_j_pressed = true;
-                j_pressed_time = timer_read();
-                // Fが既に押されていて、50ms以内ならコンボ成立
-                if (is_f_pressed && timer_elapsed(f_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_INT5);    // 無変換キーを送信
-                    caps_word_on();         // Caps Wordを有効化
-                    combo_executed = true;  // コンボが成立したことを記録
-                    reset_combo_state();     // combo_executed はリセットされない
-                    return false;  // FとJの入力をキャンセル
-                }
-                return false;  // 一旦Jの入力をキャンセル
-            } else {
-                // コンボが実行された場合はリリース時の処理をスキップ
-                if (!combo_executed) {
-                    // Fが50ms以内に押されていない場合のみJを送信
-                    if (!is_f_pressed || timer_elapsed(f_pressed_time) >= CUSTOM_COMBO_TERM) {
-                        tap_code(KC_J);  // リリース時にJを送信
-                    }
-                }
-                is_j_pressed = false;
-                j_pressed_time = 0;
-            }
-            return false;
-///// コンボ2。ここまで /////
 */
         default:
             // 他のキーが押された場合にフラグを立てる
