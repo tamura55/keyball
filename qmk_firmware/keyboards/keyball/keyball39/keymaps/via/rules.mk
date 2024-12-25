@@ -1,4 +1,4 @@
-RGBLIGHT_ENABLE = yes  # 戻し
+RGBLIGHT_ENABLE = no  # 戻し
 
 # RGB Matrix用の設定
 RGB_MATRIX_ENABLE = no
