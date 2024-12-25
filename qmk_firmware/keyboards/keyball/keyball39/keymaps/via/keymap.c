@@ -56,56 +56,59 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// Caps Word用フラグ
-bool cw_active = false;
+#ifdef RGBLIGHT_ENABLE
+bool cw_active = false;  // Caps Word用フラグ
 
 void caps_word_set_user(bool active) {
     if (active) {  // Caps Wordが有効な場合
-        rgblight_sethsv(HSV_BLUE);
+        rgblight_sethsv(HSV_RED);
         cw_active = true;
     } else {
         if (layer_state_is(6)) {
-            rgblight_sethsv(HSV_RED);
-        } else if (layer_state_is(5)) {
             rgblight_sethsv(HSV_GREEN);
+        } else if (layer_state_is(5)) {
+            rgblight_sethsv(HSV_BLUE);
         } else {
             rgblight_sethsv(HSV_OFF); // それ以外の場合、LEDを消灯
         }
         cw_active = false;
     }
 }
+#endif
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
 //    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
-//#if KEYBALL_SCROLLSNAP_ENABLE == 2
-//    if (highest_layer != 3) {
-//        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー3以外ではSSNP_VRTに固定
-//    }
-//#endif
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+    if (highest_layer != 6) {
+        keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー6以外ではSSNP_VRTに固定
+    }
+#endif
 
+#ifdef RGBLIGHT_ENABLE
     // レイヤーとLEDを連動させる
     switch (highest_layer) {
         case 5:
-            rgblight_sethsv(HSV_GREEN);
+            rgblight_sethsv(HSV_BLUE);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         case 6:
-            rgblight_sethsv(HSV_RED);
+            rgblight_sethsv(HSV_GREEN);
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー5,6以外ではSSNP_VRTに固定
-#endif
+//#if KEYBALL_SCROLLSNAP_ENABLE == 2
+//            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー5,6以外ではSSNP_VRTに固定
+//#endif
             if (cw_active) {
-                rgblight_sethsv(HSV_BLUE); // レイヤー5,6以外かつCaps Wordが有効な場合
+                rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合
 //                oled_set_brightness(5);  // OLEDの輝度を下げる
             } else {
                 rgblight_sethsv(HSV_OFF);
 //                oled_set_brightness(255);  // OLEDの輝度をデフォルト値に戻す
             }
     }
+#endif
     
     // negokazさん追記部
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
