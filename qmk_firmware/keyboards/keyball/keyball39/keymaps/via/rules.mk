@@ -1,4 +1,4 @@
-RGBLIGHT_ENABLE = no  # 戻し
+RGBLIGHT_ENABLE = no  # 削減(2800bytes)
 
 # RGB Matrix用の設定
 RGB_MATRIX_ENABLE = no
@@ -14,6 +14,6 @@ DYNAMIC_TAPPING_TERM_ENABLE = no  # 削減(268bytes)
 
 EXTRAKEY_ENABLE = yes  # 追加(488bytes)
 
-COMBO_ENABLE = no  # 削減(1824bytes)
+COMBO_ENABLE = yes  # 追加(1824bytes)
 
 CAPS_WORD_ENABLE = yes  # 追加(472bytes)
