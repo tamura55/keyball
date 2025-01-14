@@ -432,12 +432,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef COMBO_ENABLE
 enum combo_events {
   PARENTHESES,
+  SQUARE_BRACKETS,
+  CURLY_BRACKETS,
+  ANGLE_BRACKETS,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_F, KC_J, COMBO_END};
+const uint16_t PROGMEM sqbra_combo[] = {KC_D, KC_K, COMBO_END};
+const uint16_t PROGMEM cubra_combo[] = {KC_S, KC_L, COMBO_END};
+const uint16_t PROGMEM anbra_combo[] = {KC_A, KC_BSPC, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
+  [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
+  [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
+  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
@@ -448,6 +457,28 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         register_code(KC_LSFT);
         tap_code(KC_9);
         tap_code(KC_0);
+        unregister_code(KC_LSFT);
+      }
+    break;
+    case SQUARE_BRACKETS:
+      if (pressed) {
+        tap_code(KC_LBRC);
+        tap_code(KC_RBRC);
+      }
+    break;
+    case CURLY_BRACKETS:
+      if (pressed) {
+        register_code(KC_LSFT);
+        tap_code(KC_LBRC);
+        tap_code(KC_RBRC);
+        unregister_code(KC_LSFT);
+      }
+    break;
+    case ANGLE_BRACKETS:
+      if (pressed) {
+        register_code(KC_LSFT);
+        tap_code(KC_COMMA);
+        tap_code(KC_DOT);
         unregister_code(KC_LSFT);
       }
     break;
