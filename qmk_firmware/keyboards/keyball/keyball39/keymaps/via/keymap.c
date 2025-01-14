@@ -428,3 +428,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
+
+#ifdef COMBO_ENABLE
+enum combo_events {
+  PARENTHESES,
+};
+
+const uint16_t PROGMEM paren_combo[] = {KC_F, KC_J, COMBO_END};
+
+combo_t key_combos[] = {
+  [PARENTHESES] = COMBO_ACTION(paren_combo),
+};
+/* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case PARENTHESES:
+      if (pressed) {
+        register_code(KC_LSFT);
+        tap_code(KC_9);
+        tap_code(KC_0);
+        unregister_code(KC_LSFT);
+      }
+    break;
+  }
+}
+#endif
