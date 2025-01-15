@@ -455,22 +455,22 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     case PARENTHESES:
       if (pressed) {
         register_code(KC_LSFT);
+        tap_code(KC_8);
         tap_code(KC_9);
-        tap_code(KC_0);
         unregister_code(KC_LSFT);
       }
     break;
     case SQUARE_BRACKETS:
       if (pressed) {
-        tap_code(KC_LBRC);
         tap_code(KC_RBRC);
+        tap_code(KC_BSLS);
       }
     break;
     case CURLY_BRACKETS:
       if (pressed) {
         register_code(KC_LSFT);
-        tap_code(KC_LBRC);
         tap_code(KC_RBRC);
+        tap_code(KC_BSLS);
         unregister_code(KC_LSFT);
       }
     break;
