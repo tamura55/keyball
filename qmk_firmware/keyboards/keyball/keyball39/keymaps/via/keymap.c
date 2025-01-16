@@ -436,6 +436,8 @@ enum combo_events {
   CURLY_BRACKETS,
   ANGLE_BRACKETS,
   MAIL_CONFIRMED,
+  APPLICATION,
+  PASTE_SELECT,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_F, KC_J, COMBO_END};
@@ -443,6 +445,8 @@ const uint16_t PROGMEM sqbra_combo[] = {KC_D, KC_K, COMBO_END};
 const uint16_t PROGMEM cubra_combo[] = {KC_S, KC_L, COMBO_END};
 const uint16_t PROGMEM anbra_combo[] = {KC_A, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM mail_combo[] = {KC_G, KC_H, COMBO_END};
+const uint16_t PROGMEM app_combo[] = {KC_B, KC_N, COMBO_END};
+const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
@@ -450,6 +454,8 @@ combo_t key_combos[] = {
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
   [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
   [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
+  [APPLICATION] = COMBO_ACTION(app_combo),
+  [PASTE_SELECT] = COMBO_ACTION(paste_combo),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
@@ -491,6 +497,22 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         register_code(KC_LSFT);
         tap_code(KC_9);
         unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
+      }
+    break;
+    case APPLICATION:
+      if (pressed) {
+        register_code(KC_LSFT);
+        tap_code(KC_F10);
+        unregister_code(KC_LSFT);
+      }
+    break;
+    case PASTE_SELECT:
+      if (pressed) {
+        register_code(KC_LCTL);
+        register_code(KC_LALT);
+        tap_code(KC_V);
+        unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
       }
     break;
