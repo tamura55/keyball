@@ -442,6 +442,7 @@ enum combo_events {
   PARENTHESES2,
   SQUARE_BRACKETS2,
   CURLY_BRACKETS2,
+  ANGLE_BRACKETS2,
   MAIL_CONFIRMED2,
 };
 
@@ -454,9 +455,10 @@ const uint16_t PROGMEM app_combo[] = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
 
 const uint16_t PROGMEM paren_combo2[] = {KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM sqbra_combo2[] = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM cubra_combo2[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM mail_combo2[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM sqbra_combo2[] = {KC_S, KC_D, COMBO_END};
+const uint16_t PROGMEM cubra_combo2[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM anbra_combo2[] = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM mail_combo2[] = {KC_Z, KC_X, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
@@ -470,6 +472,7 @@ combo_t key_combos[] = {
   [PARENTHESES2] = COMBO_ACTION(paren_combo2),
   [SQUARE_BRACKETS2] = COMBO_ACTION(sqbra_combo2),
   [CURLY_BRACKETS2] = COMBO_ACTION(cubra_combo2),
+  [ANGLE_BRACKETS2] = COMBO_ACTION(anbra_combo2),
   [MAIL_CONFIRMED2] = COMBO_ACTION(mail_combo2),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
@@ -502,6 +505,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
     break;
     case ANGLE_BRACKETS:
+    case ANGLE_BRACKETS2:
       if (pressed) {
         register_code(KC_LSFT);
         tap_code(KC_COMMA);
