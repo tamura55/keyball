@@ -460,6 +460,8 @@ const uint16_t PROGMEM cubra_combo2[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM anbra_combo2[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM mail_combo2[] = {KC_Z, KC_X, COMBO_END};
 
+const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
+
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
   [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
@@ -474,6 +476,8 @@ combo_t key_combos[] = {
   [CURLY_BRACKETS2] = COMBO_ACTION(cubra_combo2),
   [ANGLE_BRACKETS2] = COMBO_ACTION(anbra_combo2),
   [MAIL_CONFIRMED2] = COMBO_ACTION(mail_combo2),
+  
+  COMBO(esc_combo, KC_ESC),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
