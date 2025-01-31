@@ -124,23 +124,17 @@ enum keyball_keycodes {
     STSP_HOR = QK_KB_24, // Set scroll snap mode as horizontal
     STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
 
+    // カスタムキーコード
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
     MHEN_CW  = QK_KB_27, // Caps Word用
-    TD_IME3  = QK_KB_28, // IME切替Tap Dance
-    TO6_MO3  = QK_KB_29, // タップでL6移行、それ以外はL3
+//    TD_IME3  = QK_KB_28, // IME切替Tap Dance
+//    TO6_MO3  = QK_KB_29, // タップでL6移行、それ以外はL3
     TMS_MTG  = QK_KB_30, // TeamsのマイクON/OFF切替
     
     // 親指・小指付け根キーを定義
-//    THM_LL = LCTL_T(KC_INT4),  // 変換
-//    THM_LC = LSFT_T(KC_SPC),
-//    THM_LR = LALT_T(KC_INT5),  // 無変換
-//    THM_RL = LT(2,KC_TAB),
-//    THM_RR = LT(1,KC_ENT),
-    AML_LL = RCTL_T(KC_GRV),  // 変換→半/全
-    AML_LC = RSFT_T(KC_SPC),
-    AML_LR = RALT_T(KC_INT5),  // 無変換(old)
-//    LIL_L  = LT(4,KC_MINS),
-//    LIL_R  = LT(3,KC_F10),
+//    AML_LL = RCTL_T(KC_GRV),  // 変換→半/全
+//    AML_LC = RSFT_T(KC_SPC),
+//    AML_LR = RALT_T(KC_INT5),  // 無変換(old)
 
     // User customizable 32 keycodes.
     KEYBALL_SAFE_RANGE = QK_USER_0,
