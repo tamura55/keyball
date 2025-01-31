@@ -78,7 +78,6 @@ void caps_word_set_user(bool active) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t highest_layer = get_highest_layer(state);  // 一度だけ取得して変数に格納
-//    keyball_set_scroll_mode(highest_layer == 3);  // Auto enable scroll mode when the highest layer is 3
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
     if (highest_layer != 6) {
         keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー6以外ではSSNP_VRTに固定
@@ -97,9 +96,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //            oled_set_brightness(5);  // OLEDの輝度を下げる
             break;
         default:
-//#if KEYBALL_SCROLLSNAP_ENABLE == 2
-//            keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);  // レイヤー5,6以外ではSSNP_VRTに固定
-//#endif
             if (cw_active) {
                 rgblight_sethsv(HSV_RED); // レイヤー5,6以外かつCaps Wordが有効な場合
 //                oled_set_brightness(5);  // OLEDの輝度を下げる
@@ -127,46 +123,6 @@ void oledkit_render_info_user(void) {
 }
 #endif
 
-/*
-// Retro Tappingを有効化するキーを定義
-bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LCTL_T(KC_GRV):  // 親指キー
-        case LSFT_T(KC_SPC):  // 親指キー
-        case C_S_T(KC_ESC):  // 親指キー
-        case LT(2,KC_TAB):  // 親指キー
-        case LT(1,KC_ENT):  // 親指キー
-        case LALT_T(KC_MINS):  // 小指付け根キー
-            return true;
-        default:
-            return false;
-    }
-}
-
-// nested tapが苦手なキーにのみHold On Other Key Pressを適用
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case THM_LL:
-        case THM_LC:
-        case THM_LR:
-        case THM_RL:
-        case THM_RR:
-        case AML_LL:
-        case AML_LC:
-        case AML_LR:
-        case LIL_L:
-        case LIL_R:
-        case AML_ENT1:  // AML専用右親指キー
-        case AML_TAB2:  // AML専用右親指キー
-            // Immediately select the hold action when another key is pressed.
-            return true;
-        default:
-            // Do not select the hold action when another key is pressed.
-            return false;
-    }
-}
-*/
-
 //////////////////////////////
 /// カスタムキーコード。ここから ///
 //////////////////////////////
@@ -186,29 +142,7 @@ static uint16_t aml_tab2_timer;
 //static uint16_t first_td_ime3_pressed_time = 0;
 //static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
 
-/* 擬似コンボ用
-// Combo Termを50msに設定
-#define CUSTOM_COMBO_TERM 50
-// キー押下状態を記録するフラグ。コンボ1(Q+W→Esc)用
-bool is_q_pressed = false;
-bool is_w_pressed = false;
-uint16_t q_pressed_time = 0;
-uint16_t w_pressed_time = 0;
-// コンボが成立したかを追跡
-bool combo_executed = false;
-// コンボ状態をリセット
-void reset_combo_state(void) {
-    is_q_pressed = is_w_pressed = false;
-    q_pressed_time = w_pressed_time = 0;
-}
-*/
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // 新しいキーが押されたら combo_executed をリセット
-//    if (record->event.pressed) {
-//        combo_executed = false;
-//    }
-    
     switch (keycode) {
         case AML_ENT1:
             if (record->event.pressed) {
@@ -353,59 +287,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 */
-/*
-///// コンボ1。ここから /////
-        case KC_Q:
-            if (record->event.pressed) {
-                is_q_pressed = true;
-                q_pressed_time = timer_read();
-                // Wが既に押されていて、50ms以内ならコンボ成立
-                if (is_w_pressed && timer_elapsed(w_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_ESC);
-                    combo_executed = true;  // コンボが成立したことを記録
-                    reset_combo_state();     // combo_executed はリセットされない
-                    return false;  // QとWの入力をキャンセル
-                }
-                return false;  // 一旦Qの入力をキャンセル
-            } else {
-                // コンボが実行された場合はリリース時の処理をスキップ
-                if (!combo_executed) {
-                    // Wが50ms以内に押されていない場合のみQを送信
-                    if (!is_w_pressed || timer_elapsed(w_pressed_time) >= CUSTOM_COMBO_TERM) {
-                        tap_code(KC_Q);  // リリース時にQを送信
-                    }
-                }
-                is_q_pressed = false;
-                q_pressed_time = 0;
-            }
-            return false;
-
-        case KC_W:
-            if (record->event.pressed) {
-                is_w_pressed = true;
-                w_pressed_time = timer_read();
-                // Qが既に押されていて、50ms以内ならコンボ成立
-                if (is_q_pressed && timer_elapsed(q_pressed_time) < CUSTOM_COMBO_TERM) {
-                    tap_code(KC_ESC);
-                    combo_executed = true;  // コンボが成立したことを記録
-                    reset_combo_state();     // combo_executed はリセットされない
-                    return false;  // QとWの入力をキャンセル
-                }
-                return false;  // 一旦Wの入力をキャンセル
-            } else {
-                // コンボが実行された場合はリリース時の処理をスキップ
-                if (!combo_executed) {
-                    // Qが50ms以内に押されていない場合のみWを送信
-                    if (!is_q_pressed || timer_elapsed(q_pressed_time) >= CUSTOM_COMBO_TERM) {
-                        tap_code(KC_W);  // リリース時にWを送信
-                    }
-                }
-                is_w_pressed = false;
-                w_pressed_time = 0;
-            }
-            return false;
-///// コンボ1。ここまで /////
-*/
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
@@ -436,7 +317,6 @@ enum combo_events {
   CURLY_BRACKETS,
   ANGLE_BRACKETS,
   MAIL_CONFIRMED,
-  APPLICATION,
   PASTE_SELECT,
   
   PARENTHESES2,
@@ -451,7 +331,6 @@ const uint16_t PROGMEM sqbra_combo[] = {KC_D, KC_K, COMBO_END};
 const uint16_t PROGMEM cubra_combo[] = {KC_S, KC_L, COMBO_END};
 const uint16_t PROGMEM anbra_combo[] = {KC_A, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM mail_combo[] = {KC_G, KC_H, COMBO_END};
-const uint16_t PROGMEM app_combo[] = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
 
 const uint16_t PROGMEM paren_combo2[] = {KC_D, KC_F, COMBO_END};
@@ -468,7 +347,6 @@ combo_t key_combos[] = {
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
   [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
   [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
-  [APPLICATION] = COMBO_ACTION(app_combo),
   [PASTE_SELECT] = COMBO_ACTION(paste_combo),
   
   [PARENTHESES2] = COMBO_ACTION(paren_combo2),
@@ -525,13 +403,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         tap_code(KC_9);
         unregister_code(KC_LSFT);
         unregister_code(KC_LCTL);
-      }
-    break;
-    case APPLICATION:
-      if (pressed) {
-        register_code(KC_LSFT);
-        tap_code(KC_F10);
-        unregister_code(KC_LSFT);
       }
     break;
     case PASTE_SELECT:
