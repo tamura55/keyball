@@ -337,7 +337,7 @@ const uint16_t PROGMEM paren_combo2[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sqbra_combo2[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM cubra_combo2[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM anbra_combo2[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM mail_combo2[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM mail_combo2[] = {KC_J, KC_K, COMBO_END};
 
 const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
 
