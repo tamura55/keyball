@@ -6,7 +6,7 @@ RGB_MATRIX_ENABLE = no
 # RGB_MATRIX_KEYPRESSES = yes  # キー押下に応じて反応するRGBモード
 # RGB_MATRIX_FRAMEBUFFER_EFFECTS = yes  # フレームバッファを使う効果を有効化
 
-OLED_ENABLE = no  # 削減
+OLED_ENABLE = yes  # 戻し
 
 VIA_ENABLE = yes
 
