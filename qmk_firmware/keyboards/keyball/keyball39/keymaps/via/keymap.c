@@ -215,38 +215,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 caps_word_on();         // Caps Wordを有効化
             }
             return false;
-/*
-        case TO6_MO3:
-            if (record->event.pressed) {
-                pressed_other_key_mo3 = false;         // 他のキーが押されるまでフラグをリセット
-                to6_mo3_timer = timer_read();          // タイマーをスタート
-                layer_on(3);                           // Layer3を有効化
-            } else {
-                // 他のキーが押されていない場合
-                if (!pressed_other_key_mo3) {
-                    // Tapping Term以内にリリースされた場合
-                    if (timer_elapsed(to6_mo3_timer) < TAPPING_TERM) {
-                        layer_off(3);                  // Layer3を無効化
-                        layer_on(6);                   // Layer6を有効化
-                    }  // Tapping Termを超えている場合
-                    else {
-                        layer_off(3);                  // Layer3を無効化
-                    }
-                } // 他のキーが押された場合
-                else {
-                    layer_off(3);                      // Layer3を無効化
-                }
-            }
-            return false;
-*/
+
       case TMS_MTG:
             if (record->event.pressed) {
                 register_code(KC_LWIN);
-                wait_ms(400);
                 tap_code(KC_4);
-                wait_ms(100);
+                wait_ms(200);
                 tap_code(KC_4);
-                wait_ms(100);
                 unregister_code(KC_LWIN);
                 wait_ms(400);
                 register_code(KC_LCTL);
@@ -285,6 +260,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     first_td_ime3_pressed = false;
                 }
                 td_ime3_pressed = false;  // 離したのでリセット
+            }
+            return false;
+
+        case TO6_MO3:
+            if (record->event.pressed) {
+                pressed_other_key_mo3 = false;         // 他のキーが押されるまでフラグをリセット
+                to6_mo3_timer = timer_read();          // タイマーをスタート
+                layer_on(3);                           // Layer3を有効化
+            } else {
+                // 他のキーが押されていない場合
+                if (!pressed_other_key_mo3) {
+                    // Tapping Term以内にリリースされた場合
+                    if (timer_elapsed(to6_mo3_timer) < TAPPING_TERM) {
+                        layer_off(3);                  // Layer3を無効化
+                        layer_on(6);                   // Layer6を有効化
+                    }  // Tapping Termを超えている場合
+                    else {
+                        layer_off(3);                  // Layer3を無効化
+                    }
+                } // 他のキーが押された場合
+                else {
+                    layer_off(3);                      // Layer3を無効化
+                }
             }
             return false;
 */
