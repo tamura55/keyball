@@ -58,7 +58,9 @@ keyball_t keyball = {
     .last_layer_state = 0,
     .total_mouse_movement = 0,
 
+#ifdef OLED_ENABLE
     .pressing_keys = { BL, BL, BL, BL, BL, BL, 0 },
+#endif
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -753,8 +755,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     keyball.last_kc  = keycode;
     keyball.last_pos = record->event.key;
 
+#ifdef OLED_ENABLE
     pressing_keys_update(keycode, record);
-
+#endif
+    
     if (!process_record_user(keycode, record)) {
         return false;
     }
