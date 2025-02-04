@@ -246,6 +246,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_4);
                 wait_ms(100);
                 tap_code(KC_4);
+                wait_ms(100);
                 unregister_code(KC_LWIN);
                 wait_ms(400);
                 register_code(KC_LCTL);
