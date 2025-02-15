@@ -114,6 +114,11 @@ enum keyball_keycodes {
     AML_TO   = QK_KB_10, // Toggle automatic mouse layer
     AML_I50  = QK_KB_11, // Increment automatic mouse layer timeout
     AML_D50  = QK_KB_12, // Decrement automatic mouse layer timeout
+    
+    // 設定値プリント
+    PR_CPI   = QK_KB_16, // CPIをタイピング出力
+    PR_SDIV  = QK_KB_17, // スクロール除数をタイピング出力
+    PR_AMTO  = QK_KB_18, // オートマウスタイムアウト時間をタイピング出力
 
     // AML専用右親指キー
     AML_ENT1 = QK_KB_21,
