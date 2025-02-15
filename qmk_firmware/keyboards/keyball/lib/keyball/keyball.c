@@ -882,20 +882,18 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             
             // プリント用キー追加
             case PR_CPI: {
-                // keyball_get_cpi() の値を取得し、(値 + 1) * 100 を計算
-                uint16_t cpi_value = (keyball_get_cpi() + 1) * 100;
+                uint16_t val = (keyball_get_cpi() + 1) * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
 
                 // 数値を文字列に変換
                 char buf[6]; // 5桁 + NULL 終端
                 char *p = buf + sizeof(buf) - 1;
                 *p = '\0'; // 文字列の終端
                 do {
-                    *--p = '0' + (cpi_value % 10); // 1の位を取得
-                    cpi_value /= 10;
-                } while (cpi_value);
+                    *--p = '0' + (val % 10); // 1の位を取得
+                    val /= 10;
+                } while (val);
 
-                // 変換した文字列を送信
-                send_string(p);
+                send_string(p);  // 変換した文字列を送信
                 break;
             }
 
