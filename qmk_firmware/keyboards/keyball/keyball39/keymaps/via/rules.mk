@@ -10,7 +10,7 @@ OLED_ENABLE = yes  # 削減(4032bytes)
 
 VIA_ENABLE = yes
 
-DYNAMIC_TAPPING_TERM_ENABLE = no  # 削減(268bytes)
+DYNAMIC_TAPPING_TERM_ENABLE = yes  # 追加(268bytes)
 
 EXTRAKEY_ENABLE = yes  # 追加(488bytes)
 
