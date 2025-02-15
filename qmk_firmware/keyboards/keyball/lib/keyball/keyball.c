@@ -895,7 +895,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 } while (cpi_value);
 
                 // 変換した文字列を送信
-                SEND_STRING(p);
+                send_string(p);
                 break;
             }
 
