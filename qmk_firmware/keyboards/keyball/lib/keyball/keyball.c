@@ -879,7 +879,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SCRL_DVD:
                 add_scroll_div(-1);
                 break;
-            
+            /*
             // プリント用キー追加
             case PR_CPI: {
                 uint16_t val = (keyball_get_cpi() + 1) * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
@@ -896,6 +896,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 send_string(p);  // 変換した文字列を送信
                 break;
             }
+            */
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
             case SSNP_HOR:
