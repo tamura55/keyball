@@ -877,6 +877,20 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SCRL_DVD:
                 add_scroll_div(-1);
                 break;
+            
+            // プリント用キー追加
+            case PR_CPI: {
+                // keyball_get_cpi() の値を取得し、(値 + 1) * 100 を計算
+                uint16_t cpi_value = (keyball_get_cpi() + 1) * 100;
+
+                // 数値を文字列に変換
+                char buf[6]; // 最大5桁（例: 2500）＋NULL終端
+                snprintf(buf, sizeof(buf), "%u", cpi_value);
+
+                // 文字列として送信
+                SEND_STRING(buf);
+                break;
+            }
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
             case SSNP_HOR:
