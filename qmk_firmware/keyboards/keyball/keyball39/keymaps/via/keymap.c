@@ -208,15 +208,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_UP);
             }
             return false;
-
+            
         case MHEN_CW:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
                 caps_word_on();         // Caps Wordを有効化
             }
             return false;
-
-      case TMS_MTG:
+            
+        case TMS_MTG:
             if (record->event.pressed) {
                 register_code(KC_LWIN);
                 tap_code(KC_4);
@@ -229,6 +229,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_M);
                 unregister_code(KC_LSFT);
                 unregister_code(KC_LCTL);
+            }
+            return false;
+
+        // プリント用キー追加
+        case PR_CPI:
+            if (record->event.pressed) {
+                uint16_t val = (keyball_get_cpi() + 1) * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
+
+                // 数値を文字列に変換
+                char buf[6]; // 5桁 + NULL 終端
+                char *p = buf + sizeof(buf) - 1;
+                *p = '\0'; // 文字列の終端
+                do {
+                    *--p = '0' + (val % 10); // 1の位を取得
+                    val /= 10;
+                } while (val);
+
+                send_string(p);  // 変換した文字列を送信
             }
             return false;
 /*
