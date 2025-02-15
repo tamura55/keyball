@@ -884,11 +884,16 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 uint16_t cpi_value = (keyball_get_cpi() + 1) * 100;
 
                 // 数値を文字列に変換
-                char buf[6]; // 最大5桁（例: 2500）＋NULL終端
-                snprintf(buf, sizeof(buf), "%u", cpi_value);
+                char buf[6]; // 5桁 + NULL 終端
+                char *p = buf + sizeof(buf) - 1;
+                *p = '\0'; // 文字列の終端
+                do {
+                    *--p = '0' + (cpi_value % 10); // 1の位を取得
+                    cpi_value /= 10;
+                } while (cpi_value);
 
-                // 文字列として送信
-                SEND_STRING(buf);
+                // 変換した文字列を送信
+                SEND_STRING(p);
                 break;
             }
 
