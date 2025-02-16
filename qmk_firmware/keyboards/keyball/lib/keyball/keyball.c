@@ -898,13 +898,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 uint8_t v = keyball_get_scroll_div();
                 char buf[2];
                 // 数値を文字列に変換。案1
-                char *p = buf + sizeof(buf) - 1;
-                *p = '\0';
-                do {
-                    *--p = '0' + (v % 10);
-                    v /= 10;
-                } while (v);
-                send_string(p);
+                buf[0] = '0' + v; // 数値を文字に変換
+                buf[1] = '\0'; // 文字列終端
+                send_string(buf);
                 // 数値を文字列に変換。案2
 //                itoa(v, buf, 10);
 //                send_string(buf);
