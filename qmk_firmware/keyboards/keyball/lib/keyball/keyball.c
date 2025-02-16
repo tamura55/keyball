@@ -906,6 +906,13 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                     keyball_set_auto_mouse_timeout(MAX(v, AML_TIMEOUT_MIN));
                 }
                 break;
+            // プリント用キー
+            case PR_AMTO: {
+                uint16_t v = keyball_get_auto_mouse_timeout();
+                char buf[5];
+                itoa(v, buf, 10);
+                send_string(buf);
+            } break;
 #endif
 
             default:
