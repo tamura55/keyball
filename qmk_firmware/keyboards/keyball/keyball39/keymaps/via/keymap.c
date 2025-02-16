@@ -260,7 +260,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 send_string(buf);
             }
             return false;
-
+/*
         case PR_AMTO:
             if (record->event.pressed) {
                 uint16_t val = keyball_get_auto_mouse_timeout();
@@ -269,7 +269,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 send_string(buf);
             }
             return false;
-        
+*/
 /*
         case TD_IME3:
             if (record->event.pressed) {
