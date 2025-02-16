@@ -252,6 +252,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         
+        case PR_SDIV:
+            if (record->event.pressed) {
+                uint16_t val = keyball_get_scroll_div();
+                char buf[6];
+                itoa(val, buf, 10);
+                send_string(buf);
+            }
+            return false;
+
+        case PR_AMTO:
+            if (record->event.pressed) {
+                uint16_t val = keyball_get_auto_mouse_timeout();
+                char buf[6];
+                itoa(val, buf, 10);
+                send_string(buf);
+            }
+            return false;
+        
 /*
         case TD_IME3:
             if (record->event.pressed) {
