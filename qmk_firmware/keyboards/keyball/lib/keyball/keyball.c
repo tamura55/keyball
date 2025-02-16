@@ -25,8 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string.h>
 
-//#include "send_string.h" // 追加。SEND_STRING を使う場合に必要
-
 const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
 const uint8_t CPI_MAX        = pmw3360_MAXCPI + 1;
 const uint8_t SCROLL_DIV_MAX = 7;
@@ -879,24 +877,6 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SCRL_DVD:
                 add_scroll_div(-1);
                 break;
-            /*
-            // プリント用キー追加
-            case PR_CPI: {
-                uint16_t val = (keyball_get_cpi() + 1) * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
-
-                // 数値を文字列に変換
-                char buf[6]; // 5桁 + NULL 終端
-                char *p = buf + sizeof(buf) - 1;
-                *p = '\0'; // 文字列の終端
-                do {
-                    *--p = '0' + (val % 10); // 1の位を取得
-                    val /= 10;
-                } while (val);
-
-                send_string(p);  // 変換した文字列を送信
-                break;
-            }
-            */
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
             case SSNP_HOR:
