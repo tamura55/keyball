@@ -895,16 +895,16 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 //                send_string(buf);  // 変換した文字列を送信
             } break;
             case PR_SDIV: {
-                uint16_t v = keyball_get_scroll_div();
-                char buf[6];
+                uint8_t v = keyball_get_scroll_div();
+                char buf[2];
                 // 数値を文字列に変換。案1
                 char *p = buf + sizeof(buf) - 1;
-                *p = '\0'; // 文字列の終端
+                *p = '\0';
                 do {
-                    *--p = '0' + (v % 10); // 1の位を取得
+                    *--p = '0' + (v % 10);
                     v /= 10;
                 } while (v);
-                send_string(p);  // 変換した文字列を送信
+                send_string(p);
                 // 数値を文字列に変換。案2
 //                itoa(v, buf, 10);
 //                send_string(buf);
@@ -944,12 +944,12 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
                 char buf[5];
                 // 数値を文字列に変換。案1
                 char *p = buf + sizeof(buf) - 1;
-                *p = '\0'; // 文字列の終端
+                *p = '\0';
                 do {
-                    *--p = '0' + (v % 10); // 1の位を取得
+                    *--p = '0' + (v % 10);
                     v /= 10;
                 } while (v);
-                send_string(p);  // 変換した文字列を送信
+                send_string(p);
                 // 数値を文字列に変換。案2
 //                itoa(v, buf, 10);
 //                send_string(buf);
