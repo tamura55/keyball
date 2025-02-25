@@ -448,8 +448,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 }
 #endif
 
-const uint16_t PROGMEM sqbra_combo2[] = {LALT_T(KC_S), LSFT_T(KC_D), COMBO_END};
-
 #ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
