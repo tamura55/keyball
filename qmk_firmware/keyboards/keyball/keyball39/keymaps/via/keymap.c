@@ -447,3 +447,23 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
   }
 }
 #endif
+
+const uint16_t PROGMEM sqbra_combo2[] = {LALT_T(KC_S), LSFT_T(KC_D), COMBO_END};
+
+#ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LCTL_T(KC_GRV):
+        case LSFT_T(KC_SPC):
+        case LALT_T(KC_MINS):
+        case LT(1, KC_ENT):
+        case LT(2, KC_TAB):
+        case LSFT_T(KC_F10):
+            // Immediately select the hold action when another key is pressed
+            return true;
+        default:
+            // Do not select the hold action when another key is pressed.
+            return false;
+    }
+}
+#endif
