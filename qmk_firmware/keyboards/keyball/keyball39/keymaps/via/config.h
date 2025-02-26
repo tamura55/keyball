@@ -48,3 +48,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define HOLD_ON_OTHER_KEY_PRESS  // Per Key設定にあたりオミット
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY  // 追加
 //#define RETRO_TAPPING_PER_KEY  // 追加
+
+#define TAPPING_TERM_TD TAPPING_TERM  // 擬似Tap Dance用のTapping Term
