@@ -232,39 +232,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 /*
-        // プリント用キー追加
+        // プリント用キー
         case PR_CPI:
             if (record->event.pressed) {
-                uint16_t val = (keyball_get_cpi() + 0) * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
+                uint16_t val = keyball_get_cpi() * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
                 char buf[6]; // 5桁 + NULL 終端
-                // 数値を文字列に変換。案1
-                char *p = buf + sizeof(buf) - 1;
-                *p = '\0'; // 文字列の終端
-                do {
-                    *--p = '0' + (val % 10); // 1の位を取得
-                    val /= 10;
-                } while (val);
-                send_string(p);  // 変換した文字列を送信
-                
-                // 数値を文字列に変換。案2
+                // 数値を文字列に変換
                 itoa(val, buf, 10);
                 send_string(buf);  // 変換した文字列を送信
             }
             return false;
-        
         case PR_SDIV:
             if (record->event.pressed) {
                 uint16_t val = keyball_get_scroll_div();
-                char buf[6];
+                char buf[2];
                 itoa(val, buf, 10);
                 send_string(buf);
             }
             return false;
-
         case PR_AMTO:
             if (record->event.pressed) {
                 uint16_t val = keyball_get_auto_mouse_timeout();
-                char buf[6];
+                char buf[5];
                 itoa(val, buf, 10);
                 send_string(buf);
             }
@@ -359,7 +348,7 @@ enum combo_events {
   
   PARENTHESES2,
   SQUARE_BRACKETS2,
-  MAIL_CONFIRMED2,
+  ANGLE_BRACKETS2,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_D, KC_F, COMBO_END};
@@ -369,11 +358,11 @@ const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM mail_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
 
-const uint16_t PROGMEM paren_combo2[] = {LSFT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM sqbra_combo2[] = {LALT_T(KC_S), LSFT_T(KC_D), COMBO_END};
-const uint16_t PROGMEM mail_combo2[] = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
+const uint16_t PROGMEM paren_combo2[] = {KC_G, KC_H, COMBO_END};
+const uint16_t PROGMEM sqbra_combo2[] = {KC_T, KC_Y, COMBO_END};
+const uint16_t PROGMEM anbra_combo2[] = {KC_B, KC_N, COMBO_END};
 
-const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
+//const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
@@ -385,9 +374,9 @@ combo_t key_combos[] = {
   
   [PARENTHESES2] = COMBO_ACTION(paren_combo2),
   [SQUARE_BRACKETS2] = COMBO_ACTION(sqbra_combo2),
-  [MAIL_CONFIRMED2] = COMBO_ACTION(mail_combo2),
+  [ANGLE_BRACKETS2] = COMBO_ACTION(anbra_combo2),
   
-  COMBO(esc_combo, KC_ESC),
+  //COMBO(esc_combo, KC_ESC),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
@@ -418,6 +407,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
     break;
     case ANGLE_BRACKETS:
+    case ANGLE_BRACKETS2:
       if (pressed) {
         register_code(KC_LSFT);
         tap_code(KC_COMMA);
@@ -426,7 +416,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
     break;
     case MAIL_CONFIRMED:
-    case MAIL_CONFIRMED2:
       if (pressed) {
         register_code(KC_LCTL);
         register_code(KC_LSFT);
