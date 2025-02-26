@@ -136,26 +136,21 @@ static uint16_t aml_tab2_timer;
 #endif
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
-static uint16_t td_stsp_first_tap_time = 0;
+static uint16_t td_stsp_last_tap_time = 0;
 static uint8_t td_stsp_tap_count = 0;
-// タップ回数ごとのスクロールスナップモードをLUTで管理
-static const uint8_t td_stsp_modes[] = {
-    KEYBALL_SCROLLSNAP_MODE_VERTICAL,   // 1回目
-    KEYBALL_SCROLLSNAP_MODE_HORIZONTAL, // 2回目
-    KEYBALL_SCROLLSNAP_MODE_FREE        // 3回目
-};
 // タップ回数の更新
 static void update_td_stsp_tap_count(uint16_t time) {
-    uint16_t time_diff = TIMER_DIFF_16(time, td_stsp_first_tap_time);
-
+    uint16_t time_diff = TIMER_DIFF_16(time, td_stsp_last_tap_time);
     if (td_stsp_tap_count == 0 || time_diff > TAPPING_TERM_TD * 2) {
         td_stsp_tap_count = 1;  // 長すぎる間隔ならリセット
     } else if (time_diff <= TAPPING_TERM_TD) {
         if (td_stsp_tap_count < 3) {
             td_stsp_tap_count++;
         }
+    } else {
+        td_stsp_tap_count = 1;  // Tap Dance不成立の場合はリセット
     }
-    td_stsp_first_tap_time = time;
+    td_stsp_last_tap_time = time;
 }
 #endif
 
@@ -264,9 +259,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TD_STSP:
             if (record->event.pressed) {
                 update_td_stsp_tap_count(record->event.time);
-                keyball_set_scrollsnap_mode(td_stsp_modes[td_stsp_tap_count - 1]);
-            } else if (TIMER_DIFF_16(record->event.time, td_stsp_first_tap_time) > TAPPING_TERM_TD) {
-                td_stsp_tap_count = 0;  // Tapping Termを超えた場合はリセット
+                keyball_set_scroll_mode(record->event.pressed);
+                if (td_stsp_tap_count >= 3) {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+                } else if (td_stsp_tap_count == 2) {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL);
+                } else {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+                }
+            } else if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
+                td_stsp_tap_count = 0;  // キーリリース時にTapping Term超過ならリセット
             }
             return false;
 #endif
