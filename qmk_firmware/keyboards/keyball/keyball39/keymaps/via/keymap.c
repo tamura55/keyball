@@ -269,6 +269,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             } else if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
                 td_stsp_tap_count = 0;  // キーリリース時にTapping Term超過ならリセット
+                keyball_set_scroll_mode(record->event.pressed);
+            } else {
+                keyball_set_scroll_mode(record->event.pressed);
             }
             return false;
 #endif
