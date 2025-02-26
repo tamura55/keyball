@@ -133,6 +133,8 @@ static uint16_t aml_ent1_timer;
 // AML_TAB2用
 static bool pressed_other_key_tab = false;
 static uint16_t aml_tab2_timer;
+#endif
+
 // TO6_MO3用
 //static bool pressed_other_key_mo3 = false;
 //static uint16_t to6_mo3_timer;
@@ -144,6 +146,7 @@ static uint16_t aml_tab2_timer;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
         case AML_ENT1:
             if (record->event.pressed) {
                 // AML_ENT1が押された瞬間
@@ -187,6 +190,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
+#endif
 
         case EXL_FLT:
             if (record->event.pressed) {
@@ -231,34 +235,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_LCTL);
             }
             return false;
-/*
-        // プリント用キー
-        case PR_CPI:
-            if (record->event.pressed) {
-                uint16_t val = keyball_get_cpi() * 100;  // keyball_get_cpi() の値を取得し、実際のCPI値を計算
-                char buf[6]; // 5桁 + NULL 終端
-                // 数値を文字列に変換
-                itoa(val, buf, 10);
-                send_string(buf);  // 変換した文字列を送信
-            }
-            return false;
-        case PR_SDIV:
-            if (record->event.pressed) {
-                uint16_t val = keyball_get_scroll_div();
-                char buf[2];
-                itoa(val, buf, 10);
-                send_string(buf);
-            }
-            return false;
-        case PR_AMTO:
-            if (record->event.pressed) {
-                uint16_t val = keyball_get_auto_mouse_timeout();
-                char buf[5];
-                itoa(val, buf, 10);
-                send_string(buf);
-            }
-            return false;
-*/
 /*
         case TD_IME3:
             if (record->event.pressed) {
@@ -317,12 +293,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         default:
             // 他のキーが押された場合にフラグを立てる
             if (record->event.pressed) {
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
                 if (layer_state_is(1)) {
                     pressed_other_key_ent = true;  // Layer1で他のキーが押されたことを記録
                 }
                 if (layer_state_is(2)) {
                     pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
                 }
+#endif
 //                if (layer_state_is(3)) {
 //                    pressed_other_key_mo3 = true;  // Layer3で他のキーが押されたことを記録
 //                }
@@ -332,7 +310,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return true;  // 通常のキー処理を続ける
     }
 }
-#endif
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
 //////////////////////////////
