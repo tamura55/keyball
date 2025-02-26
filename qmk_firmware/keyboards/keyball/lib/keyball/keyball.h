@@ -128,6 +128,7 @@ enum keyball_keycodes {
     STSP_VRT = QK_KB_23, // Set scroll snap mode as vertical
     STSP_HOR = QK_KB_24, // Set scroll snap mode as horizontal
     STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
+    TD_STSP  = QK_KB_31, // Tap回数に応じてスクロールモードを切り替え
 
     // カスタムキーコード
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
