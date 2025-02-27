@@ -136,21 +136,19 @@ static uint16_t aml_tab2_timer;
 #endif
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
-static uint16_t td_stsp_last_tap_time = 0;
-static uint8_t td_stsp_tap_count = 0;
+static uint16_t td_stsp_last_tap_time = 0;  // 最後のタップ時刻
+static uint8_t td_stsp_tap_count = 0;       // タップ回数（1～3）
 // タップ回数の更新
 static void update_td_stsp_tap_count(uint16_t time) {
     uint16_t time_diff = TIMER_DIFF_16(time, td_stsp_last_tap_time);
-    if (td_stsp_tap_count == 0 || time_diff > TAPPING_TERM_TD * 2) {
-        td_stsp_tap_count = 1;  // 長すぎる間隔ならリセット
-    } else if (time_diff <= TAPPING_TERM_TD) {
-        if (td_stsp_tap_count < 3) {
-            td_stsp_tap_count++;
-        }
+    if (time_diff > TAPPING_TERM_TD) {
+        td_stsp_tap_count = 1;  // タップ間隔がTAPPING_TERM_TDを超えたらリセット
     } else {
-        td_stsp_tap_count = 1;  // Tap Dance不成立の場合はリセット
+        if (td_stsp_tap_count < 3) {
+            td_stsp_tap_count++;  // 最大3回までカウント
+        }
     }
-    td_stsp_last_tap_time = time;
+    td_stsp_last_tap_time = time;  // 最後のタップ時刻を更新
 }
 #endif
 
@@ -258,8 +256,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
         case TD_STSP:
             if (record->event.pressed) {
-                update_td_stsp_tap_count(record->event.time);
-                keyball_set_scroll_mode(record->event.pressed);
+                update_td_stsp_tap_count(record->event.time);  // タップ回数を更新
+                keyball_set_scroll_mode(true);  // スクロールモードを有効化
+                // タップ回数に応じたスクロールスナップモードを設定
                 if (td_stsp_tap_count >= 3) {
                     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
                 } else if (td_stsp_tap_count == 2) {
@@ -267,13 +266,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 } else {
                     keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
                 }
-            } else if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
-                td_stsp_tap_count = 0;  // キーリリース時にTapping Term超過ならリセット
-                keyball_set_scroll_mode(record->event.pressed);
             } else {
-                keyball_set_scroll_mode(record->event.pressed);
+                keyball_set_scroll_mode(false);  // スクロールモードを解除
+                // キーを離した時に、最後のタップからTAPPING_TERM_TDを超えていたらカウントをリセット
+                if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
+                    td_stsp_tap_count = 0;
+                }
             }
-            return false;
+            return false;  // 他の処理をブロック
 #endif
 /*
         case TD_IME3:
