@@ -782,6 +782,8 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
     } else {
         // キーを離したとき
         switch (keycode) {
+            case KC_MS_BTN4:  //  L1で使うため、AMLから即離脱するべく追記
+            case KC_MS_BTN5:  //  L1で使うため、AMLから即離脱するべく追記
             case KC_MS_BTN8:  //  AML離脱用
                 set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());
                 keyball.total_mouse_movement = 0;
