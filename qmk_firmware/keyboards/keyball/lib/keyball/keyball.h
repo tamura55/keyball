@@ -120,9 +120,11 @@ enum keyball_keycodes {
     PR_SDIV  = QK_KB_17, // スクロール除数をタイピング出力
     PR_AMTO  = QK_KB_18, // オートマウスタイムアウト時間をタイピング出力
 
-    // AML専用右親指キー
+    // AML専用キー
     AML_ENT1 = QK_KB_21,
     AML_TAB2 = QK_KB_22,
+    AML_DOT3 = QK_KB_19,
+    AML_ESC4 = QK_KB_20,
 
     // SCRL_TOとSSNP_**を組み合わせたkeycode
     STSP_VRT = QK_KB_23, // Set scroll snap mode as vertical
