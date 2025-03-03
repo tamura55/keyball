@@ -123,21 +123,21 @@ enum keyball_keycodes {
     // AML専用キー
     AML_ENT1 = QK_KB_21,
     AML_TAB2 = QK_KB_22,
-    AML_DOT3 = QK_KB_19,
-    AML_ESC4 = QK_KB_20,
+    AML_DOT3 = QK_KB_23,
+    AML_ESC4 = QK_KB_24,
 
     // SCRL_TOとSSNP_**を組み合わせたkeycode
-    STSP_VRT = QK_KB_23, // Set scroll snap mode as vertical
-    STSP_HOR = QK_KB_24, // Set scroll snap mode as horizontal
-    STSP_FRE = QK_KB_25, // Set scroll snap mode as disable (free scroll)
+    STSP_VRT = QK_KB_28, // 以前はKb23
+    STSP_HOR = QK_KB_29, // 以前はKb24
+    STSP_FRE = QK_KB_30, // 以前はKb25
     TD_STSP  = QK_KB_31, // Tap回数に応じてスクロールモードを切り替え
 
     // カスタムキーコード
+    TMS_MTG  = QK_KB_25, // TeamsのマイクON/OFF切替。以前はKb30
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
     MHEN_CW  = QK_KB_27, // Caps Word用
-//    TD_IME3  = QK_KB_28, // IME切替Tap Dance
-//    TO6_MO3  = QK_KB_29, // タップでL6移行、それ以外はL3
-    TMS_MTG  = QK_KB_30, // TeamsのマイクON/OFF切替
+//    TD_IME3  = QK_KB_, // IME切替Tap Dance
+//    TO6_MO3  = QK_KB_, // タップでL6移行、それ以外はL3
     
     // 親指・小指付け根キーを定義
 //    AML_LL = RCTL_T(KC_GRV),  // 変換→半/全
