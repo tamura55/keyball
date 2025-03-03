@@ -128,11 +128,17 @@ void oledkit_render_info_user(void) {
 //////////////////////////////
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 // フラグとタイマーを初期化。AML_ENT1用
-static bool pressed_other_key_ent = false;
+static bool pressed_other_key_ent1 = false;
 static uint16_t aml_ent1_timer;
 // AML_TAB2用
-static bool pressed_other_key_tab = false;
+static bool pressed_other_key_tab2 = false;
 static uint16_t aml_tab2_timer;
+// AML_DOT3用
+static bool pressed_other_key_dot3 = false;
+static uint16_t aml_dot3_timer;
+// AML_ESC4用
+static bool pressed_other_key_esc4 = false;
+static uint16_t aml_esc4_timer;
 #endif
 
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
@@ -167,14 +173,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case AML_ENT1:
             if (record->event.pressed) {
                 // AML_ENT1が押された瞬間
-                pressed_other_key_ent = false;         // 他のキーが押されるまでフラグをリセット
+                pressed_other_key_ent1 = false;         // 他のキーが押されるまでフラグをリセット
                 aml_ent1_timer = timer_read();         // タイマーをスタート
                 layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
                 layer_on(1);                           // Layer1を有効化
             } else {
                 // AML_ENT1が離された瞬間
                 // 他のキーが押されていない場合
-                if (!pressed_other_key_ent) {
+                if (!pressed_other_key_ent1) {
                     // Tapping Term以内にリリースされた場合のみEnterを送信
                     if (timer_elapsed(aml_ent1_timer) < TAPPING_TERM) {
                         tap_code(KC_ENT);              // Enterキーを送信
@@ -189,14 +195,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case AML_TAB2:
             if (record->event.pressed) {
                 // AML_TAB2が押された瞬間
-                pressed_other_key_tab = false;         // 他のキーが押されるまでフラグをリセット
+                pressed_other_key_tab2 = false;         // 他のキーが押されるまでフラグをリセット
                 aml_tab2_timer = timer_read();         // タイマーをスタート
                 layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
                 layer_on(2);                           // Layer2を有効化
             } else {
                 // AML_TAB2が離された瞬間
                 // 他のキーが押されていない場合
-                if (!pressed_other_key_tab) {
+                if (!pressed_other_key_tab2) {
                     // Tapping Term以内にリリースされた場合のみTabを送信
                     if (timer_elapsed(aml_tab2_timer) < TAPPING_TERM) {
                         tap_code(KC_TAB);              // Tabキーを送信
@@ -207,6 +213,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_clear();                         // Layer0に戻る
             }
             return false;  // AML_TAB2に対して他の処理は行わない
+
+        case AML_DOT3:
+            if (record->event.pressed) {
+                pressed_other_key_dot3 = false;
+                aml_dot3_timer = timer_read();
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
+                layer_on(3);
+            } else {
+                if (!pressed_other_key_dot3) {
+                    if (timer_elapsed(aml_dot3_timer) < TAPPING_TERM) {
+                        tap_code(KC_DOT);
+                    }
+                }
+                layer_off(3);
+                layer_clear();
+            }
+            return false;
+
+        case AML_ESC4:
+            if (record->event.pressed) {
+                pressed_other_key_esc4 = false;
+                aml_esc4_timer = timer_read();
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
+                layer_on(4);
+            } else {
+                if (!pressed_other_key_esc4) {
+                    if (timer_elapsed(aml_esc4_timer) < TAPPING_TERM) {
+                        tap_code(KC_ESC);
+                    }
+                }
+                layer_off(4);
+                layer_clear();
+            }
+            return false;
 #endif
 
         case EXL_FLT:
@@ -335,10 +375,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
                 if (layer_state_is(1)) {
-                    pressed_other_key_ent = true;  // Layer1で他のキーが押されたことを記録
+                    pressed_other_key_ent1 = true;  // Layer1で他のキーが押されたことを記録
                 }
                 if (layer_state_is(2)) {
-                    pressed_other_key_tab = true;  // Layer2で他のキーが押されたことを記録
+                    pressed_other_key_tab2 = true;  // Layer2で他のキーが押されたことを記録
+                }
+                if (layer_state_is(3)) {
+                    pressed_other_key_dot3 = true;
+                }
+                if (layer_state_is(4)) {
+                    pressed_other_key_esc4 = true;
                 }
 #endif
 //                if (layer_state_is(3)) {
