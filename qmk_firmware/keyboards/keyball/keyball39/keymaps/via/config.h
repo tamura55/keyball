@@ -40,7 +40,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define AUTO_MOUSE_DEFAULT_LAYER 6  // AMLはレイヤー6にする
 #define DYNAMIC_KEYMAP_LAYER_COUNT 7  // レイヤー数を7へ増加
 #define AUTO_MOUSE_LAYER_KEEP_TIME 30000  // AML移行後は30s保持
-#define TAPPING_TERM 250  // 200→250へ変更
+#define TAPPING_TERM 200  // 250→200へ戻し
+#define TAPPING_TERM_TD 300  // 擬似Tap Dance用のTapping Term
 #define COMBO_TERM 70  // 追加
 #define QUICK_TAP_TERM 150  // 追加
 
@@ -48,5 +49,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define HOLD_ON_OTHER_KEY_PRESS  // Per Key設定にあたりオミット
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY  // 追加
 //#define RETRO_TAPPING_PER_KEY  // 追加
-
-#define TAPPING_TERM_TD TAPPING_TERM  // 擬似Tap Dance用のTapping Term
