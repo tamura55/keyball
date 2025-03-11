@@ -406,7 +406,7 @@ enum combo_events {
   ANGLE_BRACKETS,
   //MAIL_CONFIRMED,
   PASTE_SELECT,
-  MOUSE_BTN3,
+  CMB_MSBTN3,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_D, KC_F, COMBO_END};
@@ -426,7 +426,7 @@ combo_t key_combos[] = {
 //  [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
   [PASTE_SELECT] = COMBO_ACTION(paste_combo),
 //  COMBO(esc_combo, KC_ESC),
-  [MOUSE_BTN3] = COMBO_ACTION(msbtn3_combo),
+  [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
@@ -482,7 +482,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LCTL);
       }
       break;
-    case MOUSE_BTN3:
+    case CMB_MSBTN3:
       if (pressed) {
         register_code(KC_MS_BTN3);
       } else {
