@@ -252,8 +252,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case EXL_FLT:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
-                register_code(KC_LALT);
-                unregister_code(KC_LALT);
+                tap_code(KC_LALT);
                 tap_code(KC_W);
                 tap_code(KC_F);
                 tap_code(KC_F);
@@ -261,8 +260,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 register_code(KC_LSFT);
                 tap_code(KC_SPC);
                 unregister_code(KC_LSFT);
-                register_code(KC_LALT);
-                unregister_code(KC_LALT);
+                tap_code(KC_LALT);
                 tap_code(KC_A);
                 tap_code(KC_T);
                 tap_code(KC_DOWN);
@@ -406,61 +404,48 @@ enum combo_events {
   SQUARE_BRACKETS,
   CURLY_BRACKETS,
   ANGLE_BRACKETS,
-  MAIL_CONFIRMED,
+  //MAIL_CONFIRMED,
   PASTE_SELECT,
-  
-  PARENTHESES2,
-  SQUARE_BRACKETS2,
-  ANGLE_BRACKETS2,
+  MOUSE_BTN3,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_D, KC_F, COMBO_END};
 const uint16_t PROGMEM sqbra_combo[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM cubra_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM mail_combo[] = {KC_J, KC_K, COMBO_END};
+//const uint16_t PROGMEM mail_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
-
-const uint16_t PROGMEM paren_combo2[] = {KC_G, KC_H, COMBO_END};
-const uint16_t PROGMEM sqbra_combo2[] = {KC_T, KC_Y, COMBO_END};
-const uint16_t PROGMEM anbra_combo2[] = {KC_B, KC_N, COMBO_END};
-
 //const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
   [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
   [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
-  [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
+//  [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
   [PASTE_SELECT] = COMBO_ACTION(paste_combo),
-  
-  [PARENTHESES2] = COMBO_ACTION(paren_combo2),
-  [SQUARE_BRACKETS2] = COMBO_ACTION(sqbra_combo2),
-  [ANGLE_BRACKETS2] = COMBO_ACTION(anbra_combo2),
-  
-  //COMBO(esc_combo, KC_ESC),
+//  COMBO(esc_combo, KC_ESC),
+  [MOUSE_BTN3] = COMBO_ACTION(msbtn3_combo),
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case PARENTHESES:
-    case PARENTHESES2:
       if (pressed) {
         register_code(KC_LSFT);
         tap_code(KC_8);
         tap_code(KC_9);
         unregister_code(KC_LSFT);
       }
-    break;
+      break;
     case SQUARE_BRACKETS:
-    case SQUARE_BRACKETS2:
       if (pressed) {
         tap_code(KC_RBRC);
         tap_code(KC_BSLS);
       }
-    break;
+      break;
     case CURLY_BRACKETS:
       if (pressed) {
         register_code(KC_LSFT);
@@ -468,16 +453,16 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         tap_code(KC_BSLS);
         unregister_code(KC_LSFT);
       }
-    break;
+      break;
     case ANGLE_BRACKETS:
-    case ANGLE_BRACKETS2:
       if (pressed) {
         register_code(KC_LSFT);
         tap_code(KC_COMMA);
         tap_code(KC_DOT);
         unregister_code(KC_LSFT);
       }
-    break;
+      break;
+/*
     case MAIL_CONFIRMED:
       if (pressed) {
         register_code(KC_LCTL);
@@ -486,7 +471,8 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
         unregister_code(KC_LCTL);
       }
-    break;
+      break;
+*/
     case PASTE_SELECT:
       if (pressed) {
         register_code(KC_LCTL);
@@ -495,7 +481,14 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
       }
-    break;
+      break;
+    case MOUSE_BTN3:
+      if (pressed) {
+        register_code(KC_MS_BTN3);
+      } else {
+        unregister_code(KC_MS_BTN3);
+      }
+      break;
   }
 }
 #endif
@@ -509,7 +502,7 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LT(1, KC_ENT):
         case LT(2, KC_TAB):
         case LT(3, KC_DOT):
-        case C_S_T(KC_ESC):
+//        case C_S_T(KC_ESC):
         case LT(4, KC_ESC):
         case LSFT_T(KC_F10):
             // Immediately select the hold action when another key is pressed
