@@ -485,7 +485,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       } else {
         unregister_code(KC_MS_BTN3);
 #  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-        set_auto_mouse_timeout(keyball_get_auto_mouse_timeout());  // 短時間でAMLから離脱させる
+        layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
 #  endif
       }
       break;
