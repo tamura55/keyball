@@ -484,9 +484,9 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         register_code(KC_MS_BTN3);
       } else {
         unregister_code(KC_MS_BTN3);
-#  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-        layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
-#  endif
+//#  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+//        layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
+//#  endif
       }
       break;
     case CMB_ALTTAB:
@@ -507,16 +507,18 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
     case CMB_ALTTAB:
       switch (keycode) {
         case KC_S:
-          tap_code16(S(KC_TAB));
-//          register_code(KC_LSFT);
-//          register_code(KC_TAB);
-//          unregister_code(KC_TAB);
-//          unregister_code(KC_LSFT);
+//          tap_code16(S(KC_TAB));
+          register_code(KC_LSFT);
+          register_code(KC_TAB);
+          wait_ms(10);
+          unregister_code(KC_TAB);
+          unregister_code(KC_LSFT);
           return true;
         case KC_F:
-          tap_code(KC_TAB);
-//          register_code(KC_TAB);
-//          unregister_code(KC_TAB);
+//          tap_code(KC_TAB);
+          register_code(KC_TAB);
+          wait_ms(10);
+          unregister_code(KC_TAB);
           return true;
       }
   }
