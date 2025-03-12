@@ -168,6 +168,17 @@ static void update_td_stsp_tap_count(uint16_t time) {
 //static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) {
+        return true; // キーが離された場合は何もしない
+    }
+
+    // ComboのKey Repress処理
+    for (uint8_t i = 0; i < COMBO_COUNT; i++) {
+        if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
+            return false; // Comboが処理された場合、通常のキー入力をキャンセル
+        }
+    }
+
     switch (keycode) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
         case AML_ENT1:
@@ -393,6 +404,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return true;  // 通常のキー処理を続ける
     }
+    return true;
 }
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
@@ -518,13 +530,14 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
 */
 // CMB_ALTTABのみトライ。ここから
 enum combos {
-    CMB_ALTTAB
+    CMB_ALTTAB,
+    COMBO_COUNT  // Comboの数を自動計算
 };
 
 const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
 
 combo_t key_combos[] = {
-    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
+    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
