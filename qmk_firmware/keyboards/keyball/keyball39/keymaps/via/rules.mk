@@ -15,5 +15,6 @@ DYNAMIC_TAPPING_TERM_ENABLE = yes  # 追加(268bytes)
 EXTRAKEY_ENABLE = yes  # 追加(488bytes)
 
 COMBO_ENABLE = yes  # 追加(1824bytes)
+COMBO_PROCESS_KEY_REPRESS = yes
 
 CAPS_WORD_ENABLE = yes  # 追加(472bytes)
