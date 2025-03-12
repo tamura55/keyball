@@ -123,6 +123,49 @@ void oledkit_render_info_user(void) {
 }
 #endif
 
+///// CMB_ALTTABのみトライ。ここから /////
+#ifdef COMBO_ENABLE
+enum combos {
+    CMB_ALTTAB,
+    COMBO_COUNT  // Comboの数を自動計算
+};
+
+const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
+
+combo_t key_combos[] = {
+    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            if (pressed) {
+                register_mods(MOD_LALT);
+                tap_code(KC_TAB);
+            } else {
+                unregister_mods(MOD_LALT);
+            }
+            break;
+    }
+}
+
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            switch (keycode) {
+                case KC_F:
+                    tap_code16(S(KC_TAB));
+                    return true;
+                case KC_G:
+                    tap_code(KC_TAB);
+                    return true;
+            }
+    }
+    return false;
+}
+///// CMB_ALTTABのみトライ。ここまで /////
+#endif
+
 //////////////////////////////
 /// カスタムキーコード。ここから ///
 //////////////////////////////
@@ -528,46 +571,6 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
   return false;
 }
 */
-// CMB_ALTTABのみトライ。ここから
-enum combos {
-    CMB_ALTTAB,
-    COMBO_COUNT  // Comboの数を自動計算
-};
-
-const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
-
-combo_t key_combos[] = {
-    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
-};
-
-void process_combo_event(uint16_t combo_index, bool pressed) {
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            if (pressed) {
-                register_mods(MOD_LALT);
-                tap_code(KC_TAB);
-            } else {
-                unregister_mods(MOD_LALT);
-            }
-            break;
-    }
-}
-
-bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            switch (keycode) {
-                case KC_F:
-                    tap_code16(S(KC_TAB));
-                    return true;
-                case KC_G:
-                    tap_code(KC_TAB);
-                    return true;
-            }
-    }
-    return false;
-}
-// CMB_ALTTABのみトライ。ここまで
 #endif
 
 #ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
