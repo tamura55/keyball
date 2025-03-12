@@ -406,7 +406,7 @@ enum combo_events {
 //  ANGLE_BRACKETS,
 //  MAIL_CONFIRMED,
   PASTE_VALUE,
-  CMB_MSBTN3,
+//  CMB_MSBTN3,
   CMB_ALTTAB,
 };
 
@@ -416,7 +416,7 @@ const uint16_t PROGMEM cubra_combo[] = {KC_B, KC_N, COMBO_END};
 //const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
 //const uint16_t PROGMEM mail_combo[] = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM paste_combo[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
+//const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
 const uint16_t PROGMEM combo_alttab[] = {KC_D, KC_F, COMBO_END};
 
 combo_t key_combos[] = {
@@ -426,7 +426,7 @@ combo_t key_combos[] = {
 //  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
 //  [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
   [PASTE_VALUE] = COMBO_ACTION(paste_combo),
-  [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
+//  [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
   [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
@@ -479,16 +479,18 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         tap_code16(C(S(KC_V)));
       }
       break;
+/*
     case CMB_MSBTN3:
       if (pressed) {
         register_code(KC_MS_BTN3);
-      } else {
+/      } else {
         unregister_code(KC_MS_BTN3);
-//#  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-//        layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
-//#  endif
+#  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+        layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
+#  endif
       }
       break;
+*/
     case CMB_ALTTAB:
       if (pressed) {
         register_mods(MOD_LALT);
