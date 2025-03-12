@@ -502,10 +502,16 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
     case CMB_ALTTAB:
       switch (keycode) {
         case KC_D:
-          tap_code16(S(KC_TAB));
+//          tap_code16(S(KC_TAB));
+          register_code(KC_LSFT);
+          register_code(KC_TAB);
+          unregister_code(KC_TAB);
+          unregister_code(KC_LSFT);
           return true;
         case KC_F:
-          tap_code(KC_TAB);
+//          tap_code(KC_TAB);
+          register_code(KC_TAB);
+          unregister_code(KC_TAB);
           return true;
       }
   }
