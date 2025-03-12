@@ -403,30 +403,31 @@ enum combo_events {
   PARENTHESES,
   SQUARE_BRACKETS,
   CURLY_BRACKETS,
-  ANGLE_BRACKETS,
-  //MAIL_CONFIRMED,
-  PASTE_SELECT,
+//  ANGLE_BRACKETS,
+//  MAIL_CONFIRMED,
+  PASTE_VALUE,
   CMB_MSBTN3,
+  CMB_ALTTAB,
 };
 
-const uint16_t PROGMEM paren_combo[] = {KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM sqbra_combo[] = {KC_S, KC_D, COMBO_END};
-const uint16_t PROGMEM cubra_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM paren_combo[] = {KC_G, KC_H, COMBO_END};
+const uint16_t PROGMEM sqbra_combo[] = {KC_T, KC_Y, COMBO_END};
+const uint16_t PROGMEM cubra_combo[] = {KC_B, KC_N, COMBO_END};
+//const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
 //const uint16_t PROGMEM mail_combo[] = {KC_J, KC_K, COMBO_END};
-const uint16_t PROGMEM paste_combo[] = {KC_V, KC_M, COMBO_END};
-//const uint16_t PROGMEM esc_combo[] = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM paste_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
+const uint16_t PROGMEM combo_alttab[] = {KC_D, KC_F, COMBO_END};
 
 combo_t key_combos[] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
   [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
-  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
+//  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
 //  [MAIL_CONFIRMED] = COMBO_ACTION(mail_combo),
-  [PASTE_SELECT] = COMBO_ACTION(paste_combo),
-//  COMBO(esc_combo, KC_ESC),
+  [PASTE_VALUE] = COMBO_ACTION(paste_combo),
   [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
+  [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
 };
 /* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
 
@@ -454,6 +455,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
+/*
     case ANGLE_BRACKETS:
       if (pressed) {
         register_code(KC_LSFT);
@@ -462,7 +464,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
-/*
     case MAIL_CONFIRMED:
       if (pressed) {
         register_code(KC_LCTL);
@@ -473,13 +474,9 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
       break;
 */
-    case PASTE_SELECT:
+    case PASTE_VALUE:
       if (pressed) {
-        register_code(KC_LCTL);
-        register_code(KC_LALT);
-        tap_code(KC_V);
-        unregister_code(KC_LALT);
-        unregister_code(KC_LCTL);
+        tap_code16(C(S(KC_V)));
       }
       break;
     case CMB_MSBTN3:
@@ -489,7 +486,30 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_MS_BTN3);
       }
       break;
+    case CMB_ALTTAB:
+      if (pressed) {
+        register_mods(MOD_LALT);
+        tap_code(KC_TAB);
+      } else {
+        unregister_mods(MOD_LALT);
+      }
+      break;
   }
+}
+
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
+  switch (combo_index) {
+    case CMB_ALTTAB:
+      switch (keycode) {
+        case KC_D:
+          tap_code16(S(KC_TAB));
+          return true;
+        case KC_F:
+          tap_code(KC_TAB);
+          return true;
+      }
+  }
+  return false;
 }
 #endif
 
