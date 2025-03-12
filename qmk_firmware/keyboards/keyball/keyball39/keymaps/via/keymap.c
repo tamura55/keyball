@@ -523,7 +523,7 @@ enum combos {
 
 const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
 
-combo_t key_combos[COMBO_LENGTH] = {
+combo_t key_combos[COMBO_COUNT] = {
     [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
 };
 
