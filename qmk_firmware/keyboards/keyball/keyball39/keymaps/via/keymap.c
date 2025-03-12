@@ -491,12 +491,12 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CMB_ALTTAB:
       if (pressed) {
-//        register_mods(MOD_LALT);
-        register_code(KC_LALT);
+        register_mods(MOD_LALT);
+//        register_code(KC_LALT);
         tap_code(KC_TAB);
       } else {
-//        unregister_mods(MOD_LALT);
-        unregister_code(KC_LALT);
+        unregister_mods(MOD_LALT);
+//        unregister_code(KC_LALT);
       }
       break;
   }
@@ -506,7 +506,7 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
   switch (combo_index) {
     case CMB_ALTTAB:
       switch (keycode) {
-        case KC_D:
+        case KC_S:
           tap_code16(S(KC_TAB));
 //          register_code(KC_LSFT);
 //          register_code(KC_TAB);
