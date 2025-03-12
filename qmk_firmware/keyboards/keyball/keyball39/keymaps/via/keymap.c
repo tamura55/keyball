@@ -399,6 +399,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //////////////////////////////
 
 #ifdef COMBO_ENABLE
+/* CMB_ALTTAB以外すべてオミット
 enum combo_events {
   PARENTHESES,
   SQUARE_BRACKETS,
@@ -406,11 +407,7 @@ enum combo_events {
 //  ANGLE_BRACKETS,
   PASTE_VALUE,
 //  CMB_MSBTN3,
-//  CMB_ALTTAB,
-};
-
-enum combos {
-    CMB_ALTTAB
+  CMB_ALTTAB,
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_G, KC_H, COMBO_END};
@@ -428,13 +425,9 @@ combo_t key_combos[] = {
 //  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
   [PASTE_VALUE] = COMBO_ACTION(paste_combo),
 //  [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
-//  [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
-};
-/* COMBO_ACTION(x) is same as COMBO(x, KC_NO) */
-
-combo_t key_combos[COMBO_LENGTH] = {
   [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
 };
+// COMBO_ACTION(x) is same as COMBO(x, KC_NO)
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
@@ -460,7 +453,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
-/*
+
     case ANGLE_BRACKETS:
       if (pressed) {
         register_code(KC_LSFT);
@@ -469,24 +462,24 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
-*/
+
     case PASTE_VALUE:
       if (pressed) {
         tap_code16(C(S(KC_V)));
       }
       break;
-/*
+
     case CMB_MSBTN3:
       if (pressed) {
         register_code(KC_MS_BTN3);
-/      } else {
+      } else {
         unregister_code(KC_MS_BTN3);
 #  ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
         layer_off(AUTO_MOUSE_DEFAULT_LAYER);  // AMLから離脱
 #  endif
       }
       break;
-*/
+
     case CMB_ALTTAB:
       if (pressed) {
         register_mods(MOD_LALT);
@@ -522,6 +515,46 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
   }
   return false;
 }
+*/
+// CMB_ALTTABのみトライ。ここから
+enum combos {
+    CMB_ALTTAB
+};
+
+const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
+
+combo_t key_combos[COMBO_LENGTH] = {
+    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            if (pressed) {
+                register_mods(MOD_LALT);
+                tap_code(KC_TAB);
+            } else {
+                unregister_mods(MOD_LALT);
+            }
+            break;
+    }
+}
+
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            switch (keycode) {
+                case KC_F:
+                    tap_code16(S(KC_TAB));
+                    return true;
+                case KC_G:
+                    tap_code(KC_TAB);
+                    return true;
+            }
+    }
+    return false;
+}
+// CMB_ALTTABのみトライ。ここまで
 #endif
 
 #ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
