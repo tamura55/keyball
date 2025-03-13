@@ -266,7 +266,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
             break;
     }
 }
-
+/*
 bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
     switch (combo_index) {
         case CMB_ALTTAB:
@@ -279,6 +279,23 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
                     return true;
             }
     }
+    return false;
+}
+*/
+// 変更後
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row, uint16_t keycode) {
+    if (!combo_is_pressed[combo_index]) {  // Comboが発動していなければ何もしない
+        return false;
+    }
+
+    // キーが押された場合のみ処理する
+    if (record->event.pressed) {
+        if (combo_index == CMB_ALTTAB) {  // 例: CMB_ALTTABの処理
+            tap_code16(S(KC_TAB)); // Shift + Tabを送信
+            return true;
+        }
+    }
+
     return false;
 }
 ///// CMB_ALTTABのみトライ。ここまで /////
