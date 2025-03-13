@@ -123,336 +123,6 @@ void oledkit_render_info_user(void) {
 }
 #endif
 
-///// CMB_ALTTABのみトライ。ここから /////
-#ifdef COMBO_ENABLE
-enum combos {
-    CMB_ALTTAB,
-    COMBO_COUNT  // Comboの数を自動計算
-};
-
-const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
-
-combo_t key_combos[] = {
-    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
-};
-
-void process_combo_event(uint16_t combo_index, bool pressed) {
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            if (pressed) {
-                register_mods(MOD_LALT);
-                tap_code(KC_TAB);
-            } else {
-                unregister_mods(MOD_LALT);
-            }
-            break;
-    }
-}
-
-bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            switch (keycode) {
-                case KC_F:
-                    tap_code16(S(KC_TAB));
-                    return true;
-                case KC_G:
-                    tap_code(KC_TAB);
-                    return true;
-            }
-    }
-    return false;
-}
-///// CMB_ALTTABのみトライ。ここまで /////
-#endif
-
-//////////////////////////////
-/// カスタムキーコード。ここから ///
-//////////////////////////////
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-// フラグとタイマーを初期化。AML_ENT1用
-static bool pressed_other_key_ent1 = false;
-static uint16_t aml_ent1_timer;
-// AML_TAB2用
-static bool pressed_other_key_tab2 = false;
-static uint16_t aml_tab2_timer;
-// AML_DOT3用
-static bool pressed_other_key_dot3 = false;
-static uint16_t aml_dot3_timer;
-// AML_ESC4用
-static bool pressed_other_key_esc4 = false;
-static uint16_t aml_esc4_timer;
-#endif
-
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-static uint16_t td_stsp_last_tap_time = 0;  // 最後のタップ時刻
-static uint8_t td_stsp_tap_count = 0;       // タップ回数（1～3）
-// タップ回数の更新
-static void update_td_stsp_tap_count(uint16_t time) {
-    uint16_t time_diff = TIMER_DIFF_16(time, td_stsp_last_tap_time);
-    if (time_diff > TAPPING_TERM_TD) {
-        td_stsp_tap_count = 1;  // タップ間隔がTAPPING_TERM_TDを超えたらリセット
-    } else {
-        if (td_stsp_tap_count < 3) {
-            td_stsp_tap_count++;  // 最大3回までカウント
-        }
-    }
-    td_stsp_last_tap_time = time;  // 最後のタップ時刻を更新
-}
-#endif
-
-// TO6_MO3用
-//static bool pressed_other_key_mo3 = false;
-//static uint16_t to6_mo3_timer;
-
-// Tap Dance用フラグ
-//static bool first_td_ime3_pressed = false;
-//static uint16_t first_td_ime3_pressed_time = 0;
-//static bool td_ime3_pressed = false;  // 押されたかどうかを確認。ただし他のキーを押したらリセットされる
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (!record->event.pressed) {
-        return true; // キーが離された場合は何もしない
-    }
-
-    // ComboのKey Repress処理
-    for (uint8_t i = 0; i < COMBO_COUNT; i++) {
-        if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
-            return false; // Comboが処理された場合、通常のキー入力をキャンセル
-        }
-    }
-
-    switch (keycode) {
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-        case AML_ENT1:
-            if (record->event.pressed) {
-                // AML_ENT1が押された瞬間
-                pressed_other_key_ent1 = false;         // 他のキーが押されるまでフラグをリセット
-                aml_ent1_timer = timer_read();         // タイマーをスタート
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
-                layer_on(1);                           // Layer1を有効化
-            } else {
-                // AML_ENT1が離された瞬間
-                // 他のキーが押されていない場合
-                if (!pressed_other_key_ent1) {
-                    // Tapping Term以内にリリースされた場合のみEnterを送信
-                    if (timer_elapsed(aml_ent1_timer) < TAPPING_TERM) {
-                        tap_code(KC_ENT);              // Enterキーを送信
-                    }
-                    // Tapping Termを超えている場合は何もしない
-                }
-                layer_off(1);                          // Layer1を無効化
-                layer_clear();                         // Layer0に戻る
-            }
-            return false;  // AML_ENT1に対して他の処理は行わない
-
-        case AML_TAB2:
-            if (record->event.pressed) {
-                // AML_TAB2が押された瞬間
-                pressed_other_key_tab2 = false;         // 他のキーが押されるまでフラグをリセット
-                aml_tab2_timer = timer_read();         // タイマーをスタート
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
-                layer_on(2);                           // Layer2を有効化
-            } else {
-                // AML_TAB2が離された瞬間
-                // 他のキーが押されていない場合
-                if (!pressed_other_key_tab2) {
-                    // Tapping Term以内にリリースされた場合のみTabを送信
-                    if (timer_elapsed(aml_tab2_timer) < TAPPING_TERM) {
-                        tap_code(KC_TAB);              // Tabキーを送信
-                    }
-                    // Tapping Termを超えている場合は何もしない
-                }
-                layer_off(2);                          // Layer2を無効化
-                layer_clear();                         // Layer0に戻る
-            }
-            return false;  // AML_TAB2に対して他の処理は行わない
-
-        case AML_DOT3:
-            if (record->event.pressed) {
-                pressed_other_key_dot3 = false;
-                aml_dot3_timer = timer_read();
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
-                layer_on(3);
-            } else {
-                if (!pressed_other_key_dot3) {
-                    if (timer_elapsed(aml_dot3_timer) < TAPPING_TERM) {
-                        tap_code(KC_DOT);
-                    }
-                }
-                layer_off(3);
-                layer_clear();
-            }
-            return false;
-
-        case AML_ESC4:
-            if (record->event.pressed) {
-                pressed_other_key_esc4 = false;
-                aml_esc4_timer = timer_read();
-                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
-                layer_on(4);
-            } else {
-                if (!pressed_other_key_esc4) {
-                    if (timer_elapsed(aml_esc4_timer) < TAPPING_TERM) {
-                        tap_code(KC_ESC);
-                    }
-                }
-                layer_off(4);
-                layer_clear();
-            }
-            return false;
-#endif
-
-        case EXL_FLT:
-            if (record->event.pressed) {
-                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
-                tap_code(KC_LALT);
-                tap_code(KC_W);
-                tap_code(KC_F);
-                tap_code(KC_F);
-                tap_code(KC_UP);
-                register_code(KC_LSFT);
-                tap_code(KC_SPC);
-                unregister_code(KC_LSFT);
-                tap_code(KC_LALT);
-                tap_code(KC_A);
-                tap_code(KC_T);
-                tap_code(KC_DOWN);
-                tap_code(KC_UP);
-            }
-            return false;
-            
-        case MHEN_CW:
-            if (record->event.pressed) {
-                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
-                caps_word_on();         // Caps Wordを有効化
-            }
-            return false;
-            
-        case TMS_MTG:
-            if (record->event.pressed) {
-                register_code(KC_LWIN);
-                tap_code(KC_4);
-                wait_ms(200);
-                tap_code(KC_4);
-                unregister_code(KC_LWIN);
-                wait_ms(400);
-                register_code(KC_LCTL);
-                register_code(KC_LSFT);
-                tap_code(KC_M);
-                unregister_code(KC_LSFT);
-                unregister_code(KC_LCTL);
-            }
-            return false;
-
-#if KEYBALL_SCROLLSNAP_ENABLE == 2
-        case TD_STSP:
-            if (record->event.pressed) {
-                update_td_stsp_tap_count(record->event.time);  // タップ回数を更新
-                keyball_set_scroll_mode(true);  // スクロールモードを有効化
-                // タップ回数に応じたスクロールスナップモードを設定
-                if (td_stsp_tap_count >= 3) {
-                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
-                } else if (td_stsp_tap_count == 2) {
-                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL);
-                } else {
-                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
-                }
-            } else {
-                keyball_set_scroll_mode(false);  // スクロールモードを解除
-                // キーを離した時に、最後のタップからTAPPING_TERM_TDを超えていたらカウントをリセット
-                if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
-                    td_stsp_tap_count = 0;
-                }
-            }
-            return false;  // 他の処理をブロック
-#endif
-/*
-        case TD_IME3:
-            if (record->event.pressed) {
-                if (!first_td_ime3_pressed) {
-                    first_td_ime3_pressed_time = record->event.time;
-                // 一回目のタップのフラグがオン & 最初のキー押下から2回目のキー押下までの時間が TAPPING_TERM の2倍超なら
-                // 間隔を空けた2回目のタップと判断する
-                } else if (first_td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) > TAPPING_TERM * 2)) {
-                    first_td_ime3_pressed_time = record->event.time;
-                    first_td_ime3_pressed = false;
-                }
-                layer_on(3);
-                td_ime3_pressed = true;  // 押されたのでフラグON
-            } else {
-                layer_off(3);
-                // タップのフラグがオフ & 最初のキー押下からキーを離した時までの時間が TAPPING_TERM 未満なら
-                // タップと判断する
-                if (!first_td_ime3_pressed && td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) < TAPPING_TERM)) {
-                    tap_code(KC_INT4);    // 変換キーを送信
-                    first_td_ime3_pressed = true;
-                // タップのフラグがオン & 最初のキー押下から2回目のタイプでキーを離した時までの時間が TAPPING_TERM の2倍以下なら
-                // ダブルタップと判断する
-                } else if (first_td_ime3_pressed && td_ime3_pressed && (TIMER_DIFF_16(record->event.time, first_td_ime3_pressed_time) <= TAPPING_TERM * 2)) {
-                    tap_code(KC_INT5);    // 無変換キーを送信
-                    first_td_ime3_pressed = false;
-                } else {
-                    first_td_ime3_pressed = false;
-                }
-                td_ime3_pressed = false;  // 離したのでリセット
-            }
-            return false;
-
-        case TO6_MO3:
-            if (record->event.pressed) {
-                pressed_other_key_mo3 = false;         // 他のキーが押されるまでフラグをリセット
-                to6_mo3_timer = timer_read();          // タイマーをスタート
-                layer_on(3);                           // Layer3を有効化
-            } else {
-                // 他のキーが押されていない場合
-                if (!pressed_other_key_mo3) {
-                    // Tapping Term以内にリリースされた場合
-                    if (timer_elapsed(to6_mo3_timer) < TAPPING_TERM) {
-                        layer_off(3);                  // Layer3を無効化
-                        layer_on(6);                   // Layer6を有効化
-                    }  // Tapping Termを超えている場合
-                    else {
-                        layer_off(3);                  // Layer3を無効化
-                    }
-                } // 他のキーが押された場合
-                else {
-                    layer_off(3);                      // Layer3を無効化
-                }
-            }
-            return false;
-*/
-        default:
-            // 他のキーが押された場合にフラグを立てる
-            if (record->event.pressed) {
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
-                if (layer_state_is(1)) {
-                    pressed_other_key_ent1 = true;  // Layer1で他のキーが押されたことを記録
-                }
-                if (layer_state_is(2)) {
-                    pressed_other_key_tab2 = true;  // Layer2で他のキーが押されたことを記録
-                }
-                if (layer_state_is(3)) {
-                    pressed_other_key_dot3 = true;
-                }
-                if (layer_state_is(4)) {
-                    pressed_other_key_esc4 = true;
-                }
-#endif
-//                if (layer_state_is(3)) {
-//                    pressed_other_key_mo3 = true;  // Layer3で他のキーが押されたことを記録
-//                }
-//                first_td_ime3_pressed = false;  // フラグをリセット
-//                td_ime3_pressed = false;  // 他のキーを押したらリセットすることでタップ入力させない
-            }
-            return true;  // 通常のキー処理を続ける
-    }
-    return true;
-}
-//////////////////////////////
-/// カスタムキーコード。ここまで ///
-//////////////////////////////
-
 #ifdef COMBO_ENABLE
 /* CMB_ALTTAB以外すべてオミット
 enum combo_events {
@@ -571,7 +241,260 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
   return false;
 }
 */
+
+///// CMB_ALTTABのみトライ。ここから /////
+enum combos {
+    CMB_ALTTAB,
+    COMBO_COUNT  // Comboの数を自動計算
+};
+
+const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
+
+combo_t key_combos[] = {
+    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            if (pressed) {
+                register_mods(MOD_LALT);
+                tap_code(KC_TAB);
+            } else {
+                unregister_mods(MOD_LALT);
+            }
+            break;
+    }
+}
+
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
+    switch (combo_index) {
+        case CMB_ALTTAB:
+            switch (keycode) {
+                case KC_F:
+                    tap_code16(S(KC_TAB));
+                    return true;
+                case KC_G:
+                    tap_code(KC_TAB);
+                    return true;
+            }
+    }
+    return false;
+}
+///// CMB_ALTTABのみトライ。ここまで /////
 #endif
+
+//////////////////////////////
+/// カスタムキーコード。ここから ///
+//////////////////////////////
+// AML_**用。フラグとタイマーを初期化
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+static bool pressed_other_key_ent1 = false;
+static bool pressed_other_key_tab2 = false;
+static bool pressed_other_key_dot3 = false;
+static bool pressed_other_key_esc4 = false;
+static uint16_t aml_ent1_timer;
+static uint16_t aml_tab2_timer;
+static uint16_t aml_dot3_timer;
+static uint16_t aml_esc4_timer;
+#endif
+
+// TD_STSP用
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+static uint16_t td_stsp_last_tap_time = 0;  // 最後のタップ時刻
+static uint8_t td_stsp_tap_count = 0;       // タップ回数（1～3）
+static void update_td_stsp_tap_count(uint16_t time) {  // タップ回数および時刻を記録
+    uint16_t time_diff = TIMER_DIFF_16(time, td_stsp_last_tap_time);
+    if (time_diff > TAPPING_TERM_TD) {
+        td_stsp_tap_count = 1;  // タップ間隔がTAPPING_TERM_TDを超えたらリセット
+    } else {
+        if (td_stsp_tap_count < 3) {
+            td_stsp_tap_count++;  // 最大3回までカウント
+        }
+    }
+    td_stsp_last_tap_time = time;  // 最後のタップ時刻を更新
+}
+#endif
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // CMB_ALTTAB用に追記
+    if (!record->event.pressed) {
+        return true; // キーが離された場合は何もしない
+    }
+    // CMB_ALTTAB用。ComboのKey Repress処理
+    for (uint8_t i = 0; i < COMBO_COUNT; i++) {
+        if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
+            return false; // Comboが処理された場合、通常のキー入力をキャンセル
+        }
+    }
+    
+    // カスタムキーコード
+    switch (keycode) {
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+        case AML_ENT1:
+            if (record->event.pressed) {
+                // AML_ENT1が押された瞬間
+                pressed_other_key_ent1 = false;         // 他のキーが押されるまでフラグをリセット
+                aml_ent1_timer = timer_read();         // タイマーをスタート
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);   // Auto Mouse Layerを無効化
+                layer_on(1);                           // Layer1を有効化
+            } else {
+                // AML_ENT1が離された瞬間
+                // 他のキーが押されていない場合
+                if (!pressed_other_key_ent1) {
+                    // Tapping Term以内にリリースされた場合のみEnterを送信
+                    if (timer_elapsed(aml_ent1_timer) < TAPPING_TERM) {
+                        tap_code(KC_ENT);              // Enterキーを送信
+                    }
+                    // Tapping Termを超えている場合は何もしない
+                }
+                layer_off(1);                          // Layer1を無効化
+                layer_clear();                         // Layer0に戻る
+            }
+            return false;  // AML_ENT1に対して他の処理は行わない
+
+        case AML_TAB2:
+            if (record->event.pressed) {
+                pressed_other_key_tab2 = false;
+                aml_tab2_timer = timer_read();
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
+                layer_on(2);
+            } else {
+                if (!pressed_other_key_tab2) {
+                    if (timer_elapsed(aml_tab2_timer) < TAPPING_TERM) {
+                        tap_code(KC_TAB);
+                    }
+                }
+                layer_off(2);
+                layer_clear();
+            }
+            return false;
+
+        case AML_DOT3:
+            if (record->event.pressed) {
+                pressed_other_key_dot3 = false;
+                aml_dot3_timer = timer_read();
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
+                layer_on(3);
+            } else {
+                if (!pressed_other_key_dot3) {
+                    if (timer_elapsed(aml_dot3_timer) < TAPPING_TERM) {
+                        tap_code(KC_DOT);
+                    }
+                }
+                layer_off(3);
+                layer_clear();
+            }
+            return false;
+
+        case AML_ESC4:
+            if (record->event.pressed) {
+                pressed_other_key_esc4 = false;
+                aml_esc4_timer = timer_read();
+                layer_off(AUTO_MOUSE_DEFAULT_LAYER);
+                layer_on(4);
+            } else {
+                if (!pressed_other_key_esc4) {
+                    if (timer_elapsed(aml_esc4_timer) < TAPPING_TERM) {
+                        tap_code(KC_ESC);
+                    }
+                }
+                layer_off(4);
+                layer_clear();
+            }
+            return false;
+#endif
+
+        case EXL_FLT:
+            if (record->event.pressed) {
+                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
+                tap_code(KC_LALT);
+                tap_code(KC_W);
+                tap_code(KC_F);
+                tap_code(KC_F);
+                tap_code(KC_UP);
+                register_code(KC_LSFT);
+                tap_code(KC_SPC);
+                unregister_code(KC_LSFT);
+                tap_code(KC_LALT);
+                tap_code(KC_A);
+                tap_code(KC_T);
+                tap_code(KC_DOWN);
+                tap_code(KC_UP);
+            }
+            return false;
+            
+        case MHEN_CW:
+            if (record->event.pressed) {
+                tap_code(KC_INT5);    // 無変換キー(IMEオフ)
+                caps_word_on();         // Caps Wordを有効化
+            }
+            return false;
+            
+        case TMS_MTG:
+            if (record->event.pressed) {
+                register_code(KC_LWIN);
+                tap_code(KC_4);
+                wait_ms(200);
+                tap_code(KC_4);
+                unregister_code(KC_LWIN);
+                wait_ms(400);
+                register_code(KC_LCTL);
+                register_code(KC_LSFT);
+                tap_code(KC_M);
+                unregister_code(KC_LSFT);
+                unregister_code(KC_LCTL);
+            }
+            return false;
+
+#if KEYBALL_SCROLLSNAP_ENABLE == 2
+        case TD_STSP:
+            if (record->event.pressed) {
+                update_td_stsp_tap_count(record->event.time);  // タップ回数を更新
+                keyball_set_scroll_mode(true);  // スクロールモードを有効化
+                // タップ回数に応じたスクロールスナップモードを設定
+                if (td_stsp_tap_count >= 3) {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
+                } else if (td_stsp_tap_count == 2) {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_HORIZONTAL);
+                } else {
+                    keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_VERTICAL);
+                }
+            } else {
+                keyball_set_scroll_mode(false);  // スクロールモードを解除
+                // キーを離した時に、最後のタップからTAPPING_TERM_TDを超えていたらカウントをリセット
+                if (TIMER_DIFF_16(record->event.time, td_stsp_last_tap_time) > TAPPING_TERM_TD) {
+                    td_stsp_tap_count = 0;
+                }
+            }
+            return false;  // 他の処理をブロック
+#endif
+
+        default:
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+            // 他のキーが押された場合にフラグを立てる
+            if (record->event.pressed) {
+                if (layer_state_is(1)) {
+                    pressed_other_key_ent1 = true;  // Layer1で他のキーが押されたことを記録
+                }
+                if (layer_state_is(2)) {
+                    pressed_other_key_tab2 = true;  // Layer2で他のキーが押されたことを記録
+                }
+                if (layer_state_is(3)) {
+                    pressed_other_key_dot3 = true;
+                }
+                if (layer_state_is(4)) {
+                    pressed_other_key_esc4 = true;
+                }
+            }
+#endif
+            return true;  // 通常のキー処理を続ける
+    }
+    return true;
+}
+//////////////////////////////
+/// カスタムキーコード。ここまで ///
+//////////////////////////////
 
 #ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
