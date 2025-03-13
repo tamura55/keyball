@@ -317,7 +317,8 @@ static void update_td_stsp_tap_count(uint16_t time) {  // タップ回数およ�
 #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // CMB_ALTTAB用に追記
+/*
+  // CMB_ALTTAB用に追記
     if (!record->event.pressed) {
         return true; // キーが離された場合は何もしない
     }
@@ -327,9 +328,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false; // Comboが処理された場合、通常のキー入力をキャンセル
         }
     }
+*/
     
     // カスタムキーコード
     switch (keycode) {
+// CMB_ALTTAB用
+#ifdef COMBO_ENABLE
+        case KC_F:
+        case KC_G:
+            if (record->event.pressed) {
+                // ComboのKey Repress処理
+                for (uint8_t i = 0; i < COMBO_COUNT; i++) {
+                    if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
+                        return false; // Comboが処理された場合、通常のキー入力をキャンセル
+                    }
+                }
+            }
+            return true;  // Combo以外であれば通常のキー入力を行う
+#endif
+
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
         case AML_ENT1:
             if (record->event.pressed) {
@@ -492,7 +509,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
             return true;  // 通常のキー処理を続ける
     }
-    return true;
+//    return true;
 }
 //////////////////////////////
 /// カスタムキーコード。ここまで ///
