@@ -413,14 +413,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_F);
                 tap_code(KC_F);
                 tap_code(KC_UP);
-                register_code(KC_LSFT);
-                tap_code(KC_SPC);
-                unregister_code(KC_LSFT);
-                tap_code(KC_LALT);
-                tap_code(KC_A);
-                tap_code(KC_T);
+                tap_code16(S(KC_SPC));
+//                register_code(KC_LSFT);
+//                tap_code(KC_SPC);
+//                unregister_code(KC_LSFT);
+                tap_code16(C(S(KC_L)));
+//                tap_code(KC_LALT);
+//                tap_code(KC_A);
+//                tap_code(KC_T);
                 tap_code(KC_DOWN);
-                tap_code(KC_UP);
             }
             return false;
             
@@ -439,11 +440,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_4);
                 unregister_code(KC_LWIN);
                 wait_ms(400);
-                register_code(KC_LCTL);
-                register_code(KC_LSFT);
-                tap_code(KC_M);
-                unregister_code(KC_LSFT);
-                unregister_code(KC_LCTL);
+                tap_code16(C(S(KC_M)));
+//                register_code(KC_LCTL);
+//                register_code(KC_LSFT);
+//                tap_code(KC_M);
+//                unregister_code(KC_LSFT);
+//                unregister_code(KC_LCTL);
             }
             return false;
 
@@ -505,7 +507,6 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LT(1, KC_ENT):
         case LT(2, KC_TAB):
         case LT(3, KC_DOT):
-//        case C_S_T(KC_ESC):
         case LT(4, KC_ESC):
         case LSFT_T(KC_F10):
             // Immediately select the hold action when another key is pressed
