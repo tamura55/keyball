@@ -124,7 +124,6 @@ void oledkit_render_info_user(void) {
 #endif
 
 #ifdef COMBO_ENABLE
-/* CMB_ALTTAB以外すべてオミット
 enum combo_events {
   PARENTHESES,
   SQUARE_BRACKETS,
@@ -133,6 +132,7 @@ enum combo_events {
   PASTE_VALUE,
 //  CMB_MSBTN3,
   CMB_ALTTAB,
+  COMBO_COUNT  // Comboの数を自動計算
 };
 
 const uint16_t PROGMEM paren_combo[] = {KC_G, KC_H, COMBO_END};
@@ -143,7 +143,7 @@ const uint16_t PROGMEM paste_combo[] = {KC_C, KC_V, COMBO_END};
 //const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
 const uint16_t PROGMEM combo_alttab[] = {KC_D, KC_F, COMBO_END};
 
-combo_t key_combos[] = {
+combo_t key_combos[COMBO_COUNT] = {
   [PARENTHESES] = COMBO_ACTION(paren_combo),
   [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
@@ -154,7 +154,11 @@ combo_t key_combos[] = {
 };
 // COMBO_ACTION(x) is same as COMBO(x, KC_NO)
 
+// Comboの状態管理
+static bool combo_key_press_active[COMBO_COUNT] = { false };
+
 void process_combo_event(uint16_t combo_index, bool pressed) {
+  combo_key_press_active[combo_index] = pressed;  // Comboが押されている間はTRUE、離すとFALSE
   switch(combo_index) {
     case PARENTHESES:
       if (pressed) {
@@ -208,86 +212,14 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
     case CMB_ALTTAB:
       if (pressed) {
         register_mods(MOD_LALT);
-//        register_code(KC_LALT);
         tap_code(KC_TAB);
       } else {
         unregister_mods(MOD_LALT);
-//        unregister_code(KC_LALT);
       }
-      break;
+      break;    
   }
 }
 
-bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
-  switch (combo_index) {
-    case CMB_ALTTAB:
-      switch (keycode) {
-        case KC_S:
-//          tap_code16(S(KC_TAB));
-          register_code(KC_LSFT);
-          register_code(KC_TAB);
-          wait_ms(10);
-          unregister_code(KC_TAB);
-          unregister_code(KC_LSFT);
-          return true;
-        case KC_F:
-//          tap_code(KC_TAB);
-          register_code(KC_TAB);
-          wait_ms(10);
-          unregister_code(KC_TAB);
-          return true;
-      }
-  }
-  return false;
-}
-*/
-
-///// CMB_ALTTABのみトライ。ここから /////
-enum combos {
-    CMB_ALTTAB,
-    COMBO_COUNT  // Comboの数を自動計算
-};
-
-const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
-
-combo_t key_combos[COMBO_COUNT] = {
-    [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
-};
-
-// Comboの状態管理
-static bool combo_key_press_active[COMBO_COUNT] = { false };
-
-void process_combo_event(uint16_t combo_index, bool pressed) {
-    combo_key_press_active[combo_index] = pressed;  // Comboが押されている間はTRUE、離すとFALSE
-    
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            if (pressed) {
-                register_mods(MOD_LALT);
-                tap_code(KC_TAB);
-            } else {
-                unregister_mods(MOD_LALT);
-            }
-            break;
-    }
-}
-/*
-bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key_index, uint16_t keycode) {
-    switch (combo_index) {
-        case CMB_ALTTAB:
-            switch (keycode) {
-                case KC_F:
-                    tap_code16(S(KC_TAB));
-                    return true;
-                case KC_G:
-                    tap_code(KC_TAB);
-                    return true;
-            }
-    }
-    return false;
-}
-*/
-// 変更後
 bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row, uint16_t keycode, keyrecord_t *record) {
     if (!combo_key_press_active[combo_index]) {  // Comboが発動していなければ何もしない
         return false;
@@ -295,10 +227,10 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row
 
     if (record->event.pressed) {
         if (combo_index == CMB_ALTTAB) {  
-            if (keycode == KC_F) {
+            if (keycode == KC_S) {
                 tap_code16(S(KC_TAB)); // Shift + Tabを送信
                 return true;
-            } else if (keycode == KC_G) {
+            } else if (keycode == KC_F) {
                 tap_code(KC_TAB); // Tabを送信
                 return true;
             }
@@ -307,7 +239,6 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row
 
     return false;
 }
-///// CMB_ALTTABのみトライ。ここまで /////
 #endif
 
 //////////////////////////////
@@ -343,25 +274,11 @@ static void update_td_stsp_tap_count(uint16_t time) {  // タップ回数およ�
 #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-/*
-  // CMB_ALTTAB用に追記
-    if (!record->event.pressed) {
-        return true; // キーが離された場合は何もしない
-    }
-    // CMB_ALTTAB用。ComboのKey Repress処理
-    for (uint8_t i = 0; i < COMBO_COUNT; i++) {
-        if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
-            return false; // Comboが処理された場合、通常のキー入力をキャンセル
-        }
-    }
-*/
-    
-    // カスタムキーコード
     switch (keycode) {
-// CMB_ALTTAB用
+        // CMB_ALTTAB用
 #ifdef COMBO_ENABLE
+        case KC_S:
         case KC_F:
-        case KC_G:
             if (record->event.pressed) {
                 // ComboのKey Repress処理
                 for (uint16_t i = 0; i < COMBO_COUNT; i++) {
@@ -457,13 +374,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_F);
                 tap_code(KC_UP);
                 tap_code16(S(KC_SPC));
-//                register_code(KC_LSFT);
-//                tap_code(KC_SPC);
-//                unregister_code(KC_LSFT);
                 tap_code16(C(S(KC_L)));
-//                tap_code(KC_LALT);
-//                tap_code(KC_A);
-//                tap_code(KC_T);
                 tap_code(KC_DOWN);
             }
             return false;
@@ -471,7 +382,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MHEN_CW:
             if (record->event.pressed) {
                 tap_code(KC_INT5);    // 無変換キー(IMEオフ)
-                caps_word_on();         // Caps Wordを有効化
+                caps_word_on();       // Caps Wordを有効化
             }
             return false;
             
@@ -484,11 +395,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_code(KC_LWIN);
                 wait_ms(400);
                 tap_code16(C(S(KC_M)));
-//                register_code(KC_LCTL);
-//                register_code(KC_LSFT);
-//                tap_code(KC_M);
-//                unregister_code(KC_LSFT);
-//                unregister_code(KC_LCTL);
             }
             return false;
 
