@@ -250,11 +250,16 @@ enum combos {
 
 const uint16_t PROGMEM combo_alttab[] = {KC_F, KC_G, COMBO_END};
 
-combo_t key_combos[] = {
+combo_t key_combos[COMBO_COUNT] = {
     [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO: process_combo_eventで処理
 };
 
+// Comboの状態管理
+static bool combo_key_press_active[COMBO_COUNT] = { false };
+
 void process_combo_event(uint16_t combo_index, bool pressed) {
+    combo_key_press_active[combo_index] = pressed;  // Comboが押されている間はTRUE、離すとFALSE
+    
     switch (combo_index) {
         case CMB_ALTTAB:
             if (pressed) {
@@ -283,16 +288,20 @@ bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t key
 }
 */
 // 変更後
-bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row, uint16_t keycode) {
-    if (!combo_is_pressed[combo_index]) {  // Comboが発動していなければ何もしない
+bool process_combo_key_repress(uint16_t combo_index, combo_t *combo, uint8_t row, uint16_t keycode, keyrecord_t *record) {
+    if (!combo_key_press_active[combo_index]) {  // Comboが発動していなければ何もしない
         return false;
     }
 
-    // キーが押された場合のみ処理する
     if (record->event.pressed) {
-        if (combo_index == CMB_ALTTAB) {  // 例: CMB_ALTTABの処理
-            tap_code16(S(KC_TAB)); // Shift + Tabを送信
-            return true;
+        if (combo_index == CMB_ALTTAB) {  
+            if (keycode == KC_F) {
+                tap_code16(S(KC_TAB)); // Shift + Tabを送信
+                return true;
+            } else if (keycode == KC_G) {
+                tap_code(KC_TAB); // Tabを送信
+                return true;
+            }
         }
     }
 
@@ -355,8 +364,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_G:
             if (record->event.pressed) {
                 // ComboのKey Repress処理
-                for (uint8_t i = 0; i < COMBO_COUNT; i++) {
-                    if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode)) {
+                for (uint16_t i = 0; i < COMBO_COUNT; i++) {
+                    if (process_combo_key_repress(i, &key_combos[i], record->event.key.row, keycode, record)) {
                         return false; // Comboが処理された場合、通常のキー入力をキャンセル
                     }
                 }
