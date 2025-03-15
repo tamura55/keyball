@@ -182,7 +182,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
-
+/*
     case ANGLE_BRACKETS:
       if (pressed) {
         register_code(KC_LSFT);
@@ -191,13 +191,13 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         unregister_code(KC_LSFT);
       }
       break;
-
+*/
     case PASTE_VALUE:
       if (pressed) {
         tap_code16(C(S(KC_V)));
       }
       break;
-
+/*
     case CMB_MSBTN3:
       if (pressed) {
         register_code(KC_MS_BTN3);
@@ -208,7 +208,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 #  endif
       }
       break;
-
+*/
     case CMB_ALTTAB:
       if (pressed) {
         register_mods(MOD_LALT);
