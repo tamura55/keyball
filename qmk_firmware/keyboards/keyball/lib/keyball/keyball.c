@@ -731,11 +731,11 @@ static void pressing_keys_update(uint16_t keycode, keyrecord_t *record) {
 bool is_mouse_record_kb(uint16_t keycode, keyrecord_t* record) {
     // 押下後もAML保持したいキーを定義
     switch (keycode) {
-// Kb23~25,31追加
+// スクロール用カスタムキー
 #    if KEYBALL_SCROLLSNAP_ENABLE == 2
-        case STSP_VRT:
-        case STSP_HOR:
-        case STSP_FRE:
+//        case STSP_VRT:
+//        case STSP_HOR:
+//        case STSP_FRE:
         case TD_STSP:
             return true;
 #    endif
