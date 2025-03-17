@@ -807,7 +807,8 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             // process_auto_mouse may use this in future, if changed order of
             // processes.
             return true;
-// Kb23~25追加
+/*
+// 押してる間のみ指定方向スクロール
 #if KEYBALL_SCROLLSNAP_ENABLE == 2
         case STSP_VRT:
             keyball_set_scroll_mode(record->event.pressed);
@@ -822,6 +823,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             keyball_set_scrollsnap_mode(KEYBALL_SCROLLSNAP_MODE_FREE);
             return true;
 #endif
+*/
     }
 
     // process events which works on pressed only.
