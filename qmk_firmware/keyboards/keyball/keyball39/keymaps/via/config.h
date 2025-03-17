@@ -50,5 +50,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define RETRO_TAPPING_PER_KEY  // 追加
 
 #ifdef COMBO_ENABLE
-#define COMBO_TERM 90
+#    define COMBO_TERM 90
 #endif
