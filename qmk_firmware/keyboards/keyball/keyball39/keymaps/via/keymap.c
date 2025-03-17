@@ -159,13 +159,12 @@ static bool combo_key_press_active[COMBO_COUNT] = { false };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
   combo_key_press_active[combo_index] = pressed;  // Comboが押されている間はTRUE、離すとFALSE
+  
   switch(combo_index) {
     case PARENTHESES:
       if (pressed) {
-        register_code(KC_LSFT);
-        tap_code(KC_8);
-        tap_code(KC_9);
-        unregister_code(KC_LSFT);
+        tap_code16(S(KC_8));
+        tap_code16(S(KC_9));
       }
       break;
     case SQUARE_BRACKETS:
@@ -176,19 +175,15 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case CURLY_BRACKETS:
       if (pressed) {
-        register_code(KC_LSFT);
-        tap_code(KC_RBRC);
-        tap_code(KC_BSLS);
-        unregister_code(KC_LSFT);
+        tap_code16(S(KC_RBRC));
+        tap_code16(S(KC_BSLS));
       }
       break;
 /*
     case ANGLE_BRACKETS:
       if (pressed) {
-        register_code(KC_LSFT);
-        tap_code(KC_COMMA);
-        tap_code(KC_DOT);
-        unregister_code(KC_LSFT);
+        tap_code16(S(KC_COMMA));
+        tap_code16(S(KC_DOT));
       }
       break;
 */
