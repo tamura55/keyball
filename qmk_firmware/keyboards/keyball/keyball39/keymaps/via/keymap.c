@@ -129,8 +129,8 @@ enum combo_events {
   SQUARE_BRACKETS,
   CURLY_BRACKETS,
 //  ANGLE_BRACKETS,
-  PASTE_VALUE,
 //  CMB_MSBTN3,
+  PASTE_VALUE,
   CMB_ALTTAB,
   COMBO_COUNT  // Comboの数を自動計算
 };
@@ -139,8 +139,8 @@ const uint16_t PROGMEM paren_combo[] = {KC_G, KC_H, COMBO_END};
 const uint16_t PROGMEM sqbra_combo[] = {KC_T, KC_Y, COMBO_END};
 const uint16_t PROGMEM cubra_combo[] = {KC_B, KC_N, COMBO_END};
 //const uint16_t PROGMEM anbra_combo[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM paste_combo[] = {KC_C, KC_V, COMBO_END};
 //const uint16_t PROGMEM msbtn3_combo[] = {KC_MS_BTN1, KC_MS_BTN2, COMBO_END};
+const uint16_t PROGMEM paste_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM combo_alttab[] = {KC_D, KC_F, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
@@ -148,8 +148,8 @@ combo_t key_combos[COMBO_COUNT] = {
   [SQUARE_BRACKETS] = COMBO_ACTION(sqbra_combo),
   [CURLY_BRACKETS] = COMBO_ACTION(cubra_combo),
 //  [ANGLE_BRACKETS] = COMBO_ACTION(anbra_combo),
-  [PASTE_VALUE] = COMBO_ACTION(paste_combo),
 //  [CMB_MSBTN3] = COMBO_ACTION(msbtn3_combo),
+  [PASTE_VALUE] = COMBO_ACTION(paste_combo),
   [CMB_ALTTAB] = COMBO(combo_alttab, KC_NO), // KC_NO to leave processing for process_combo_event
 };
 // COMBO_ACTION(x) is same as COMBO(x, KC_NO)
@@ -186,13 +186,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         tap_code16(S(KC_DOT));
       }
       break;
-*/
-    case PASTE_VALUE:
-      if (pressed) {
-        tap_code16(C(S(KC_V)));
-      }
-      break;
-/*
     case CMB_MSBTN3:
       if (pressed) {
         register_code(KC_MS_BTN3);
@@ -204,6 +197,11 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
       break;
 */
+    case PASTE_VALUE:
+      if (pressed) {
+        tap_code16(C(S(KC_V)));
+      }
+      break;
     case CMB_ALTTAB:
       if (pressed) {
         register_mods(MOD_LALT);
@@ -416,6 +414,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;  // 他の処理をブロック
 #endif
 
+        case GRP_COL:
+            if (record->event.pressed) {
+                tap_code16(C(KC_SPC));
+                tap_code16(S(A(KC_RIGHT)));
+            }
+            return false;
+        case UNG_COL:
+            if (record->event.pressed) {
+                tap_code16(C(KC_SPC));
+                tap_code16(S(A(KC_LEFT)));
+            }
+            return false;
+
         default:
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
             // 他のキーが押された場合にフラグを立てる
@@ -448,6 +459,7 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case LCTL_T(KC_GRV):
         case LSFT_T(KC_SPC):
         case LALT_T(KC_MINS):
+        case C_S_T(KC_MINS):
         case LT(1, KC_ENT):
         case LT(2, KC_TAB):
         case LT(3, KC_DOT):
