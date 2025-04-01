@@ -105,16 +105,16 @@ enum keyball_keycodes {
     SCRL_DVI = QK_KB_8, // Increment scroll divider
     SCRL_DVD = QK_KB_9, // Decrement scroll divider
 
-    SSNP_VRT = QK_KB_13, // Set scroll snap mode as vertical
-    SSNP_HOR = QK_KB_14, // Set scroll snap mode as horizontal
-    SSNP_FRE = QK_KB_15, // Set scroll snap mode as disable (free scroll)
-
     // Auto mouse layer control keycodes.
     // Only works when POINTING_DEVICE_AUTO_MOUSE_ENABLE is defined.
     AML_TO   = QK_KB_10, // Toggle automatic mouse layer
     AML_I50  = QK_KB_11, // Increment automatic mouse layer timeout
     AML_D50  = QK_KB_12, // Decrement automatic mouse layer timeout
-    
+
+    SSNP_VRT = QK_KB_13, // Set scroll snap mode as vertical
+    SSNP_HOR = QK_KB_14, // Set scroll snap mode as horizontal
+    SSNP_FRE = QK_KB_15, // Set scroll snap mode as disable (free scroll)
+
     // 設定値プリント
     PR_CPI   = QK_KB_16, // CPIをタイピング出力
     PR_SDIV  = QK_KB_17, // スクロール除数をタイピング出力
@@ -126,18 +126,20 @@ enum keyball_keycodes {
     AML_DOT3 = QK_KB_23,
     AML_ESC4 = QK_KB_24,
 
-    // SCRL_TOとSSNP_**を組み合わせたkeycode
-    STSP_VRT = QK_KB_28, // 以前はKb23
-    STSP_HOR = QK_KB_29, // 以前はKb24
-    STSP_FRE = QK_KB_30, // 以前はKb25
-    TD_STSP  = QK_KB_31, // Tap回数に応じてスクロールモードを切り替え
-
     // カスタムキーコード
+    GRP_COL  = QK_KB_19, // 列選択してグループ化
+    UNG_COL  = QK_KB_20, // 列選択してグループ解除
     TMS_MTG  = QK_KB_25, // TeamsのマイクON/OFF切替。以前はKb30
     EXL_FLT  = QK_KB_26, // Excelフィルタ用
     MHEN_CW  = QK_KB_27, // Caps Word用
 //    TD_IME3  = QK_KB_, // IME切替Tap Dance
 //    TO6_MO3  = QK_KB_, // タップでL6移行、それ以外はL3
+
+    // SCRL_TOとSSNP_**を組み合わせたkeycode
+    STSP_VRT = QK_KB_28, // 以前はKb23
+    STSP_HOR = QK_KB_29, // 以前はKb24
+    STSP_FRE = QK_KB_30, // 以前はKb25
+    TD_STSP  = QK_KB_31, // Tap回数に応じてスクロールモードを切り替え
     
     // 親指・小指付け根キーを定義
 //    AML_LL = RCTL_T(KC_GRV),  // 変換→半/全
